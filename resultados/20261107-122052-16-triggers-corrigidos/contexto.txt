@@ -1,0 +1,12 @@
+rotulo: 16-triggers-corrigidos
+data: 2026-11-07 12:20:54 -0300
+vus: 20
+duracao: 60s
+aquecimento: 15s
+semente: 42
+commit: 0abc158
+arquivos alterados sem commit: 0
+
+limites dos containers:
+  banco: cpus=500000000 (1e9 = 1 CPU, 0 = sem limite) memoria=536870912 bytes (0 = sem limite)
+  api: cpus=500000000 (1e9 = 1 CPU, 0 = sem limite) memoria=268435456 bytes (0 = sem limite)
