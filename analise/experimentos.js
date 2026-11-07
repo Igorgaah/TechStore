@@ -65,7 +65,7 @@ const META = [
     hipotese: 'As consultas de itens por pedido e de pedidos por cliente varrem a tabela inteira a cada chamada; com índice, viram buscas de poucas linhas, e o p95 de pedidos-do-cliente e a CPU do banco por requisição caem.',
     curta: 'FKs sem índice forçam varredura → índice reduz p95 e CPU',
     status: 'Aplicada, sem ganho geral claro',
-    conclusao: (r, a) => `No banco, a consulta de itens por pedido caiu de 40,5% para 0,5% do tempo (diagnostico/00 → 01, carga-consultas.txt) e o p50 de pedidos-do-cliente de ${ms(rota(a, 'pedidos-do-cliente', 'p50'))} para ${ms(rota(r, 'pedidos-do-cliente', 'p50'))} ms. O req/s geral e a CPU por requisição não saíram da faixa da linha de base: o banco seguiu saturado pelas outras varreduras (status, vendas-por-dia, top-produtos). A execução mediana desta série teve ${(r.erros_max * 100).toFixed(2).replace('.', ',')}% de erros (timeout de 60 s em top-produtos), o que trunca o p95 dela.`,
+    conclusao: (r, a) => `No banco, a consulta de itens por pedido caiu de 40,5% para 0,5% do tempo (diagnostico/00 → 01, carga-consultas.txt) e o p50 de pedidos-do-cliente de ${ms(rota(a, 'pedidos-do-cliente', 'p50'))} para ${ms(rota(r, 'pedidos-do-cliente', 'p50'))} ms. O req/s geral e a CPU do banco por requisição não saíram da faixa da linha de base (o banco seguiu saturado pelas outras varreduras: status, vendas-por-dia, top-produtos); a CPU da API por requisição subiu (${ms(a.recursos.api.cpu_ms_por_req)} → ${ms(r.recursos.api.cpu_ms_por_req)} ms). A execução mediana desta série teve ${(r.erros_max * 100).toFixed(2).replace('.', ',')}% de erros (timeout de 60 s em top-produtos), o que trunca o p95 dela.`,
     curtaConclusao: 'Resolveu a consulta-alvo, mas o banco seguiu saturado pelas outras',
   },
   {
@@ -78,7 +78,7 @@ const META = [
     status: 'Aplicada e medida (ganho provável em req/s)',
     prefixo: '**Ganho claro em req/s nesta série; provável com a série descartada.** ',
     conclusao: (r, a) => `p95 de pedidos-por-status ${ms(rota(a, 'pedidos-por-status'))} → ${ms(rota(r, 'pedidos-por-status'))} ms; o count virou Index Only Scan (diagnostico/02-indice-status/explain.txt). Ressalva: a 1ª série com o **mesmo código** (descartada por 2 relatórios sem commit; commit 5198b26) deu 2,10 / 2,93 / 3,49 req/s, faixa que se sobrepõe à da 01; a série que ficou foi refeita no commit c05803a, depois da série da 03. Com as 6 execuções, o ganho em req/s é provável, não claro.`,
-    curtaConclusao: 'p95 da página 4× menor; ganho geral provável (ver ressalva)',
+    curtaConclusao: 'p95 da página 4× menor; ganho geral provável (ressalva em experimentos.md)',
   },
   {
     rotulo: '03-resumo-top-produtos',
@@ -88,7 +88,7 @@ const META = [
     hipotese: 'Cada chamada agrega 1,5 milhão de itens; mantendo a soma por produto no momento da escrita (mesma transação), a rota lê ~10 linhas de um índice e o req/s geral sobe.',
     curta: 'Agregar 1,5 mi de itens por chamada → resumo reduz p95 de top-produtos',
     status: 'Aplicada, sem ganho geral claro',
-    conclusao: (r, a) => `p95 de top-produtos ${ms(rota(a, 'top-produtos'))} → ${ms(rota(r, 'top-produtos'))} ms, mas o req/s geral ficou na mesma faixa: a rota é só 2% da carga e os "29% do tempo do banco" do pg_stat_statements eram em boa parte espera por CPU (tempo de relógio), não trabalho. Os triggers tinham 2 defeitos que só aparecem com escrita (corrida com cancelamento e overflow), corrigidos na 16.`,
+    conclusao: (r, a) => `p95 de top-produtos ${ms(rota(a, 'top-produtos'))} → ${ms(rota(r, 'top-produtos'))} ms, mas o req/s geral ficou na mesma faixa: a rota é só 2% da carga, e o efeito no total ficou dentro do ruído da série (a fatia de tempo de relógio do pg_stat_statements, 29%, não previu o efeito no req/s). Os triggers tinham 2 defeitos que só aparecem com escrita (corrida com cancelamento e overflow), corrigidos na 16.`,
     curtaConclusao: 'Rota 20× mais rápida; peso pequeno na carga (2%)',
   },
   {
@@ -162,7 +162,7 @@ const META = [
     mudanca: 'Pedidos do cliente em uma consulta com JOIN (fim do N+1)',
     arquivos: '`api/src/rotas.js`',
     fonte: f('chen', 'yang', 'rails'),
-    hipotese: 'A rota faz 1 + uma consulta por pedido e por item (17 idas para o cliente 42), em sequência, e cada uma espera na fila; com um JOIN, na mesma ordem, vira 1 ida e o p95 da rota cai.',
+    hipotese: 'A rota faz 2 consultas fixas (cliente e pedidos) + uma por pedido e uma por item (17 idas para o cliente 42), em sequência, e cada uma espera na fila; com um JOIN, na mesma ordem, vira 1 ida e o p95 da rota cai.',
     curta: '17 idas sequenciais ao banco → 1 consulta reduz p95 da rota',
     status: 'Aplicada e medida',
     conclusao: (r, a) => `p95 de pedidos-do-cliente ${ms(rota(a, 'pedidos-do-cliente'))} → ${ms(rota(r, 'pedidos-do-cliente'))} ms. Equivalência com o código original conferida em 790 URLs (diagnostico/10-pedidos-cliente-join/equivalencia.txt).`,
@@ -198,8 +198,8 @@ const META = [
     hipotese: 'Cada resposta era serializada duas vezes e "gravada de forma síncrona" no stdout; logando só método, URL, status e duração, a CPU da API por requisição cai.',
     curta: 'Log síncrono do corpo → sem corpo, menos CPU da API',
     status: 'Aplicada, sem ganho (hipótese refutada)',
-    conclusao: (r, a) => `Sem ganho de desempenho (CPU da API por requisição ${n2(a.recursos.api.cpu_ms_por_req)} → ${n2(r.recursos.api.cpu_ms_por_req)} ms). A premissa estava errada: o stdout do container é um pipe (diagnostico/ambiente-host.txt: \`/proc/1/fd/1 -> pipe:[...]\`, Tty=false), e a doc do Node 20 diz que escrita em pipe é assíncrona em POSIX. Ganho real em outra dimensão: log de 1.147 → 84 bytes por requisição, sem nome e e-mail de clientes (diagnostico/00 e 13, log-api.txt).`,
-    curtaConclusao: 'Hipótese refutada; log ~14× menor e sem dados pessoais',
+    conclusao: (r, a) => `Sem ganho mensurável (CPU da API por requisição ${n2(a.recursos.api.cpu_ms_por_req)} → ${n2(r.recursos.api.cpu_ms_por_req)} ms). A premissa de escrita síncrona estava errada: o stdout do container é um pipe (diagnostico/ambiente-host.txt: \`/proc/1/fd/1 -> pipe:[...]\`, Tty=false), e a doc do Node 20 diz que escrita em pipe é assíncrona em POSIX; a serialização extra do corpo pesou pouco. Ganho real em outra dimensão: log de 1.147 → 84 bytes por requisição, sem o corpo das respostas (com nomes e e-mails de clientes); o e-mail ainda aparece na URL de /clientes?email= (proximos-testes.md, item 13) (diagnostico/00 e 13, log-api.txt).`,
+    curtaConclusao: 'Hipótese refutada; log ~14× menor, sem o corpo das respostas',
   },
   {
     rotulo: '14-totais-pedido',

@@ -9,7 +9,7 @@ Ordem: primeiro o que pode **derrubar** a conclusão do artigo, depois o que pod
 ### 1. Custo dos triggers numa carga com escrita
 
 - **De onde veio:** [Nelson, Citus Data, "Faster PostgreSQL Counting"](https://www.citusdata.com/blog/2016/10/12/count-performance/): contagem por trigger "shifts overhead to inserts and deletes", e no teste deles as inserções ficaram 50× mais lentas. [PostgreSQL 16, 13.3 Explicit Locking](https://www.postgresql.org/docs/16/explicit-locking.html): o UPDATE de uma linha bloqueia outras transações que tentam alterar a mesma linha até o fim da transação.
-- **O que eu acredito que ganharia:** a resposta à maior dúvida da solução. Opinião: `totais_pedido` (uma linha por pedido) e `receita_por_produto` (20 mil linhas) devem ter custo moderado. A `pedidos_por_status` é uma linha quente: toda inserção de pedido atualiza uma de só 4 linhas, então transações concorrentes devem se enfileirar nela. Dois riscos já foram reproduzidos na revisão, sem medida de frequência: *deadlock* (erro 40P01) entre inserções de itens dos mesmos produtos em ordens diferentes e entre trocas de status em ordens opostas; e espera por lock entre inserir item e cancelar o mesmo pedido, que é o efeito desejado da correção 16 (no teste, ~4–5 s, o tempo que a outra transação ficou aberta). Limite conhecido: DELETE de um pedido e dos seus itens no **mesmo comando** não é descontado de `receita_por_produto`.
+- **O que eu acredito que ganharia:** a resposta à maior dúvida da solução. Opinião: `totais_pedido` (uma linha por pedido) e `receita_por_produto` (20 mil linhas) devem ter custo moderado. A `pedidos_por_status` é uma linha quente: toda inserção de pedido atualiza uma de só 4 linhas, então transações concorrentes devem se enfileirar nela. Dois riscos já apareceram, sem medida de frequência: *deadlock* (erro 40P01) entre inserções de itens dos mesmos produtos em ordens diferentes, reproduzido por `testes/deadlock.sh` ([saída](diagnostico/16-triggers-corrigidos/deadlock.txt)), e possível também entre trocas de status em ordens opostas (não reproduzido nos testes salvos); e espera por lock entre inserir item e cancelar o mesmo pedido, que é o efeito desejado da correção 16 (no teste, ~4–5 s, o tempo que a outra transação ficou aberta). Limite conhecido: DELETE de um pedido e dos seus itens no **mesmo comando** não é descontado de `receita_por_produto`.
 - **Como testaria:** um script `pgbench` que cria pedidos com 1 a 5 itens (como o `02-dados.sql`) com 1, 8 e 32 clientes simultâneos, medindo TPS, latência e a taxa de 40P01, com e sem os triggers (banco recriado com e sem os arquivos `05`, `08`, `10` e `11`). Se a linha quente pesar, testar contadores particionados (N linhas por status, uma escolhida por transação, somadas na leitura). Se os deadlocks pesarem, testar triggers por comando que façam os upserts ordenados por `produto_id` (item 11) ou nova tentativa automática em quem escreve.
 - **O que precisaria:** um perfil de escrita da loja real (pedidos por segundo no pico) para escolher a concorrência; o `pgbench` já vem na imagem do PostgreSQL.
 
@@ -33,6 +33,13 @@ Ordem: primeiro o que pode **derrubar** a conclusão do artigo, depois o que pod
 - **O que eu acredito que ganharia:** mostrar quanto cada mudança vale sozinha. Opinião: a 11 (sem paralelismo) e a 05 (pool) dariam ganho grande em qualquer ordem; 03 e 09 dariam ganho maior se aplicadas depois que o banco deixa de estar saturado.
 - **Como testaria:** partir do estado final e desfazer uma mudança por vez (*ablation*), medindo cada estado.
 - **O que precisaria:** ~15 séries de medição.
+
+### 17. Linha de base com mais CPU
+
+- **De onde veio:** a própria tese do artigo ("não precisava de mais máquina") e o modelo de custo do [AWS Fargate](https://aws.amazon.com/fargate/pricing/), que cobra por vCPU e GB por segundo.
+- **O que eu acredito que ganharia:** a forma mais direta de derrubar a tese. Opinião: com 2–4 CPUs no banco, a linha de base ganharia algumas vezes em req/s, mas continuaria duas ordens de grandeza abaixo dos 199 req/s, porque o trabalho por requisição (413 ms de CPU do banco, contra 2,05 ms na 14) não muda.
+- **Como testaria:** recriar o banco no commit da linha de base com 2 e 4 CPUs no compose, 3 medições cada, e comparar req/s e custo por milhão de requisições com a 14 e a 15.
+- **O que precisaria:** uma máquina com núcleos livres (a usada aqui tem 4, e ~2 estavam ocupados).
 
 ## Testes que podem melhorar o resultado
 

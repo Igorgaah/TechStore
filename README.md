@@ -8,7 +8,7 @@ A aplicação é a API de uma loja fictícia, em Node.js (Express) com PostgreSQ
 
 **O problema:** com 20 usuários simultâneos, a API atendia 2,34 requisições por segundo, com p95 de 27 s. O banco ficava saturado (95% de 1 CPU) e a API, quase ociosa. O diagnóstico ([diagnostico/](diagnostico/)) mostrou que o banco refazia trabalho desnecessário: varreduras de tabela inteira por falta de índice, uma conexão nova por consulta, N+1 (17 idas ao banco numa só requisição), consulta paralela num banco de 1 CPU relatórios recalculados sobre 1,5 milhão de itens e contagens sobre até 300 mil pedidos a cada chamada.
 
-**O que mudou:** 16 mudanças (14 de desempenho, 1 de custo e 1 de corretude), uma por commit, cada uma medida 3 vezes pelo `scripts/medir.sh`: índices, pool de conexões, fim do N+1, agregação no banco, tabelas de resumo mantidas por trigger (exatas), consulta paralela desligada, log sem dados pessoais, menos CPU para o banco e, por fim, correções nos triggers achadas na revisão (corrida, ordem de disparo e overflow, que só aparecem com escrita). Nenhuma resposta mudou: o contrato foi mantido em todas as execuções, e 790 URLs foram conferidas contra o código original.
+**O que mudou:** 16 mudanças (14 de desempenho, 1 de custo e 1 de corretude), uma por commit, cada uma medida 3 vezes pelo `scripts/medir.sh`: índices, pool de conexões, fim do N+1, agregação no banco, tabelas de resumo mantidas por trigger (exatas nos casos testados; ver limites no artigo), consulta paralela desligada, log sem o corpo das respostas, menos CPU para o banco e, por fim, correções nos triggers achadas na revisão (corrida, ordem de disparo e overflow, que só aparecem com escrita). Nenhuma resposta mudou: o contrato foi mantido em todas as execuções, e 790 URLs foram conferidas contra o código original.
 
 | Estado | req/s | p95 | CPU média banco · API | CPU alocada (limite) | Custo estimado por milhão de req. |
 |---|---|---|---|---|---|
@@ -36,6 +36,7 @@ diagnostico/coletar.sh 99-teste diagnostico/consultas/15-atuais.sql   # evidênc
 testes/api-original.sh && node testes/equivalencia.js http://127.0.0.1:3001 http://127.0.0.1:3000 && testes/api-original.sh parar
 docker compose exec -T banco psql -U loja -d loja -X < testes/resumos.sql   # confere os triggers (ROLLBACK no fim)
 testes/concorrencia.sh                     # corrida entre inserir item e cancelar o pedido (faz COMMIT num pedido de teste)
+testes/deadlock.sh                         # deadlock entre inserções de itens em ordem oposta (idem)
 node analise/medianas.js && node analise/graficos.js && node analise/experimentos.js   # tabelas e gráficos a partir de resultados/
 ```
 
