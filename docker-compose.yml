@@ -28,7 +28,9 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1.0"
+          # Mudança 15: 1.0 -> 0.5 CPU. Depois das mudanças 01 a 14 o banco usa ~0,42 CPU sob a carga
+          # e o gargalo é a API; reservar 1 CPU inteira é pagar por CPU ociosa.
+          cpus: "0.5"
           memory: 512M
 
   api:
