@@ -109,7 +109,12 @@ rotas.get('/pedidos', assincrono(async (req, res) => {
   const pagina = req.query.pagina === undefined ? 1 : inteiroPositivo(req.query.pagina);
   if (pagina === null) return res.status(400).json({ erro: 'pagina invalida' });
 
-  const [contagem] = await consultar('SELECT count(*) AS total FROM pedidos WHERE status = $1', [status]);
+  // Total exato do status, mantido por trigger em pedidos_por_status (banco/08-resumo-pedidos-status.sql).
+  // Status sem nenhum pedido não tem linha: coalesce devolve 0, como o count(*) original.
+  const [contagem] = await consultar(
+    'SELECT coalesce((SELECT total FROM pedidos_por_status WHERE status = $1), 0) AS total',
+    [status],
+  );
   const linhas = await consultar(
     'SELECT * FROM pedidos WHERE status = $1 ORDER BY criado_em DESC, id DESC LIMIT $2 OFFSET $3',
     [status, TAMANHO_PAGINA, (pagina - 1) * TAMANHO_PAGINA],

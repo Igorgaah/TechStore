@@ -1,4 +1,4 @@
--- Teste dos triggers das tabelas de resumo: aplica escritas de todos os tipos dentro de uma
+-- Teste dos triggers das tabelas de resumo (receita_por_produto, mudança 03; pedidos_por_status, mudança 08): aplica escritas de todos os tipos dentro de uma
 -- transação e, depois de cada uma, confere se o resumo é igual ao agregado calculado do zero.
 -- Termina com ROLLBACK: não deixa nada no banco.
 --   docker compose exec -T banco psql -U loja -d loja -X < testes/resumos.sql
@@ -26,7 +26,23 @@ BEGIN
     IF diferencas > 0 THEN
         RAISE EXCEPTION 'FALHOU em "%": % linhas diferentes entre resumo e agregado completo', etapa, diferencas;
     END IF;
-    RETURN 'ok  ' || etapa;
+
+    -- Contagem por status (mudança 08), se a tabela existir.
+    IF to_regclass('pedidos_por_status') IS NOT NULL THEN
+        EXECUTE $q$
+            SELECT count(*) FROM (
+                (SELECT status, total FROM pedidos_por_status WHERE total > 0
+                 EXCEPT ALL SELECT status, count(*) FROM pedidos GROUP BY status)
+                UNION ALL
+                (SELECT status, count(*) FROM pedidos GROUP BY status
+                 EXCEPT ALL SELECT status, total FROM pedidos_por_status WHERE total > 0)) d
+        $q$ INTO diferencas;
+        IF diferencas > 0 THEN
+            RAISE EXCEPTION 'FALHOU em "%": contagem por status difere em % linhas', etapa, diferencas;
+        END IF;
+        RETURN 'ok  ' || etapa || ' (receita por produto e contagem por status)';
+    END IF;
+    RETURN 'ok  ' || etapa || ' (receita por produto)';
 END $$;
 
 SELECT pg_temp.conferir('estado inicial');
