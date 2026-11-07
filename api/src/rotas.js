@@ -115,8 +115,17 @@ rotas.get('/pedidos', assincrono(async (req, res) => {
     'SELECT coalesce((SELECT total FROM pedidos_por_status WHERE status = $1), 0) AS total',
     [status],
   );
+  // "Deferred join": a subconsulta escolhe os ids da página só pelo índice (status, criado_em DESC,
+  // id DESC), sem ler a tabela para as linhas puladas pelo OFFSET (index-only scan); depois busca só
+  // as 20 linhas da página. Mesma ordenação (com desempate por id), então os mesmos pedidos na mesma ordem.
   const linhas = await consultar(
-    'SELECT * FROM pedidos WHERE status = $1 ORDER BY criado_em DESC, id DESC LIMIT $2 OFFSET $3',
+    `SELECT p.id, p.cliente_id, p.status, p.criado_em
+       FROM (SELECT id FROM pedidos
+              WHERE status = $1
+              ORDER BY criado_em DESC, id DESC
+              LIMIT $2 OFFSET $3) AS pagina
+       JOIN pedidos p ON p.id = pagina.id
+      ORDER BY p.criado_em DESC, p.id DESC`,
     [status, TAMANHO_PAGINA, (pagina - 1) * TAMANHO_PAGINA],
   );
 
