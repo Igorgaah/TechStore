@@ -1,0 +1,30 @@
+# rotulo: 01-indices-fk
+# data: 2026-11-07 02:21:17 -0300
+# commit: 27b459c (arquivos alterados sem commit: 0)
+
+Amostras: 55 (1 por segundo). Sessões ativas em média: 7.58 (com 1 CPU no banco, acima de 1 = fila).
+
+Por estado de espera (CPU = executando, sem esperar). Colunas: sessões ativas em média, % das amostras ativas.
+    4.29   56.6%  CPU
+    1.09   14.4%  IO:DataFileRead
+    0.96   12.7%  LWLock:BufferMapping
+    0.82   10.8%  IO:BufFileWrite
+    0.11    1.4%  IPC:BufferIO
+    0.09    1.2%  IPC:MessageQueueReceive
+    0.09    1.2%  IO:DSMAllocate
+    0.05    0.7%  IPC:BgWorkerShutdown
+    0.04    0.5%  Client:ClientWrite
+    0.02    0.2%  Timeout:SpinDelay
+    0.02    0.2%  IPC:ParallelFinish
+
+Por consulta (quanto do banco cada consulta ocupa). Colunas: sessões ativas em média, % das amostras ativas.
+    2.05   27.1%  SELECT * FROM pedidos WHERE status = $1 ORDER BY criado_em DESC, id DESC LIMIT $2 OFFSET $3
+    1.45   19.2%  SELECT p.id AS pedido_id, p.criado_em, p.observacoes, i.quantidade, i.preco_unitario_centavos FROM pedidos p JOIN itens_pedido i ON i.pedido_id = p.id
+    0.96   12.7%  SELECT count(*) AS total FROM pedidos WHERE status = $1
+    0.93   12.2%  SELECT pr.id, pr.nome, pr.categoria, sum(i.quantidade) AS unidades, sum(i.quantidade * i.preco_unitario_centavos) AS receita_centavos FROM itens_pedid
+    0.73    9.6%  SELECT * FROM clientes WHERE lower(email) = lower($1) ORDER BY id
+    0.44    5.8%  SELECT * FROM produtos WHERE id = $1
+    0.36    4.8%  SELECT * FROM produtos WHERE nome ILIKE '%' 
+    0.35    4.6%  SELECT * FROM itens_pedido WHERE pedido_id = $1 ORDER BY id
+    0.18    2.4%  SELECT * FROM pedidos WHERE cliente_id = $1 ORDER BY criado_em DESC, id DESC
+    0.13    1.7%  SELECT * FROM clientes WHERE id = $1

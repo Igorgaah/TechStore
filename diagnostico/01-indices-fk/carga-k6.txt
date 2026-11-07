@@ -1,0 +1,19 @@
+ Container desafio-performance-carga-run-da54e6611125 Creating 
+ Container desafio-performance-carga-run-da54e6611125 Created 
+Medição: diagnostico-01-indices-fk
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        177
+Requisições/s:      2.60
+Tempo de resposta:  mediana 2701.3 ms | p95 25914.8 ms | p99 30763.9 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               47        880.4 ms      2031.3 ms     2831.5 ms     0.0%    
+cliente-por-email     33        2521.4 ms     4625.9 ms     5218.2 ms     0.0%    
+pedidos-do-cliente    36        18882.7 ms    27134.1 ms    29035.5 ms    0.0%    
+pedidos-por-status    20        8802.1 ms     26328.6 ms    31808.9 ms    0.0%    
+busca-produtos        28        1253.5 ms     3463.7 ms     4881.3 ms     0.0%    
+vendas-por-dia        11        7845.0 ms     12821.4 ms    13707.3 ms    0.0%    
+top-produtos          2         35234.7 ms    43242.2 ms    43953.9 ms    0.0%    

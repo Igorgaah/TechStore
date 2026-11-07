@@ -1,0 +1,22 @@
+# rotulo: 01-indices-fk
+# data: 2026-11-07 02:21:10 -0300
+# commit: 27b459c (arquivos alterados sem commit: 0)
+
+pg_stat_statements durante a carga de diagnóstico (20 VUs, 60s, semente 42).
+tempo_total_ms = soma do tempo de execução no banco; pct = fatia do tempo total do banco.
+
+Pager usage is off.
+ chamadas | tempo_total_ms | pct  | media_ms | linhas | blocos_cache | blocos_lidos | blocos_temp |                                                    consulta                                                    
+----------+----------------+------+----------+--------+--------------+--------------+-------------+----------------------------------------------------------------------------------------------------------------
+       20 |         146409 | 33.0 |  7320.46 |    400 |        84043 |       334464 |       43506 | SELECT * FROM pedidos WHERE status = $1 ORDER BY criado_em DESC, id DESC LIMIT $2 OFFSET $3
+       11 |          87354 | 19.7 |  7941.31 | 142186 |       231205 |       188142 |           0 | SELECT p.id AS pedido_id, p.criado_em, p.observacoes, i.quantidade, i.preco_unitario_centavos FROM pedidos p J
+        2 |          66251 | 14.9 | 33125.55 |     20 |        21310 |        40053 |           0 | SELECT pr.id, pr.nome, pr.categoria, sum(i.quantidade) AS unidades, sum(i.quantidade * i.preco_unitario_centav
+       33 |          57155 | 12.9 |  1731.98 |     33 |        38247 |            0 |           0 | SELECT * FROM clientes WHERE lower(email) = lower($1) ORDER BY id
+       20 |          56722 | 12.8 |  2836.08 |     20 |        76435 |       340245 |           0 | SELECT count(*) AS total FROM pedidos WHERE status = $1
+       28 |          16327 |  3.7 |   583.12 |    560 |         5488 |            0 |           0 | SELECT * FROM produtos WHERE nome ILIKE $2 || $1 || $3 ORDER BY nome, id LIMIT $4
+       83 |           4757 |  1.1 |    57.31 |     83 |          178 |           71 |           0 | SELECT * FROM clientes WHERE id = $1
+       36 |           3872 |  0.9 |   107.55 |    180 |          319 |          185 |           0 | SELECT * FROM pedidos WHERE cliente_id = $1 ORDER BY criado_em DESC, id DESC
+      520 |           2604 |  0.6 |     5.01 |    520 |         1528 |           32 |           0 | SELECT * FROM produtos WHERE id = $1
+      180 |           2433 |  0.5 |    13.51 |    520 |         1177 |           84 |           0 | SELECT * FROM itens_pedido WHERE pedido_id = $1 ORDER BY id
+(10 rows)
+

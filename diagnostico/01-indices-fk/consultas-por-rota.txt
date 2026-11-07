@@ -1,0 +1,15 @@
+# rotulo: 01-indices-fk
+# data: 2026-11-07 02:18:01 -0300
+# commit: 27b459c (arquivos alterados sem commit: 0)
+
+Uma chamada de cada rota, com o banco ocioso.
+consultas = execuções no banco (pg_stat_statements); conexoes = conexões novas (log_connections).
+
+rota                                                            status  consultas   conexoes   tempo_s
+/clientes/42                                                       200          1          1  0.062654
+/clientes?email=cliente3%40exemplo.com                             200          1          1  0.295108
+/clientes/42/pedidos                                               200         17         17  0.632654
+/pedidos?status=pago&pagina=500                                    200          2          2  1.909622
+/produtos/busca?q=cadeira                                          200          1          1  0.072164
+/relatorios/vendas-por-dia?inicio=2024-06-01&fim=2024-06-07        200          1          1  1.267862
+/relatorios/top-produtos?limite=10                                 200          1          1  5.122634

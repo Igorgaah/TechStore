@@ -1,0 +1,16 @@
+# rotulo: 01-indices-fk
+# data: 2026-11-07 02:21:21 -0300
+# commit: 27b459c (arquivos alterados sem commit: 0)
+
+Log da API (stdout do container) durante a carga de diagnóstico:
+  linhas: 177
+  bytes:  205891
+  requisições da carga (k6): 177
+  bytes de log por requisição: 1163
+  maior linha (bytes): 3472
+
+Exemplos (primeiros 600 caracteres de linhas de rotas diferentes):
+{"metodo":"GET","url":"/clientes/72938","status":200,"duracao_ms":190,"resposta":{"id":72938,"nome":"Carla Queiroz","email":"cliente72938@exemplo.com","cidade":"Belo Horizonte","criado_em":"2022-04-26T03:20:22.000Z"}}
+{"metodo":"GET","url":"/clientes?email=cliente17610%40exemplo.com","status":200,"duracao_ms":472,"resposta":[{"id":17610,"nome":"Sofia Oliveira","email":"Cliente17610@Exemplo.com","cidade":"Recife","criado_em":"2022-06-04T01:06:30.000Z"}]}
+{"metodo":"GET","url":"/clientes/26537/pedidos","status":200,"duracao_ms":14983,"resposta":[{"id":200216,"status":"cancelado","criado_em":"2025-12-30T01:31:04.000Z","total_centavos":1269710,"itens":[{"produto_id":4880,"produto_nome":"Cadeira Portatil Modelo 4880","quantidade":1,"preco_unitario_centavos":328190},{"produto_id":5383,"produto_nome":"Teclado Pro Modelo 5383","quantidade":2,"preco_unitario_centavos":470760}]},{"id":300216,"status":"cancelado","criado_em":"2025-08-20T04:24:24.000Z","total_centavos":2068660,"itens":[{"produto_id":4880,"produto_nome":"Cadeira Portatil Modelo 4880","qua
+{"metodo":"GET","url":"/relatorios/vendas-por-dia?inicio=2025-11-16&fim=2025-11-22","status":200,"duracao_ms":6933,"resposta":[{"dia":"2025-11-16","pedidos":616,"itens":3701,"receita_centavos":917647550},{"dia":"2025-11-17","pedidos":616,"itens":3702,"receita_centavos":904006500},{"dia":"2025-11-18","pedidos":610,"itens":3642,"receita_centavos":899567720},{"dia":"2025-11-19","pedidos":620,"itens":3727,"receita_centavos":914089900},{"dia":"2025-11-20","pedidos":617,"itens":3699,"receita_centavos":903445910},{"dia":"2025-11-21","pedidos":612,"itens":3674,"receita_centavos":910666830},{"dia":"202
