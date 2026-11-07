@@ -1,0 +1,15 @@
+# rotulo: 15-banco-meia-cpu
+# data: 2026-11-07 10:50:55 -0300
+# commit: 9c65b15 (arquivos alterados sem commit: 2)
+
+Uma chamada de cada rota, com o banco ocioso.
+consultas = execuções no banco (pg_stat_statements); conexoes = conexões novas (log_connections).
+
+rota                                                            status  consultas   conexoes   tempo_s
+/clientes/42                                                       200          1          1  0.080532
+/clientes?email=cliente3%40exemplo.com                             200          1          0  0.049843
+/clientes/42/pedidos                                               200          1          0  0.035232
+/pedidos?status=pago&pagina=500                                    200          2          0  0.036321
+/produtos/busca?q=cadeira                                          200          1          0  0.176837
+/relatorios/vendas-por-dia?inicio=2024-06-01&fim=2024-06-07        200          1          0  0.052835
+/relatorios/top-produtos?limite=10                                 200          1          0  0.063832

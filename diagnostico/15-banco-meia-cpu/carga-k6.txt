@@ -1,0 +1,19 @@
+ Container desafio-performance-carga-run-5a469aa26a53 Creating 
+ Container desafio-performance-carga-run-5a469aa26a53 Created 
+Medição: diagnostico-15-banco-meia-cpu
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        4830
+Requisições/s:      79.88
+Tempo de resposta:  mediana 177.7 ms | p95 604.3 ms | p99 1739.9 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               1256      120.2 ms      434.6 ms      1302.7 ms     0.0%    
+cliente-por-email     705       131.4 ms      410.3 ms      785.1 ms      0.0%    
+pedidos-do-cliente    995       194.7 ms      874.6 ms      2325.6 ms     0.0%    
+pedidos-por-status    699       290.7 ms      822.4 ms      2521.1 ms     0.0%    
+busca-produtos        713       169.7 ms      502.5 ms      1331.0 ms     0.0%    
+vendas-por-dia        375       170.0 ms      524.2 ms      939.7 ms      0.0%    
+top-produtos          87        139.4 ms      441.4 ms      1443.6 ms     0.0%    

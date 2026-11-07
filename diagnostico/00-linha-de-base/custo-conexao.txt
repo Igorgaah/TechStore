@@ -1,0 +1,8 @@
+# rotulo: 00-linha-de-base
+# data: 2026-11-07 02:01:02 -0300
+# commit: 19948f4 (arquivos alterados sem commit: 0)
+
+consultas por cenário: 300 (SELECT por chave primária, banco ocioso)
+conexão nova por consulta (db.js original)    14.977 ms/consulta  | CPU do Node 4.894 ms/consulta | total 4493 ms
+pool (1 conexão reaproveitada)                2.528 ms/consulta  | CPU do Node 1.247 ms/consulta | total 758 ms
+razão tempo (nova/pool): 5.9x

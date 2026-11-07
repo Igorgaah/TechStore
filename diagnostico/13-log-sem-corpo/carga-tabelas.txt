@@ -1,0 +1,22 @@
+# rotulo: 13-log-sem-corpo
+# data: 2026-11-07 10:21:29 -0300
+# commit: 576e5ff (arquivos alterados sem commit: 0)
+
+Contadores acumulados durante a carga de diagnóstico (zerados com pg_stat_reset logo antes).
+
+Pager usage is off.
+       tabela        | varreduras_seq | linhas_lidas_seq | buscas_indice | linhas_via_indice 
+---------------------+----------------+------------------+---------------+-------------------
+ pedidos_por_status  |            890 |             3560 |             0 |                 0
+ clientes            |              0 |                0 |          3776 |              2469
+ produtos            |              0 |                0 |         26874 |           1320633
+ pedidos             |              0 |                0 |         27720 |           2328986
+ itens_pedido        |              0 |                0 |       2086884 |           6241917
+ receita_por_produto |              0 |                0 |           315 |              1050
+(6 rows)
+
+ sessoes_abertas | transacoes | blocos_lidos_disco | blocos_cache | pct_cache | arquivos_temp | bytes_temp | tempo_ativo_s | tempo_sessao_s 
+-----------------+------------+--------------------+--------------+-----------+---------------+------------+---------------+----------------
+              19 |       8429 |             523370 |      8914551 |      94.5 |             0 | 0 bytes    |         326.3 |          682.5
+(1 row)
+

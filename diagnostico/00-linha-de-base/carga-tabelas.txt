@@ -1,0 +1,20 @@
+# rotulo: 00-linha-de-base
+# data: 2026-11-07 02:04:33 -0300
+# commit: 19948f4 (arquivos alterados sem commit: 0)
+
+Contadores acumulados durante a carga de diagnóstico (zerados com pg_stat_reset logo antes).
+
+Pager usage is off.
+    tabela    | varreduras_seq | linhas_lidas_seq | buscas_indice | linhas_via_indice 
+--------------+----------------+------------------+---------------+-------------------
+ itens_pedido |            280 |        228000000 |             0 |                 0
+ pedidos      |            118 |         37000000 |            24 |                 0
+ clientes     |             22 |          2200000 |            69 |                69
+ produtos     |             24 |           480000 |           387 |               385
+(4 rows)
+
+ sessoes_abertas | transacoes | blocos_lidos_disco | blocos_cache | pct_cache | arquivos_temp | bytes_temp | tempo_ativo_s | tempo_sessao_s 
+-----------------+------------+--------------------+--------------+-----------+---------------+------------+---------------+----------------
+             727 |       1826 |            1581510 |      1608287 |      50.4 |            16 | 343 MB     |        1047.1 |         1254.9
+(1 row)
+

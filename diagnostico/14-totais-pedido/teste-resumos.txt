@@ -1,0 +1,91 @@
+# testes/resumos.sql no commit 3051546, 2026-11-07 10:27:23 -0300
+
+Pager usage is off.
+BEGIN
+CREATE FUNCTION
+                                   conferir                                    
+-------------------------------------------------------------------------------
+ ok  estado inicial (receita por produto, contagem por status, vendas por dia)
+(1 row)
+
+INSERT 0 2
+INSERT 0 4
+                                                          conferir                                                           
+-----------------------------------------------------------------------------------------------------------------------------
+ ok  insere pedido pago com 3 itens e pedido cancelado com 1 item (receita por produto, contagem por status, vendas por dia)
+(1 row)
+
+UPDATE 1
+                                          conferir                                           
+---------------------------------------------------------------------------------------------
+ ok  altera quantidade de um item (receita por produto, contagem por status, vendas por dia)
+(1 row)
+
+UPDATE 1
+                                              conferir                                               
+-----------------------------------------------------------------------------------------------------
+ ok  troca o produto e o preço de um item (receita por produto, contagem por status, vendas por dia)
+(1 row)
+
+UPDATE 1
+                                     conferir                                     
+----------------------------------------------------------------------------------
+ ok  cancela um pedido (receita por produto, contagem por status, vendas por dia)
+(1 row)
+
+INSERT 0 1
+                                            conferir                                            
+------------------------------------------------------------------------------------------------
+ ok  insere item em pedido cancelado (receita por produto, contagem por status, vendas por dia)
+(1 row)
+
+UPDATE 1
+                                         conferir                                          
+-------------------------------------------------------------------------------------------
+ ok  reativa o pedido cancelado (receita por produto, contagem por status, vendas por dia)
+(1 row)
+
+UPDATE 1
+                                             conferir                                             
+--------------------------------------------------------------------------------------------------
+ ok  troca entre status não cancelados (receita por produto, contagem por status, vendas por dia)
+(1 row)
+
+UPDATE 1
+                                                    conferir                                                    
+----------------------------------------------------------------------------------------------------------------
+ ok  move item de pedido cancelado para pedido ativo (receita por produto, contagem por status, vendas por dia)
+(1 row)
+
+DELETE 1
+                                   conferir                                   
+------------------------------------------------------------------------------
+ ok  apaga um item (receita por produto, contagem por status, vendas por dia)
+(1 row)
+
+UPDATE 3
+                                           conferir                                            
+-----------------------------------------------------------------------------------------------
+ ok  muda a data (o dia) de pedidos (receita por produto, contagem por status, vendas por dia)
+(1 row)
+
+INSERT 0 1
+                                        conferir                                        
+----------------------------------------------------------------------------------------
+ ok  insere pedido sem itens (receita por produto, contagem por status, vendas por dia)
+(1 row)
+
+UPDATE 3
+                                                 conferir                                                  
+-----------------------------------------------------------------------------------------------------------
+ ok  cancela 3 pedidos já existentes de uma vez (receita por produto, contagem por status, vendas por dia)
+(1 row)
+
+DELETE 4
+DELETE 3
+                                       conferir                                       
+--------------------------------------------------------------------------------------
+ ok  apaga pedidos e itens (receita por produto, contagem por status, vendas por dia)
+(1 row)
+
+ROLLBACK

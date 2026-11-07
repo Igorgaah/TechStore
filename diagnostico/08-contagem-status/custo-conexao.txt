@@ -1,0 +1,8 @@
+# rotulo: 08-contagem-status
+# data: 2026-11-07 09:00:45 -0300
+# commit: 36969d5 (arquivos alterados sem commit: 0)
+
+consultas por cenário: 300 (SELECT por chave primária, banco ocioso)
+conexão nova por consulta (db.js original)    14.401 ms/consulta  | CPU do Node 5.106 ms/consulta | total 4320 ms
+pool (1 conexão reaproveitada)                2.485 ms/consulta  | CPU do Node 1.295 ms/consulta | total 746 ms
+razão tempo (nova/pool): 5.8x

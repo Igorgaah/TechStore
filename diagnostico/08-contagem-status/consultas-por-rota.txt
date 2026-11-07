@@ -1,0 +1,15 @@
+# rotulo: 08-contagem-status
+# data: 2026-11-07 09:01:12 -0300
+# commit: 36969d5 (arquivos alterados sem commit: 0)
+
+Uma chamada de cada rota, com o banco ocioso.
+consultas = execuções no banco (pg_stat_statements); conexoes = conexões novas (log_connections).
+
+rota                                                            status  consultas   conexoes   tempo_s
+/clientes/42                                                       200          1          1  0.045332
+/clientes?email=cliente3%40exemplo.com                             200          1          0  0.031631
+/clientes/42/pedidos                                               200         17          0  0.078593
+/pedidos?status=pago&pagina=500                                    200          2          0  0.189204
+/produtos/busca?q=cadeira                                          200          1          0  0.045739
+/relatorios/vendas-por-dia?inicio=2024-06-01&fim=2024-06-07        200          1          0  0.113242
+/relatorios/top-produtos?limite=10                                 200          1          0  0.032724

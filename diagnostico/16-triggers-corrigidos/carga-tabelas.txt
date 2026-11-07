@@ -1,0 +1,23 @@
+# rotulo: 16-triggers-corrigidos
+# data: 2026-11-07 12:38:31 -0300
+# commit: cbe1be2 (arquivos alterados sem commit: 4)
+
+Contadores acumulados durante a carga de diagnóstico (zerados com pg_stat_reset logo antes).
+
+Pager usage is off.
+       tabela        | varreduras_seq | linhas_lidas_seq | buscas_indice | linhas_via_indice 
+---------------------+----------------+------------------+---------------+-------------------
+ pedidos_por_status  |           1294 |             5176 |             0 |                 0
+ produtos            |              0 |                0 |         38492 |           1938702
+ clientes            |              0 |                0 |          5412 |              3548
+ pedidos             |              0 |                0 |         37792 |             43960
+ totais_pedido       |              0 |                0 |           730 |              1101
+ itens_pedido        |              0 |                0 |         16776 |             31498
+ receita_por_produto |              0 |                0 |           483 |              1771
+(7 rows)
+
+ sessoes_abertas | transacoes | blocos_lidos_disco | blocos_cache | pct_cache | arquivos_temp | bytes_temp | tempo_ativo_s | tempo_sessao_s 
+-----------------+------------+--------------------+--------------+-----------+---------------+------------+---------------+----------------
+              19 |      10300 |              32578 |       652185 |      95.2 |             0 | 0 bytes    |         105.3 |          684.8
+(1 row)
+

@@ -1,0 +1,8 @@
+# rotulo: 15-banco-meia-cpu
+# data: 2026-11-07 10:57:42 -0300
+# commit: d7f6ed0 (arquivos alterados sem commit: 3)
+
+consultas por cenário: 300 (SELECT por chave primária, banco ocioso)
+conexão nova por consulta (db.js original)    21.159 ms/consulta  | CPU do Node 5.648 ms/consulta | total 6348 ms
+pool (1 conexão reaproveitada)                2.019 ms/consulta  | CPU do Node 1.048 ms/consulta | total 606 ms
+razão tempo (nova/pool): 10.5x

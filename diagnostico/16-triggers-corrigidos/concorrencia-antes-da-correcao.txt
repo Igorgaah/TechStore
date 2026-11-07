@@ -1,0 +1,8 @@
+# testes/concorrencia.sh no commit 2e2a94c, 2026-11-07 11:47:26 -0300
+ok      estado inicial: resumo (itens 5025, receita 656335360) = agregado completo
+        cenário 1: o INSERT esperou 3 s pela transação que cancelava o pedido
+FALHOU  cenário 1 (cancela o pedido enquanto outro insere item): resumo (itens 5026, receita 656337360) != agregado completo (itens 5025, receita 656335360)
+        cenário 2: o UPDATE esperou 3 s pela transação que inseria o item
+FALHOU  cenário 2 (insere item enquanto outro cancela o pedido): resumo (itens 5027, receita 656339360) != agregado completo (itens 5025, receita 656335360)
+FALHOU  depois da limpeza: resumo (itens 5027, receita 656339360) != agregado completo (itens 5025, receita 656335360)
+Concorrência: 3 conferências falharam.

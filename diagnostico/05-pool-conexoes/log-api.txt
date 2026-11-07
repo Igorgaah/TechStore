@@ -1,0 +1,16 @@
+# rotulo: 05-pool-conexoes
+# data: 2026-11-07 08:33:40 -0300
+# commit: 402df25 (arquivos alterados sem commit: 0)
+
+Log da API (stdout do container) durante a carga de diagnóstico:
+  linhas: 1002
+  bytes:  1212803
+  requisições da carga (k6): 1002
+  bytes de log por requisição: 1210
+  maior linha (bytes): 3506
+
+Exemplos (primeiros 600 caracteres de linhas de rotas diferentes):
+{"metodo":"GET","url":"/clientes/57067","status":200,"duracao_ms":3,"resposta":{"id":57067,"nome":"Tiago Barbosa","email":"cliente57067@exemplo.com","cidade":"Rio de Janeiro","criado_em":"2022-05-01T11:32:53.000Z"}}
+{"metodo":"GET","url":"/clientes?email=cliente91089%40exemplo.com","status":200,"duracao_ms":293,"resposta":[{"id":91089,"nome":"Joao Duarte","email":"Cliente91089@Exemplo.com","cidade":"Curitiba","criado_em":"2022-11-15T18:29:51.000Z"}]}
+{"metodo":"GET","url":"/clientes/62621/pedidos","status":200,"duracao_ms":3304,"resposta":[{"id":133220,"status":"pago","criado_em":"2025-10-23T10:49:40.000Z","total_centavos":162550,"itens":[{"produto_id":924,"produto_nome":"Mouse Dobravel Modelo 924","quantidade":1,"preco_unitario_centavos":162550}]},{"id":233220,"status":"pago","criado_em":"2025-06-13T13:43:00.000Z","total_centavos":325100,"itens":[{"produto_id":924,"produto_nome":"Mouse Dobravel Modelo 924","quantidade":2,"preco_unitario_centavos":162550}]},{"id":333220,"status":"pago","criado_em":"2025-02-01T16:36:20.000Z","total_centavos
+{"metodo":"GET","url":"/relatorios/vendas-por-dia?inicio=2025-11-16&fim=2025-11-22","status":200,"duracao_ms":2275,"resposta":[{"dia":"2025-11-16","pedidos":616,"itens":3701,"receita_centavos":917647550},{"dia":"2025-11-17","pedidos":616,"itens":3702,"receita_centavos":904006500},{"dia":"2025-11-18","pedidos":610,"itens":3642,"receita_centavos":899567720},{"dia":"2025-11-19","pedidos":620,"itens":3727,"receita_centavos":914089900},{"dia":"2025-11-20","pedidos":617,"itens":3699,"receita_centavos":903445910},{"dia":"2025-11-21","pedidos":612,"itens":3674,"receita_centavos":910666830},{"dia":"202

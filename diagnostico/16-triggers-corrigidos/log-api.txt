@@ -1,0 +1,16 @@
+# rotulo: 16-triggers-corrigidos
+# data: 2026-11-07 12:38:37 -0300
+# commit: cbe1be2 (arquivos alterados sem commit: 4)
+
+Log da API (stdout do container) durante a carga de diagnóstico:
+  linhas: 9029
+  bytes:  757973
+  requisições da carga (k6): 9029
+  bytes de log por requisição: 83
+  maior linha (bytes): 114
+
+Exemplos (primeiros 600 caracteres de linhas de rotas diferentes):
+{"metodo":"GET","url":"/clientes/57067","status":200,"duracao_ms":17}
+{"metodo":"GET","url":"/clientes?email=cliente38153%40exemplo.com","status":200,"duracao_ms":13}
+{"metodo":"GET","url":"/clientes/10400/pedidos","status":200,"duracao_ms":101}
+{"metodo":"GET","url":"/relatorios/vendas-por-dia?inicio=2025-11-16&fim=2025-11-22","status":200,"duracao_ms":2}

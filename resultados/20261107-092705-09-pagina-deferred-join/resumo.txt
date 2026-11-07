@@ -1,0 +1,17 @@
+Medição: 09-pagina-deferred-join
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        2259
+Requisições/s:      36.73
+Tempo de resposta:  mediana 206.0 ms | p95 2103.9 ms | p99 3803.8 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               585       88.3 ms       260.5 ms      392.2 ms      0.0%    
+cliente-por-email     332       87.9 ms       305.5 ms      497.5 ms      0.0%    
+pedidos-do-cliente    469       1365.6 ms     3759.9 ms     5086.3 ms     0.0%    
+pedidos-por-status    314       190.2 ms      682.0 ms      1001.6 ms     0.0%    
+busca-produtos        343       312.7 ms      621.4 ms      812.8 ms      0.0%    
+vendas-por-dia        180       683.5 ms      2495.3 ms     3875.4 ms     0.0%    
+top-produtos          36        94.0 ms       300.6 ms      362.8 ms      0.0%    

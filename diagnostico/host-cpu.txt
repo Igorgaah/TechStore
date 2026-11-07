@@ -1,0 +1,20 @@
+﻿# CPU do host (Windows) por processo, amostrada em 10 s com Get-Process (PowerShell)
+# data: 2026-11-07 11:00:40 -03:00
+# processadores lógicos: 4; carga média dos processadores (Win32_Processor.LoadPercentage): 80%
+# 100% = 1 núcleo lógico inteiro. Docker e containers ociosos durante a amostra.
+
+
+Processo             PID CPU_pct_de_1_nucleo
+--------             --- -------------------
+otclient_dx        21840                84,7
+otclient_dx        15948                65,8
+otclient_dx         8500                  57
+Code                2420                 7,7
+opera               1728                 2,2
+Docker Desktop     17824                 1,9
+claude             13184                 1,6
+NVIDIA Share       11428                 1,4
+Discord            12944                 1,1
+powershell         10280                 1,1
+com.docker.backend 15568                 0,8
+audiodg             3560                 0,8

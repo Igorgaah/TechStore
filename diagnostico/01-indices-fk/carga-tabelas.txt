@@ -1,0 +1,20 @@
+# rotulo: 01-indices-fk
+# data: 2026-11-07 02:21:13 -0300
+# commit: 27b459c (arquivos alterados sem commit: 0)
+
+Contadores acumulados durante a carga de diagnóstico (zerados com pg_stat_reset logo antes).
+
+Pager usage is off.
+    tabela    | varreduras_seq | linhas_lidas_seq | buscas_indice | linhas_via_indice 
+--------------+----------------+------------------+---------------+-------------------
+ pedidos      |            125 |         26500000 |            62 |               180
+ clientes     |             33 |          3300000 |            83 |                83
+ itens_pedido |              3 |          3000000 |         47598 |            142706
+ produtos     |             31 |           620000 |           524 |               520
+(4 rows)
+
+ sessoes_abertas | transacoes | blocos_lidos_disco | blocos_cache | pct_cache | arquivos_temp | bytes_temp | tempo_ativo_s | tempo_sessao_s 
+-----------------+------------+--------------------+--------------+-----------+---------------+------------+---------------+----------------
+             944 |       2081 |             903318 |       656665 |      42.1 |            29 | 339 MB     |         450.4 |          829.2
+(1 row)
+

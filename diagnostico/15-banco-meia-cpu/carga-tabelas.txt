@@ -1,0 +1,23 @@
+# rotulo: 15-banco-meia-cpu
+# data: 2026-11-07 10:53:29 -0300
+# commit: 9c65b15 (arquivos alterados sem commit: 5)
+
+Contadores acumulados durante a carga de diagnóstico (zerados com pg_stat_reset logo antes).
+
+Pager usage is off.
+       tabela        | varreduras_seq | linhas_lidas_seq | buscas_indice | linhas_via_indice 
+---------------------+----------------+------------------+---------------+-------------------
+ pedidos_por_status  |            699 |             2796 |             0 |                 0
+ produtos            |              0 |                0 |         20619 |           1032193
+ clientes            |              0 |                0 |          2950 |              1954
+ pedidos             |              0 |                0 |         20413 |             18920
+ totais_pedido       |              0 |                0 |           370 |                 0
+ itens_pedido        |              0 |                0 |          8964 |             14885
+ receita_por_produto |              0 |                0 |           261 |               870
+(7 rows)
+
+ sessoes_abertas | transacoes | blocos_lidos_disco | blocos_cache | pct_cache | arquivos_temp | bytes_temp | tempo_ativo_s | tempo_sessao_s 
+-----------------+------------+--------------------+--------------+-----------+---------------+------------+---------------+----------------
+              18 |       5589 |              18496 |       342095 |      94.9 |             0 | 0 bytes    |         215.0 |          695.7
+(1 row)
+

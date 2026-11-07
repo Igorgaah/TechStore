@@ -1,0 +1,19 @@
+ Container desafio-performance-carga-run-8b5a7e8fdce0 Creating 
+ Container desafio-performance-carga-run-8b5a7e8fdce0 Created 
+Medição: diagnostico-16-triggers-corrigidos
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        9029
+Requisições/s:      150.16
+Tempo de resposta:  mediana 105.8 ms | p95 283.9 ms | p99 432.9 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               2249      98.3 ms       201.5 ms      300.6 ms      0.0%    
+cliente-por-email     1325      99.1 ms       209.9 ms      351.6 ms      0.0%    
+pedidos-do-cliente    1887      105.3 ms      296.8 ms      445.2 ms      0.0%    
+pedidos-por-status    1314      182.4 ms      405.6 ms      585.7 ms      0.0%    
+busca-produtos        1357      111.0 ms      275.2 ms      331.2 ms      0.0%    
+vendas-por-dia        734       102.9 ms      217.3 ms      359.8 ms      0.0%    
+top-produtos          163       96.0 ms       200.9 ms      287.2 ms      0.0%    

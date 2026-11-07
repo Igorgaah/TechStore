@@ -1,0 +1,8 @@
+# rotulo: 01-indices-fk
+# data: 2026-11-07 02:17:26 -0300
+# commit: 27b459c (arquivos alterados sem commit: 0)
+
+consultas por cenário: 300 (SELECT por chave primária, banco ocioso)
+conexão nova por consulta (db.js original)    15.257 ms/consulta  | CPU do Node 5.218 ms/consulta | total 4577 ms
+pool (1 conexão reaproveitada)                2.368 ms/consulta  | CPU do Node 1.235 ms/consulta | total 710 ms
+razão tempo (nova/pool): 6.4x

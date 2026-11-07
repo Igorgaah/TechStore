@@ -1,0 +1,17 @@
+Medição: 12-indice-trigramas
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        7666
+Requisições/s:      126.74
+Tempo de resposta:  mediana 111.0 ms | p95 399.4 ms | p99 694.6 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               1948      99.0 ms       199.2 ms      275.4 ms      0.0%    
+cliente-por-email     1128      100.0 ms      200.4 ms      301.9 ms      0.0%    
+pedidos-do-cliente    1595      101.9 ms      203.9 ms      290.6 ms      0.0%    
+pedidos-por-status    1122      188.7 ms      349.0 ms      470.1 ms      0.0%    
+busca-produtos        1140      113.8 ms      223.0 ms      327.4 ms      0.0%    
+vendas-por-dia        605       420.4 ms      890.7 ms      2171.6 ms     0.0%    
+top-produtos          128       101.3 ms      194.6 ms      267.1 ms      0.0%    

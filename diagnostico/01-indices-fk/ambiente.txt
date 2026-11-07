@@ -1,0 +1,49 @@
+# rotulo: 01-indices-fk
+# data: 2026-11-07 02:17:07 -0300
+# commit: 27b459c (arquivos alterados sem commit: 0)
+
+Pager usage is off.
+                                                       version                                                       
+---------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 16.4 (Debian 16.4-1.pgdg120+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14) 12.2.0, 64-bit
+(1 row)
+
+              name               | setting | unit |       source       
+---------------------------------+---------+------+--------------------
+ effective_cache_size            | 524288  | 8kB  | default
+ jit                             | on      |      | default
+ jit_above_cost                  | 100000  |      | default
+ maintenance_work_mem            | 65536   | kB   | default
+ max_connections                 | 100     |      | configuration file
+ max_parallel_workers_per_gather | 2       |      | default
+ random_page_cost                | 4       |      | default
+ shared_buffers                  | 16384   | 8kB  | configuration file
+ shared_preload_libraries        |         |      | default
+ work_mem                        | 4096    | kB   | default
+(10 rows)
+
+    tabela    | linhas_estimadas |  dados  | indices |  total  
+--------------+------------------+---------+---------+---------
+ pedidos      |           499994 | 163 MB  | 16 MB   | 179 MB
+ itens_pedido |          1500000 | 75 MB   | 53 MB   | 128 MB
+ clientes     |           100000 | 9248 kB | 2208 kB | 11 MB
+ produtos     |            20000 | 1520 kB | 456 kB  | 2016 kB
+(4 rows)
+
+    tabela    |           indice           |                                       definicao                                        
+--------------+----------------------------+----------------------------------------------------------------------------------------
+ clientes     | clientes_pkey              | CREATE UNIQUE INDEX clientes_pkey ON public.clientes USING btree (id)
+ itens_pedido | itens_pedido_pedido_id_idx | CREATE INDEX itens_pedido_pedido_id_idx ON public.itens_pedido USING btree (pedido_id)
+ itens_pedido | itens_pedido_pkey          | CREATE UNIQUE INDEX itens_pedido_pkey ON public.itens_pedido USING btree (id)
+ pedidos      | pedidos_cliente_id_idx     | CREATE INDEX pedidos_cliente_id_idx ON public.pedidos USING btree (cliente_id)
+ pedidos      | pedidos_pkey               | CREATE UNIQUE INDEX pedidos_pkey ON public.pedidos USING btree (id)
+ produtos     | produtos_pkey              | CREATE UNIQUE INDEX produtos_pkey ON public.produtos USING btree (id)
+(6 rows)
+
+    tabela    |      chave_estrangeira       |                    definicao                     
+--------------+------------------------------+--------------------------------------------------
+ pedidos      | pedidos_cliente_id_fkey      | FOREIGN KEY (cliente_id) REFERENCES clientes(id)
+ itens_pedido | itens_pedido_pedido_id_fkey  | FOREIGN KEY (pedido_id) REFERENCES pedidos(id)
+ itens_pedido | itens_pedido_produto_id_fkey | FOREIGN KEY (produto_id) REFERENCES produtos(id)
+(3 rows)
+

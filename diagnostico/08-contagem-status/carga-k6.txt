@@ -1,0 +1,19 @@
+ Container desafio-performance-carga-run-716a3b7a4a2f Creating 
+ Container desafio-performance-carga-run-716a3b7a4a2f Created 
+Medição: diagnostico-08-contagem-status
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        2586
+Requisições/s:      42.78
+Tempo de resposta:  mediana 202.8 ms | p95 1782.2 ms | p99 2489.5 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               668       85.0 ms       184.5 ms      288.8 ms      0.0%    
+cliente-por-email     378       90.1 ms       197.8 ms      281.0 ms      0.0%    
+pedidos-do-cliente    532       1289.1 ms     2315.3 ms     2970.2 ms     0.0%    
+pedidos-por-status    360       250.0 ms      1897.1 ms     2793.8 ms     0.0%    
+busca-produtos        398       300.1 ms      512.3 ms      615.7 ms      0.0%    
+vendas-por-dia        204       516.6 ms      993.3 ms      1477.5 ms     0.0%    
+top-produtos          46        88.0 ms       182.7 ms      358.6 ms      0.0%    

@@ -1,0 +1,8 @@
+# rotulo: 13-log-sem-corpo
+# data: 2026-11-07 10:18:38 -0300
+# commit: 576e5ff (arquivos alterados sem commit: 0)
+
+consultas por cenário: 300 (SELECT por chave primária, banco ocioso)
+conexão nova por consulta (db.js original)    16.942 ms/consulta  | CPU do Node 5.413 ms/consulta | total 5082 ms
+pool (1 conexão reaproveitada)                2.193 ms/consulta  | CPU do Node 1.109 ms/consulta | total 658 ms
+razão tempo (nova/pool): 7.7x

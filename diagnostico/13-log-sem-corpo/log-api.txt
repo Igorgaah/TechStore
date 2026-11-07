@@ -1,0 +1,16 @@
+# rotulo: 13-log-sem-corpo
+# data: 2026-11-07 10:21:34 -0300
+# commit: 576e5ff (arquivos alterados sem commit: 0)
+
+Log da API (stdout do container) durante a carga de diagnóstico:
+  linhas: 6206
+  bytes:  522200
+  requisições da carga (k6): 6206
+  bytes de log por requisição: 84
+  maior linha (bytes): 115
+
+Exemplos (primeiros 600 caracteres de linhas de rotas diferentes):
+{"metodo":"GET","url":"/clientes/56814","status":200,"duracao_ms":27}
+{"metodo":"GET","url":"/clientes?email=cliente91089%40exemplo.com","status":200,"duracao_ms":75}
+{"metodo":"GET","url":"/clientes/26537/pedidos","status":200,"duracao_ms":41}
+{"metodo":"GET","url":"/relatorios/vendas-por-dia?inicio=2025-10-04&fim=2025-10-10","status":200,"duracao_ms":321}
