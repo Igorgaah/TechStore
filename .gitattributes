@@ -2,3 +2,7 @@
 *.sql text eol=lf
 *.js text eol=lf
 *.yml text eol=lf
+
+# Evidências geradas pelos scripts: guardadas byte a byte, sem conversão de fim de linha.
+resultados/** -text
+diagnostico/**/*.txt -text
