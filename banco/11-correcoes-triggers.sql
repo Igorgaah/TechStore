@@ -10,7 +10,8 @@
 --    do item podia rodar antes de existir a linha do pedido em totais_pedido e o item se perdia. Agora
 --    os dois triggers fazem upsert e funcionam em qualquer ordem.
 -- 3. Overflow: quantidade * preco era calculado em integer e uma escrita com produto acima de
---    2.147.483.647 era recusada pelos triggers (sem eles, o esquema original aceitava). Agora em bigint.
+--    2.147.483.647 era recusada pelos triggers (sem eles, o esquema original aceitava). Agora em bigint
+--    (com cast explícito do sum(), que sobre bigint devolve numeric).
 --
 -- Limites que continuam (documentados em proximos-testes.md): DELETE de pedido e de seus itens no MESMO
 -- comando (CTE) não é subtraído de receita_por_produto; inserções concorrentes de itens dos mesmos
@@ -42,7 +43,7 @@ BEGIN
     END IF;
     sinal := CASE WHEN NEW.status = 'cancelado' THEN -1 ELSE 1 END;
     PERFORM receita_por_produto_somar(i.produto_id, sinal * count(*), sinal * sum(i.quantidade),
-                                      sinal * sum(i.quantidade::bigint * i.preco_unitario_centavos))
+                                      (sinal * sum(i.quantidade::bigint * i.preco_unitario_centavos))::bigint)
        FROM itens_pedido i
       WHERE i.pedido_id = NEW.id
       GROUP BY i.produto_id;
