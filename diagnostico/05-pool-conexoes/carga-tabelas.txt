@@ -1,0 +1,21 @@
+# rotulo: 05-pool-conexoes
+# data: 2026-11-07 08:33:34 -0300
+# commit: 402df25 (arquivos alterados sem commit: 0)
+
+Contadores acumulados durante a carga de diagnóstico (zerados com pg_stat_reset logo antes).
+
+Pager usage is off.
+       tabela        | varreduras_seq | linhas_lidas_seq | buscas_indice | linhas_via_indice 
+---------------------+----------------+------------------+---------------+-------------------
+ clientes            |            153 |         15300000 |           479 |               479
+ produtos            |            148 |          2960000 |          3166 |              3134
+ receita_por_produto |              0 |                0 |            48 |               160
+ pedidos             |              0 |                0 |           770 |           1794302
+ itens_pedido        |              0 |                0 |        291129 |            872927
+(5 rows)
+
+ sessoes_abertas | transacoes | blocos_lidos_disco | blocos_cache | pct_cache | arquivos_temp | bytes_temp | tempo_ativo_s | tempo_sessao_s 
+-----------------+------------+--------------------+--------------+-----------+---------------+------------+---------------+----------------
+              21 |       5896 |             435909 |      2564762 |      85.5 |            16 | 72 MB      |         226.1 |          707.8
+(1 row)
+

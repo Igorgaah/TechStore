@@ -1,0 +1,8 @@
+# rotulo: 05-pool-conexoes
+# data: 2026-11-07 08:30:13 -0300
+# commit: 402df25 (arquivos alterados sem commit: 0)
+
+consultas por cenário: 300 (SELECT por chave primária, banco ocioso)
+conexão nova por consulta (db.js original)    21.220 ms/consulta  | CPU do Node 7.864 ms/consulta | total 6366 ms
+pool (1 conexão reaproveitada)                3.026 ms/consulta  | CPU do Node 1.556 ms/consulta | total 908 ms
+razão tempo (nova/pool): 7.0x
