@@ -96,6 +96,27 @@ Tarifas por segundo do [AWS Fargate](https://aws.amazon.com/fargate/pricing/) (L
 
 Nas medições em que uma rota tem poucas requisições (veja a tabela abaixo), o p95 dela oscila muito: compare pelo resultado geral.
 
+## p50 (mediana) por rota (ms, mediana das execuções)
+
+| Rótulo | cliente | cliente-por-email | pedidos-do-cliente | pedidos-por-status | busca-produtos | vendas-por-dia | top-produtos |
+|---|---|---|---|---|---|---|---|
+| 00-linha-de-base | 382 | 1604 | 23491 | 11397 | 807 | 11286 | 28254 |
+| 01-indices-fk | 583 | 2004 | 12945 | 12812 | 1232 | 16956 | 28988 |
+| 02-indice-status | 578 | 2011 | 14168 | 2121 | 1012 | 6093 | 16001 |
+| 03-resumo-top-produtos | 584 | 1888 | 13376 | 3687 | 1117 | 7315 | 745 |
+| 04-indice-dia | 681 | 1921 | 11277 | 3091 | 1253 | 3539 | 589 |
+| 05-pool-conexoes | 205 | 1064 | 4061 | 1102 | 489 | 1953 | 505 |
+| 06-indice-email | 151 | 188 | 3269 | 866 | 420 | 1219 | 118 |
+| 07-vendas-agregado-sql | 139 | 111 | 2235 | 829 | 397 | 1097 | 156 |
+| 08-contagem-status | 89.2 | 95.7 | 1316 | 242 | 285 | 571 | 86.4 |
+| 09-pagina-deferred-join | 88.3 | 94.3 | 1366 | 190 | 313 | 684 | 88.3 |
+| 10-pedidos-cliente-join | 204 | 214 | 208 | 418 | 536 | 1014 | 198 |
+| 11-sem-paralelismo | 118 | 116 | 128 | 251 | 389 | 583 | 123 |
+| 12-indice-trigramas | 97.3 | 97.5 | 101 | 189 | 112 | 418 | 101 |
+| 13-log-sem-corpo | 97.3 | 96.4 | 100 | 189 | 112 | 426 | 97.7 |
+| 14-totais-pedido | 91.9 | 91.8 | 96.4 | 121 | 101 | 97.6 | 94.4 |
+| 15-banco-meia-cpu | 95.2 | 95.3 | 100 | 133 | 103 | 98.6 | 94.5 |
+
 ## Requisições por rota (mediana das execuções)
 
 | Rótulo | cliente | cliente-por-email | pedidos-do-cliente | pedidos-por-status | busca-produtos | vendas-por-dia | top-produtos |

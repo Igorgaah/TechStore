@@ -218,6 +218,12 @@ for (const r of resumos) md.push(`| ${r.rotulo} | ${ROTAS.map((rota) => fmt.ms(r
 md.push('');
 md.push('Nas medições em que uma rota tem poucas requisições (veja a tabela abaixo), o p95 dela oscila muito: compare pelo resultado geral.');
 md.push('');
+md.push('## p50 (mediana) por rota (ms, mediana das execuções)');
+md.push('');
+md.push(`| Rótulo | ${ROTAS.join(' | ')} |`);
+md.push(`|---|${ROTAS.map(() => '---').join('|')}|`);
+for (const r of resumos) md.push(`| ${r.rotulo} | ${ROTAS.map((rota) => fmt.ms(r.porRota[rota].p50)).join(' | ')} |`);
+md.push('');
 md.push('## Requisições por rota (mediana das execuções)');
 md.push('');
 md.push(`| Rótulo | ${ROTAS.join(' | ')} |`);
