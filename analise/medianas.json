@@ -1,0 +1,1570 @@
+[
+  {
+    "rotulo": "00-linha-de-base",
+    "n": 3,
+    "pastas": [
+      "20261107-015412-00-linha-de-base",
+      "20261107-015607-00-linha-de-base",
+      "20261107-015813-00-linha-de-base"
+    ],
+    "commits": [
+      "f73b4d2"
+    ],
+    "sujos": [
+      "0"
+    ],
+    "parametros": [
+      "20 VUs, 60s, semente 42"
+    ],
+    "limites": {
+      "banco": {
+        "cpus": 1,
+        "memoria_mib": 512
+      },
+      "api": {
+        "cpus": 0.5,
+        "memoria_mib": 256
+      }
+    },
+    "contratoMantido": true,
+    "rps": 2.3415506334109093,
+    "rps_min": 2.0241252390185456,
+    "rps_max": 2.5074051928648595,
+    "p95": 27087.494663499998,
+    "p95_min": 26124.8669353,
+    "p95_max": 34641.0861078,
+    "p50": 1597.783955,
+    "p99": 30927.285729519976,
+    "erros": 0,
+    "recursos": {
+      "api": {
+        "cpu_media": 9.655675675675678,
+        "cpu_max": 20.74,
+        "mem_media": 29.699729729729732,
+        "mem_max": 38.3,
+        "cpu_ms_por_req": 35.02007669749606
+      },
+      "banco": {
+        "cpu_media": 95.25935483870968,
+        "cpu_max": 109.76,
+        "mem_media": 385.0351351351352,
+        "mem_max": 446.2,
+        "cpu_ms_por_req": 341.3795665634675
+      }
+    },
+    "porRota": {
+      "cliente": {
+        "p50": 382.17609,
+        "p95": 600.6673475,
+        "req": 47
+      },
+      "cliente-por-email": {
+        "p50": 1604.349009,
+        "p95": 2873.963045,
+        "req": 31
+      },
+      "pedidos-do-cliente": {
+        "p50": 23490.737335,
+        "p95": 30039.7604628,
+        "req": 37
+      },
+      "pedidos-por-status": {
+        "p50": 11397.396597,
+        "p95": 17699.629080099985,
+        "req": 17
+      },
+      "busca-produtos": {
+        "p50": 806.727918,
+        "p95": 1318.2921801999998,
+        "req": 23
+      },
+      "vendas-por-dia": {
+        "p50": 11286.364397500001,
+        "p95": 14607.578222299999,
+        "req": 12
+      },
+      "top-produtos": {
+        "p50": 28254.135061499997,
+        "p95": 44228.06180475,
+        "req": 2
+      }
+    },
+    "limite_cpu_total": 1.5,
+    "limite_mem_total": 768,
+    "ganho_claro_rps": null,
+    "ganho_claro_p95": null,
+    "piora_clara_rps": null,
+    "custo_hora_usd": 0.0640521,
+    "custo_milhao_req_usd": 7.59849039611936
+  },
+  {
+    "rotulo": "01-indices-fk",
+    "n": 3,
+    "pastas": [
+      "20261107-020845-01-indices-fk",
+      "20261107-021059-01-indices-fk",
+      "20261107-021309-01-indices-fk"
+    ],
+    "commits": [
+      "47d499c"
+    ],
+    "sujos": [
+      "0"
+    ],
+    "parametros": [
+      "20 VUs, 60s, semente 42"
+    ],
+    "limites": {
+      "banco": {
+        "cpus": 1,
+        "memoria_mib": 512
+      },
+      "api": {
+        "cpus": 0.5,
+        "memoria_mib": 256
+      }
+    },
+    "contratoMantido": true,
+    "rps": 2.3994045374078437,
+    "rps_min": 1.7333196212193693,
+    "rps_max": 3.3838940756813427,
+    "p95": 26251.745901299993,
+    "p95_min": 17484.094018799988,
+    "p95_max": 40556.018892399996,
+    "p50": 2300.131472,
+    "p99": 39595.11607465982,
+    "erros": 0,
+    "recursos": {
+      "api": {
+        "cpu_media": 13.575,
+        "cpu_max": 36.01,
+        "mem_media": 36.96478260869566,
+        "mem_max": 47.62,
+        "cpu_ms_por_req": 46.75972540045767
+      },
+      "banco": {
+        "cpu_media": 103.85,
+        "cpu_max": 147.17,
+        "mem_media": 367.6807692307692,
+        "mem_max": 424.2,
+        "cpu_ms_por_req": 338.64130434782606
+      }
+    },
+    "porRota": {
+      "cliente": {
+        "p50": 583.472008,
+        "p95": 2282.0479504,
+        "req": 47
+      },
+      "cliente-por-email": {
+        "p50": 2003.836869,
+        "p95": 3570.3818777,
+        "req": 34
+      },
+      "pedidos-do-cliente": {
+        "p50": 12944.595976,
+        "p95": 27502.8956406,
+        "req": 38
+      },
+      "pedidos-por-status": {
+        "p50": 12811.980974,
+        "p95": 24213.760648,
+        "req": 21
+      },
+      "busca-produtos": {
+        "p50": 1231.7763535,
+        "p95": 2775.8042297999996,
+        "req": 30
+      },
+      "vendas-por-dia": {
+        "p50": 16955.690471,
+        "p95": 34322.469741,
+        "req": 11
+      },
+      "top-produtos": {
+        "p50": 28988.27838,
+        "p95": 51403.302951,
+        "req": 3
+      }
+    },
+    "limite_cpu_total": 1.5,
+    "limite_mem_total": 768,
+    "ganho_claro_rps": false,
+    "ganho_claro_p95": false,
+    "piora_clara_rps": false,
+    "custo_hora_usd": 0.0640521,
+    "custo_milhao_req_usd": 7.415277300101115
+  },
+  {
+    "rotulo": "02-indice-status",
+    "n": 3,
+    "pastas": [
+      "20261107-025201-02-indice-status",
+      "20261107-025411-02-indice-status",
+      "20261107-025629-02-indice-status"
+    ],
+    "commits": [
+      "c05803a"
+    ],
+    "sujos": [
+      "0"
+    ],
+    "parametros": [
+      "20 VUs, 60s, semente 42"
+    ],
+    "limites": {
+      "banco": {
+        "cpus": 1,
+        "memoria_mib": 512
+      },
+      "api": {
+        "cpus": 0.5,
+        "memoria_mib": 256
+      }
+    },
+    "contratoMantido": true,
+    "rps": 3.848331294500749,
+    "rps_min": 3.799964138828872,
+    "rps_max": 4.401823350324713,
+    "p95": 18354.645307199997,
+    "p95_min": 14849.479983950008,
+    "p95_max": 19005.8272264,
+    "p50": 1857.194101,
+    "p99": 22641.391689280008,
+    "erros": 0,
+    "recursos": {
+      "api": {
+        "cpu_media": 18.76086956521739,
+        "cpu_max": 40.46,
+        "mem_media": 34.14913043478261,
+        "mem_max": 41.62,
+        "cpu_ms_por_req": 45.20691461498166
+      },
+      "banco": {
+        "cpu_media": 101.66833333333335,
+        "cpu_max": 128.34,
+        "mem_media": 431.53333333333336,
+        "mem_max": 496.1,
+        "cpu_ms_por_req": 225.24644412191577
+      }
+    },
+    "porRota": {
+      "cliente": {
+        "p50": 577.613926,
+        "p95": 1391.225850350001,
+        "req": 65
+      },
+      "cliente-por-email": {
+        "p50": 2010.736198,
+        "p95": 3322.4137628999997,
+        "req": 42
+      },
+      "pedidos-do-cliente": {
+        "p50": 14168.191865,
+        "p95": 21974.573148199997,
+        "req": 59
+      },
+      "pedidos-por-status": {
+        "p50": 2121.33262,
+        "p95": 5451.9539737000005,
+        "req": 31
+      },
+      "busca-produtos": {
+        "p50": 1012.006104,
+        "p95": 2707.9566562499995,
+        "req": 44
+      },
+      "vendas-por-dia": {
+        "p50": 6093.440466,
+        "p95": 13070.209311199997,
+        "req": 19
+      },
+      "top-produtos": {
+        "p50": 16001.057408,
+        "p95": 22716.2816628,
+        "req": 5
+      }
+    },
+    "limite_cpu_total": 1.5,
+    "limite_mem_total": 768,
+    "ganho_claro_rps": true,
+    "ganho_claro_p95": false,
+    "piora_clara_rps": false,
+    "custo_hora_usd": 0.0640521,
+    "custo_milhao_req_usd": 4.623367542556707
+  },
+  {
+    "rotulo": "03-resumo-top-produtos",
+    "n": 3,
+    "pastas": [
+      "20261107-024245-03-resumo-top-produtos",
+      "20261107-024438-03-resumo-top-produtos",
+      "20261107-024630-03-resumo-top-produtos"
+    ],
+    "commits": [
+      "f24add0"
+    ],
+    "sujos": [
+      "0"
+    ],
+    "parametros": [
+      "20 VUs, 60s, semente 42"
+    ],
+    "limites": {
+      "banco": {
+        "cpus": 1,
+        "memoria_mib": 512
+      },
+      "api": {
+        "cpus": 0.5,
+        "memoria_mib": 256
+      }
+    },
+    "contratoMantido": true,
+    "rps": 3.986841631917771,
+    "rps_min": 3.0657530107181525,
+    "rps_max": 5.688905519572502,
+    "p95": 16564.568080399993,
+    "p95_min": 13882.54529025,
+    "p95_max": 21296.164327049995,
+    "p50": 2093.008579,
+    "p99": 22086.631802160002,
+    "erros": 0,
+    "recursos": {
+      "api": {
+        "cpu_media": 21.81208333333333,
+        "cpu_max": 37.74,
+        "mem_media": 34.27181818181818,
+        "mem_max": 42.29,
+        "cpu_ms_por_req": 47.189602446483164
+      },
+      "banco": {
+        "cpu_media": 106.96583333333335,
+        "cpu_max": 132.04,
+        "mem_media": 444.4259259259259,
+        "mem_max": 469.5,
+        "cpu_ms_por_req": 249.72568093385223
+      }
+    },
+    "porRota": {
+      "cliente": {
+        "p50": 583.97603,
+        "p95": 1732.493971,
+        "req": 61
+      },
+      "cliente-por-email": {
+        "p50": 1887.960865,
+        "p95": 4557.016146499998,
+        "req": 43
+      },
+      "pedidos-do-cliente": {
+        "p50": 13376.197651,
+        "p95": 21973.5497508,
+        "req": 57
+      },
+      "pedidos-por-status": {
+        "p50": 3687.360061,
+        "p95": 6047.617072,
+        "req": 31
+      },
+      "busca-produtos": {
+        "p50": 1117.151382,
+        "p95": 2282.16261195,
+        "req": 41
+      },
+      "vendas-por-dia": {
+        "p50": 7315.087133000001,
+        "p95": 14532.10588,
+        "req": 20
+      },
+      "top-produtos": {
+        "p50": 744.966043,
+        "p95": 1103.8036785499999,
+        "req": 4
+      }
+    },
+    "limite_cpu_total": 1.5,
+    "limite_mem_total": 768,
+    "ganho_claro_rps": false,
+    "ganho_claro_p95": false,
+    "piora_clara_rps": false,
+    "custo_hora_usd": 0.0640521,
+    "custo_milhao_req_usd": 4.46274310410506
+  },
+  {
+    "rotulo": "04-indice-dia",
+    "n": 3,
+    "pastas": [
+      "20261107-030242-04-indice-dia",
+      "20261107-030438-04-indice-dia",
+      "20261107-030630-04-indice-dia"
+    ],
+    "commits": [
+      "29fa6dd"
+    ],
+    "sujos": [
+      "0"
+    ],
+    "parametros": [
+      "20 VUs, 60s, semente 42"
+    ],
+    "limites": {
+      "banco": {
+        "cpus": 1,
+        "memoria_mib": 512
+      },
+      "api": {
+        "cpus": 0.5,
+        "memoria_mib": 256
+      }
+    },
+    "contratoMantido": true,
+    "rps": 4.099989252006896,
+    "rps_min": 3.306113492519581,
+    "rps_max": 7.3094129818988955,
+    "p95": 17876.70598874997,
+    "p95_min": 11116.315686,
+    "p95_max": 24675.222100299987,
+    "p50": 1959.226668,
+    "p99": 25283.818871670013,
+    "erros": 0,
+    "recursos": {
+      "api": {
+        "cpu_media": 22.531000000000002,
+        "cpu_max": 55,
+        "mem_media": 33.11299999999999,
+        "mem_max": 43.55,
+        "cpu_ms_por_req": 52.39767441860465
+      },
+      "banco": {
+        "cpu_media": 109.62099999999998,
+        "cpu_max": 131.27,
+        "mem_media": 412.2375,
+        "mem_max": 463.7,
+        "cpu_ms_por_req": 254.93255813953485
+      }
+    },
+    "porRota": {
+      "cliente": {
+        "p50": 681.270115,
+        "p95": 1717.2381,
+        "req": 61
+      },
+      "cliente-por-email": {
+        "p50": 1921.2030055,
+        "p95": 4003.966447199999,
+        "req": 45
+      },
+      "pedidos-do-cliente": {
+        "p50": 11277.486423999999,
+        "p95": 24598.985919899987,
+        "req": 59
+      },
+      "pedidos-por-status": {
+        "p50": 3091.445493,
+        "p95": 7769.6462206,
+        "req": 29
+      },
+      "busca-produtos": {
+        "p50": 1252.967627,
+        "p95": 3022.357535,
+        "req": 41
+      },
+      "vendas-por-dia": {
+        "p50": 3539.481833,
+        "p95": 10822.950026299994,
+        "req": 19
+      },
+      "top-produtos": {
+        "p50": 589.175536,
+        "p95": 1252.83991665,
+        "req": 4
+      }
+    },
+    "limite_cpu_total": 1.5,
+    "limite_mem_total": 768,
+    "ganho_claro_rps": false,
+    "ganho_claro_p95": false,
+    "piora_clara_rps": false,
+    "custo_hora_usd": 0.0640521,
+    "custo_milhao_req_usd": 4.339584546786532
+  },
+  {
+    "rotulo": "05-pool-conexoes",
+    "n": 3,
+    "pastas": [
+      "20261107-082338-05-pool-conexoes",
+      "20261107-082533-05-pool-conexoes",
+      "20261107-082725-05-pool-conexoes"
+    ],
+    "commits": [
+      "ca04720"
+    ],
+    "sujos": [
+      "0"
+    ],
+    "parametros": [
+      "20 VUs, 60s, semente 42"
+    ],
+    "limites": {
+      "banco": {
+        "cpus": 1,
+        "memoria_mib": 512
+      },
+      "api": {
+        "cpus": 0.5,
+        "memoria_mib": 256
+      }
+    },
+    "contratoMantido": true,
+    "rps": 10.678324871655555,
+    "rps_min": 8.995789409232497,
+    "rps_max": 13.256343147632057,
+    "p95": 7084.043942,
+    "p95_min": 5475.9284694,
+    "p95_max": 8031.249543549999,
+    "p50": 877.349809,
+    "p99": 10449.075315610004,
+    "erros": 0,
+    "recursos": {
+      "api": {
+        "cpu_media": 37.36761904761905,
+        "cpu_max": 64.29,
+        "mem_media": 34.541111111111114,
+        "mem_max": 47.07,
+        "cpu_ms_por_req": 30.524104378593535
+      },
+      "banco": {
+        "cpu_media": 100.66523809523811,
+        "cpu_max": 142.77,
+        "mem_media": 462.69444444444446,
+        "mem_max": 492.3,
+        "cpu_ms_por_req": 86.34763379035826
+      }
+    },
+    "porRota": {
+      "cliente": {
+        "p50": 205.1839745,
+        "p95": 1118.4807897499988,
+        "req": 172
+      },
+      "cliente-por-email": {
+        "p50": 1064.180195,
+        "p95": 2710.7690399999988,
+        "req": 93
+      },
+      "pedidos-do-cliente": {
+        "p50": 4061.3681509999997,
+        "p95": 10421.886984599998,
+        "req": 136
+      },
+      "pedidos-por-status": {
+        "p50": 1102.246616,
+        "p95": 5709.8766725,
+        "req": 90
+      },
+      "busca-produtos": {
+        "p50": 489.129727,
+        "p95": 1478.6550154,
+        "req": 100
+      },
+      "vendas-por-dia": {
+        "p50": 1952.661184,
+        "p95": 5805.9353128,
+        "req": 45
+      },
+      "top-produtos": {
+        "p50": 505.4554735,
+        "p95": 796.92385625,
+        "req": 10
+      }
+    },
+    "limite_cpu_total": 1.5,
+    "limite_mem_total": 768,
+    "ganho_claro_rps": true,
+    "ganho_claro_p95": true,
+    "piora_clara_rps": false,
+    "custo_hora_usd": 0.0640521,
+    "custo_milhao_req_usd": 1.6662023504480163
+  },
+  {
+    "rotulo": "06-indice-email",
+    "n": 3,
+    "pastas": [
+      "20261107-083735-06-indice-email",
+      "20261107-083927-06-indice-email",
+      "20261107-084117-06-indice-email"
+    ],
+    "commits": [
+      "37a4838"
+    ],
+    "sujos": [
+      "0"
+    ],
+    "parametros": [
+      "20 VUs, 60s, semente 42"
+    ],
+    "limites": {
+      "banco": {
+        "cpus": 1,
+        "memoria_mib": 512
+      },
+      "api": {
+        "cpus": 0.5,
+        "memoria_mib": 256
+      }
+    },
+    "contratoMantido": true,
+    "rps": 16.52192302523435,
+    "rps_min": 14.446678800548883,
+    "rps_max": 17.90330086772296,
+    "p95": 4803.8649789,
+    "p95_min": 4516.622708999999,
+    "p95_max": 5741.317224899997,
+    "p50": 536.720322,
+    "p99": 7277.867393560002,
+    "erros": 0,
+    "recursos": {
+      "api": {
+        "cpu_media": 42.83863636363637,
+        "cpu_max": 59.96,
+        "mem_media": 33.0475,
+        "mem_max": 41.67,
+        "cpu_ms_por_req": 26.282935153583622
+      },
+      "banco": {
+        "cpu_media": 86.51409090909091,
+        "cpu_max": 127.05,
+        "mem_media": 459.52,
+        "mem_max": 489.6,
+        "cpu_ms_por_req": 51.141334527541424
+      }
+    },
+    "porRota": {
+      "cliente": {
+        "p50": 150.687446,
+        "p95": 877.7528238999997,
+        "req": 267
+      },
+      "cliente-por-email": {
+        "p50": 187.618768,
+        "p95": 992.3255333,
+        "req": 158
+      },
+      "pedidos-do-cliente": {
+        "p50": 3269.494322,
+        "p95": 7131.332864749998,
+        "req": 208
+      },
+      "pedidos-por-status": {
+        "p50": 865.7924815,
+        "p95": 3458.161815299998,
+        "req": 142
+      },
+      "busca-produtos": {
+        "p50": 419.87983099999997,
+        "p95": 1282.5379897999999,
+        "req": 154
+      },
+      "vendas-por-dia": {
+        "p50": 1218.825637,
+        "p95": 3262.639456,
+        "req": 69
+      },
+      "top-produtos": {
+        "p50": 118.016596,
+        "p95": 987.1501089999999,
+        "req": 17
+      }
+    },
+    "limite_cpu_total": 1.5,
+    "limite_mem_total": 768,
+    "ganho_claro_rps": true,
+    "ganho_claro_p95": false,
+    "piora_clara_rps": false,
+    "custo_hora_usd": 0.0640521,
+    "custo_milhao_req_usd": 1.0768873558377827
+  },
+  {
+    "rotulo": "07-vendas-agregado-sql",
+    "n": 3,
+    "pastas": [
+      "20261107-084436-07-vendas-agregado-sql",
+      "20261107-084633-07-vendas-agregado-sql",
+      "20261107-084825-07-vendas-agregado-sql"
+    ],
+    "commits": [
+      "dd0df8d"
+    ],
+    "sujos": [
+      "0"
+    ],
+    "parametros": [
+      "20 VUs, 60s, semente 42"
+    ],
+    "limites": {
+      "banco": {
+        "cpus": 1,
+        "memoria_mib": 512
+      },
+      "api": {
+        "cpus": 0.5,
+        "memoria_mib": 256
+      }
+    },
+    "contratoMantido": true,
+    "rps": 19.886051876582297,
+    "rps_min": 14.40156079761687,
+    "rps_max": 29.941507301476125,
+    "p95": 3701.6364070499994,
+    "p95_min": 2397.0112277,
+    "p95_max": 5361.3771435499975,
+    "p50": 401.8558325,
+    "p99": 7016.827412870004,
+    "erros": 0,
+    "recursos": {
+      "api": {
+        "cpu_media": 15.560454545454546,
+        "cpu_max": 33.65,
+        "mem_media": 24.531818181818185,
+        "mem_max": 26.11,
+        "cpu_ms_por_req": 7.754379341588645
+      },
+      "banco": {
+        "cpu_media": 102.99739130434784,
+        "cpu_max": 141.18,
+        "mem_media": 457.28636363636366,
+        "mem_max": 490.6,
+        "cpu_ms_por_req": 51.90516460283904
+      }
+    },
+    "porRota": {
+      "cliente": {
+        "p50": 139.093776,
+        "p95": 503.2428721999998,
+        "req": 314
+      },
+      "cliente-por-email": {
+        "p50": 111.137445,
+        "p95": 497.2085057,
+        "req": 183
+      },
+      "pedidos-do-cliente": {
+        "p50": 2235.164148,
+        "p95": 6158.691300999999,
+        "req": 247
+      },
+      "pedidos-por-status": {
+        "p50": 829.3789545,
+        "p95": 3863.343730949999,
+        "req": 170
+      },
+      "busca-produtos": {
+        "p50": 396.8019515,
+        "p95": 870.2027820000001,
+        "req": 186
+      },
+      "vendas-por-dia": {
+        "p50": 1096.6270125,
+        "p95": 4077.2669637500003,
+        "req": 86
+      },
+      "top-produtos": {
+        "p50": 155.732822,
+        "p95": 311.0030335999992,
+        "req": 18
+      }
+    },
+    "limite_cpu_total": 1.5,
+    "limite_mem_total": 768,
+    "ganho_claro_rps": false,
+    "ganho_claro_p95": false,
+    "piora_clara_rps": false,
+    "custo_hora_usd": 0.0640521,
+    "custo_milhao_req_usd": 0.8947100264257106
+  },
+  {
+    "rotulo": "08-contagem-status",
+    "n": 3,
+    "pastas": [
+      "20261107-085516-08-contagem-status",
+      "20261107-085655-08-contagem-status",
+      "20261107-085835-08-contagem-status"
+    ],
+    "commits": [
+      "20fef6f"
+    ],
+    "sujos": [
+      "0"
+    ],
+    "parametros": [
+      "20 VUs, 60s, semente 42"
+    ],
+    "limites": {
+      "banco": {
+        "cpus": 1,
+        "memoria_mib": 512
+      },
+      "api": {
+        "cpus": 0.5,
+        "memoria_mib": 256
+      }
+    },
+    "contratoMantido": true,
+    "rps": 40.836428951710474,
+    "rps_min": 40.774908820813,
+    "rps_max": 42.81390031810617,
+    "p95": 1855.6386067999981,
+    "p95_min": 1737.286771,
+    "p95_max": 1887.8945231999999,
+    "p50": 207.30420650000002,
+    "p99": 2669.2460257200005,
+    "erros": 0,
+    "recursos": {
+      "api": {
+        "cpu_media": 23.923043478260865,
+        "cpu_max": 41.91,
+        "mem_media": 26.63086956521739,
+        "mem_max": 26.95,
+        "cpu_ms_por_req": 5.842013059404363
+      },
+      "banco": {
+        "cpu_media": 101.35000000000001,
+        "cpu_max": 123,
+        "mem_media": 463.60909090909087,
+        "mem_max": 494.9,
+        "cpu_ms_por_req": 24.74969474969475
+      }
+    },
+    "porRota": {
+      "cliente": {
+        "p50": 89.249864,
+        "p95": 193.89344739999993,
+        "req": 640
+      },
+      "cliente-por-email": {
+        "p50": 95.74119400000001,
+        "p95": 215.99038454999996,
+        "req": 359
+      },
+      "pedidos-do-cliente": {
+        "p50": 1315.9979315,
+        "p95": 2562.0801362999996,
+        "req": 513
+      },
+      "pedidos-por-status": {
+        "p50": 242.3993435,
+        "p95": 1677.2048030000005,
+        "req": 345
+      },
+      "busca-produtos": {
+        "p50": 285.2535495,
+        "p95": 571.1998284999994,
+        "req": 374
+      },
+      "vendas-por-dia": {
+        "p50": 570.90221,
+        "p95": 1084.3233532,
+        "req": 192
+      },
+      "top-produtos": {
+        "p50": 86.43601050000001,
+        "p95": 167.478671,
+        "req": 42
+      }
+    },
+    "limite_cpu_total": 1.5,
+    "limite_mem_total": 768,
+    "ganho_claro_rps": true,
+    "ganho_claro_p95": true,
+    "piora_clara_rps": false,
+    "custo_hora_usd": 0.0640521,
+    "custo_milhao_req_usd": 0.4356955408867786
+  },
+  {
+    "rotulo": "09-pagina-deferred-join",
+    "n": 3,
+    "pastas": [
+      "20261107-092522-09-pagina-deferred-join",
+      "20261107-092705-09-pagina-deferred-join",
+      "20261107-092849-09-pagina-deferred-join"
+    ],
+    "commits": [
+      "6c88411"
+    ],
+    "sujos": [
+      "0"
+    ],
+    "parametros": [
+      "20 VUs, 60s, semente 42"
+    ],
+    "limites": {
+      "banco": {
+        "cpus": 1,
+        "memoria_mib": 512
+      },
+      "api": {
+        "cpus": 0.5,
+        "memoria_mib": 256
+      }
+    },
+    "contratoMantido": true,
+    "rps": 36.730650271071994,
+    "rps_min": 33.878846227163926,
+    "rps_max": 42.13679631201203,
+    "p95": 2103.930291399999,
+    "p95_min": 1885.3656884499997,
+    "p95_max": 2373.303329,
+    "p50": 206.02941,
+    "p99": 3390.3557797999997,
+    "erros": 0,
+    "recursos": {
+      "api": {
+        "cpu_media": 23.965416666666666,
+        "cpu_max": 50.35,
+        "mem_media": 25.78791666666667,
+        "mem_max": 27.16,
+        "cpu_ms_por_req": 6.365316511730854
+      },
+      "banco": {
+        "cpu_media": 104.21750000000002,
+        "cpu_max": 121.95,
+        "mem_media": 460.69583333333344,
+        "mem_max": 477,
+        "cpu_ms_por_req": 27.680610889774236
+      }
+    },
+    "porRota": {
+      "cliente": {
+        "p50": 88.33894,
+        "p95": 260.45880999999997,
+        "req": 585
+      },
+      "cliente-por-email": {
+        "p50": 94.3120745,
+        "p95": 287.49906595000004,
+        "req": 332
+      },
+      "pedidos-do-cliente": {
+        "p50": 1365.566877,
+        "p95": 3344.4861625999974,
+        "req": 469
+      },
+      "pedidos-por-status": {
+        "p50": 190.224774,
+        "p95": 588.2752006999997,
+        "req": 314
+      },
+      "busca-produtos": {
+        "p50": 312.734496,
+        "p95": 627.2151670000001,
+        "req": 343
+      },
+      "vendas-por-dia": {
+        "p50": 683.545439,
+        "p95": 2495.2887794999997,
+        "req": 180
+      },
+      "top-produtos": {
+        "p50": 88.348559,
+        "p95": 300.643762,
+        "req": 36
+      }
+    },
+    "limite_cpu_total": 1.5,
+    "limite_mem_total": 768,
+    "ganho_claro_rps": false,
+    "ganho_claro_p95": false,
+    "piora_clara_rps": false,
+    "custo_hora_usd": 0.0640521,
+    "custo_milhao_req_usd": 0.4843979038947934
+  },
+  {
+    "rotulo": "10-pedidos-cliente-join",
+    "n": 3,
+    "pastas": [
+      "20261107-094122-10-pedidos-cliente-join",
+      "20261107-094303-10-pedidos-cliente-join",
+      "20261107-094444-10-pedidos-cliente-join"
+    ],
+    "commits": [
+      "cf6d102"
+    ],
+    "sujos": [
+      "0"
+    ],
+    "parametros": [
+      "20 VUs, 60s, semente 42"
+    ],
+    "limites": {
+      "banco": {
+        "cpus": 1,
+        "memoria_mib": 512
+      },
+      "api": {
+        "cpus": 0.5,
+        "memoria_mib": 256
+      }
+    },
+    "contratoMantido": true,
+    "rps": 45.10437980790295,
+    "rps_min": 38.26095556374873,
+    "rps_max": 50.70831814865086,
+    "p95": 1129.6596772999994,
+    "p95_min": 1002.2839659999999,
+    "p95_max": 1398.3016987999997,
+    "p50": 307.47679800000003,
+    "p99": 2650.2362433399967,
+    "erros": 0,
+    "recursos": {
+      "api": {
+        "cpu_media": 15.927272727272726,
+        "cpu_max": 39.63,
+        "mem_media": 26.272499999999997,
+        "mem_max": 27,
+        "cpu_ms_por_req": 3.3681773879142294
+      },
+      "banco": {
+        "cpu_media": 104.25166666666667,
+        "cpu_max": 127.95,
+        "mem_media": 469.6416666666666,
+        "mem_max": 489,
+        "cpu_ms_por_req": 21.419172572304156
+      }
+    },
+    "porRota": {
+      "cliente": {
+        "p50": 203.872332,
+        "p95": 519.9311895999999,
+        "req": 693
+      },
+      "cliente-por-email": {
+        "p50": 214.2516695,
+        "p95": 594.02959475,
+        "req": 396
+      },
+      "pedidos-do-cliente": {
+        "p50": 207.897282,
+        "p95": 614.5860091999999,
+        "req": 575
+      },
+      "pedidos-por-status": {
+        "p50": 417.587761,
+        "p95": 1196.5274825999998,
+        "req": 378
+      },
+      "busca-produtos": {
+        "p50": 535.817677,
+        "p95": 1016.8932221999999,
+        "req": 425
+      },
+      "vendas-por-dia": {
+        "p50": 1014.155357,
+        "p95": 3848.979252,
+        "req": 211
+      },
+      "top-produtos": {
+        "p50": 197.67008950000002,
+        "p95": 493.89639575,
+        "req": 46
+      }
+    },
+    "limite_cpu_total": 1.5,
+    "limite_mem_total": 768,
+    "ganho_claro_rps": false,
+    "ganho_claro_p95": true,
+    "piora_clara_rps": false,
+    "custo_hora_usd": 0.0640521,
+    "custo_milhao_req_usd": 0.39446834377894574
+  },
+  {
+    "rotulo": "11-sem-paralelismo",
+    "n": 3,
+    "pastas": [
+      "20261107-095534-11-sem-paralelismo",
+      "20261107-095715-11-sem-paralelismo",
+      "20261107-095855-11-sem-paralelismo"
+    ],
+    "commits": [
+      "e9f2260"
+    ],
+    "sujos": [
+      "0"
+    ],
+    "parametros": [
+      "20 VUs, 60s, semente 42"
+    ],
+    "limites": {
+      "banco": {
+        "cpus": 1,
+        "memoria_mib": 512
+      },
+      "api": {
+        "cpus": 0.5,
+        "memoria_mib": 256
+      }
+    },
+    "contratoMantido": true,
+    "rps": 82.97934777089765,
+    "rps_min": 68.44592174567873,
+    "rps_max": 85.05825697974873,
+    "p95": 595.3585572999996,
+    "p95_min": 589.5258490000001,
+    "p95_max": 688.836038,
+    "p50": 187.11158,
+    "p99": 910.2120625999988,
+    "erros": 0,
+    "recursos": {
+      "api": {
+        "cpu_media": 23.394347826086953,
+        "cpu_max": 51.16,
+        "mem_media": 26.51380952380952,
+        "mem_max": 26.96,
+        "cpu_ms_por_req": 2.9702511930957622
+      },
+      "banco": {
+        "cpu_media": 104.19952380952381,
+        "cpu_max": 118.52,
+        "mem_media": 482.4086956521739,
+        "mem_max": 489.4,
+        "cpu_ms_por_req": 12.506444145972054
+      }
+    },
+    "porRota": {
+      "cliente": {
+        "p50": 117.78139350000001,
+        "p95": 282.3790562999997,
+        "req": 1298
+      },
+      "cliente-por-email": {
+        "p50": 116.13182,
+        "p95": 289.86906580000004,
+        "req": 729
+      },
+      "pedidos-do-cliente": {
+        "p50": 128.169277,
+        "p95": 295.114788,
+        "req": 1041
+      },
+      "pedidos-por-status": {
+        "p50": 251.317862,
+        "p95": 492.89602950000005,
+        "req": 719
+      },
+      "busca-produtos": {
+        "p50": 389.3597795,
+        "p95": 669.5637829,
+        "req": 740
+      },
+      "vendas-por-dia": {
+        "p50": 583.1914615000001,
+        "p95": 1294.0108956499996,
+        "req": 384
+      },
+      "top-produtos": {
+        "p50": 123.027457,
+        "p95": 259.6742865499999,
+        "req": 88
+      }
+    },
+    "limite_cpu_total": 1.5,
+    "limite_mem_total": 768,
+    "ganho_claro_rps": true,
+    "ganho_claro_p95": true,
+    "piora_clara_rps": false,
+    "custo_hora_usd": 0.0640521,
+    "custo_milhao_req_usd": 0.2144178097075868
+  },
+  {
+    "rotulo": "12-indice-trigramas",
+    "n": 3,
+    "pastas": [
+      "20261107-100352-12-indice-trigramas",
+      "20261107-100528-12-indice-trigramas",
+      "20261107-100705-12-indice-trigramas"
+    ],
+    "commits": [
+      "1f3aaea"
+    ],
+    "sujos": [
+      "0"
+    ],
+    "parametros": [
+      "20 VUs, 60s, semente 42"
+    ],
+    "limites": {
+      "banco": {
+        "cpus": 1,
+        "memoria_mib": 512
+      },
+      "api": {
+        "cpus": 0.5,
+        "memoria_mib": 256
+      }
+    },
+    "contratoMantido": true,
+    "rps": 130.47425004165328,
+    "rps_min": 126.74470923849604,
+    "rps_max": 133.7315726038462,
+    "p95": 391.175121,
+    "p95_min": 389.9185577,
+    "p95_max": 399.39193375,
+    "p50": 109.569229,
+    "p99": 648.9896010500013,
+    "erros": 0,
+    "recursos": {
+      "api": {
+        "cpu_media": 38.323043478260864,
+        "cpu_max": 56.1,
+        "mem_media": 26.72608695652174,
+        "mem_max": 27.32,
+        "cpu_ms_por_req": 2.851770567649327
+      },
+      "banco": {
+        "cpu_media": 102.79636363636364,
+        "cpu_max": 119.65,
+        "mem_media": 476.95217391304345,
+        "mem_max": 482.4,
+        "cpu_ms_por_req": 7.8410651133763265
+      }
+    },
+    "porRota": {
+      "cliente": {
+        "p50": 97.294518,
+        "p95": 187.206752,
+        "req": 1981
+      },
+      "cliente-por-email": {
+        "p50": 97.54624849999999,
+        "p95": 187.3879028499999,
+        "req": 1154
+      },
+      "pedidos-do-cliente": {
+        "p50": 100.5535375,
+        "p95": 194.91081054999998,
+        "req": 1634
+      },
+      "pedidos-por-status": {
+        "p50": 188.73046900000003,
+        "p95": 317.680375,
+        "req": 1155
+      },
+      "busca-produtos": {
+        "p50": 112.48369349999999,
+        "p95": 222.97843779999994,
+        "req": 1176
+      },
+      "vendas-por-dia": {
+        "p50": 417.964585,
+        "p95": 815.2637712500001,
+        "req": 628
+      },
+      "top-produtos": {
+        "p50": 101.3273015,
+        "p95": 187.8754528,
+        "req": 138
+      }
+    },
+    "limite_cpu_total": 1.5,
+    "limite_mem_total": 768,
+    "ganho_claro_rps": true,
+    "ganho_claro_p95": true,
+    "piora_clara_rps": false,
+    "custo_hora_usd": 0.0640521,
+    "custo_milhao_req_usd": 0.1363659878812862
+  },
+  {
+    "rotulo": "13-log-sem-corpo",
+    "n": 3,
+    "pastas": [
+      "20261107-101229-13-log-sem-corpo",
+      "20261107-101412-13-log-sem-corpo",
+      "20261107-101552-13-log-sem-corpo"
+    ],
+    "commits": [
+      "7a0aa11"
+    ],
+    "sujos": [
+      "0"
+    ],
+    "parametros": [
+      "20 VUs, 60s, semente 42"
+    ],
+    "limites": {
+      "banco": {
+        "cpus": 1,
+        "memoria_mib": 512
+      },
+      "api": {
+        "cpus": 0.5,
+        "memoria_mib": 256
+      }
+    },
+    "contratoMantido": true,
+    "rps": 130.37852520161212,
+    "rps_min": 129.95568907843207,
+    "rps_max": 131.2238245295361,
+    "p95": 399.76917119999996,
+    "p95_min": 398.72452554999995,
+    "p95_max": 400.31398039999993,
+    "p50": 108.464694,
+    "p99": 677.4728995199995,
+    "erros": 0,
+    "recursos": {
+      "api": {
+        "cpu_media": 35.95818181818182,
+        "cpu_max": 60.97,
+        "mem_media": 26.65181818181818,
+        "mem_max": 27.16,
+        "cpu_ms_por_req": 2.7435031906039034
+      },
+      "banco": {
+        "cpu_media": 97.5990909090909,
+        "cpu_max": 119.72,
+        "mem_media": 473.15000000000003,
+        "mem_max": 480,
+        "cpu_ms_por_req": 7.446522704152409
+      }
+    },
+    "porRota": {
+      "cliente": {
+        "p50": 97.30971,
+        "p95": 188.2359495,
+        "req": 1999
+      },
+      "cliente-por-email": {
+        "p50": 96.41512,
+        "p95": 191.2518891999998,
+        "req": 1153
+      },
+      "pedidos-do-cliente": {
+        "p50": 100.041844,
+        "p95": 194.180234,
+        "req": 1636
+      },
+      "pedidos-por-status": {
+        "p50": 188.744435,
+        "p95": 313.32974359999974,
+        "req": 1154
+      },
+      "busca-produtos": {
+        "p50": 111.949199,
+        "p95": 217.90362819999982,
+        "req": 1169
+      },
+      "vendas-por-dia": {
+        "p50": 426.470244,
+        "p95": 824.9520759999996,
+        "req": 627
+      },
+      "top-produtos": {
+        "p50": 97.7353265,
+        "p95": 197.57452775,
+        "req": 136
+      }
+    },
+    "limite_cpu_total": 1.5,
+    "limite_mem_total": 768,
+    "ganho_claro_rps": false,
+    "ganho_claro_p95": false,
+    "piora_clara_rps": false,
+    "custo_hora_usd": 0.0640521,
+    "custo_milhao_req_usd": 0.13646610875899062
+  },
+  {
+    "rotulo": "14-totais-pedido",
+    "n": 3,
+    "pastas": [
+      "20261107-102849-14-totais-pedido",
+      "20261107-103032-14-totais-pedido",
+      "20261107-103211-14-totais-pedido"
+    ],
+    "commits": [
+      "3051546"
+    ],
+    "sujos": [
+      "0"
+    ],
+    "parametros": [
+      "20 VUs, 60s, semente 42"
+    ],
+    "limites": {
+      "banco": {
+        "cpus": 1,
+        "memoria_mib": 512
+      },
+      "api": {
+        "cpus": 0.5,
+        "memoria_mib": 256
+      }
+    },
+    "contratoMantido": true,
+    "rps": 199.073694030648,
+    "rps_min": 186.46748262481714,
+    "rps_max": 202.96259007363062,
+    "p95": 177.78158,
+    "p95_min": 176.163422,
+    "p95_max": 190.94171159999993,
+    "p50": 98.005003,
+    "p99": 200.875241,
+    "erros": 0,
+    "recursos": {
+      "api": {
+        "cpu_media": 48.638571428571424,
+        "cpu_max": 59.5,
+        "mem_media": 27.069545454545448,
+        "mem_max": 27.8,
+        "cpu_ms_por_req": 2.430193583692455
+      },
+      "banco": {
+        "cpu_media": 41.6304347826087,
+        "cpu_max": 70.07,
+        "mem_media": 459.22272727272724,
+        "mem_max": 468.9,
+        "cpu_ms_por_req": 2.0489099228582743
+      }
+    },
+    "porRota": {
+      "cliente": {
+        "p50": 91.850498,
+        "p95": 155.9774718,
+        "req": 2979
+      },
+      "cliente-por-email": {
+        "p50": 91.804325,
+        "p95": 161.972973,
+        "req": 1753
+      },
+      "pedidos-do-cliente": {
+        "p50": 96.38849,
+        "p95": 165.92289244999998,
+        "req": 2454
+      },
+      "pedidos-por-status": {
+        "p50": 121.0772495,
+        "p95": 201.011507,
+        "req": 1736
+      },
+      "busca-produtos": {
+        "p50": 101.0153895,
+        "p95": 177.73970279999998,
+        "req": 1840
+      },
+      "vendas-por-dia": {
+        "p50": 97.578724,
+        "p95": 167.91224359999998,
+        "req": 977
+      },
+      "top-produtos": {
+        "p50": 94.3889805,
+        "p95": 150.15503394999996,
+        "req": 222
+      }
+    },
+    "limite_cpu_total": 1.5,
+    "limite_mem_total": 768,
+    "ganho_claro_rps": true,
+    "ganho_claro_p95": true,
+    "piora_clara_rps": false,
+    "custo_hora_usd": 0.0640521,
+    "custo_milhao_req_usd": 0.08937519387800594
+  },
+  {
+    "rotulo": "15-banco-meia-cpu",
+    "n": 3,
+    "pastas": [
+      "20261107-103825-15-banco-meia-cpu",
+      "20261107-104003-15-banco-meia-cpu",
+      "20261107-104142-15-banco-meia-cpu"
+    ],
+    "commits": [
+      "b8ab565"
+    ],
+    "sujos": [
+      "0"
+    ],
+    "parametros": [
+      "20 VUs, 60s, semente 42"
+    ],
+    "limites": {
+      "banco": {
+        "cpus": 0.5,
+        "memoria_mib": 512
+      },
+      "api": {
+        "cpus": 0.5,
+        "memoria_mib": 256
+      }
+    },
+    "contratoMantido": true,
+    "rps": 177.55507630054396,
+    "rps_min": 162.46573580074724,
+    "rps_max": 197.2248033726111,
+    "p95": 200.97103569999993,
+    "p95_min": 182.11081025000001,
+    "p95_max": 261.95850140000005,
+    "p50": 100.173213,
+    "p99": 310.47026444000034,
+    "erros": 0,
+    "recursos": {
+      "api": {
+        "cpu_media": 45.95869565217391,
+        "cpu_max": 57.64,
+        "mem_media": 26.943043478260872,
+        "mem_max": 27.79,
+        "cpu_ms_por_req": 2.61428815642731
+      },
+      "banco": {
+        "cpu_media": 41.27217391304349,
+        "cpu_max": 60.89,
+        "mem_media": 422.3086956521739,
+        "mem_max": 443.2,
+        "cpu_ms_por_req": 2.3182273308206414
+      }
+    },
+    "porRota": {
+      "cliente": {
+        "p50": 95.240456,
+        "p95": 180.0699243,
+        "req": 2659
+      },
+      "cliente-por-email": {
+        "p50": 95.296737,
+        "p95": 180.7890495,
+        "req": 1559
+      },
+      "pedidos-do-cliente": {
+        "p50": 100.2707495,
+        "p95": 207.80010754999984,
+        "req": 2214
+      },
+      "pedidos-por-status": {
+        "p50": 132.676419,
+        "p95": 269.90093179999997,
+        "req": 1555
+      },
+      "busca-produtos": {
+        "p50": 102.764006,
+        "p95": 195.8962435999999,
+        "req": 1617
+      },
+      "vendas-por-dia": {
+        "p50": 98.557527,
+        "p95": 185.73976409999995,
+        "req": 880
+      },
+      "top-produtos": {
+        "p50": 94.512165,
+        "p95": 176.3819883,
+        "req": 198
+      }
+    },
+    "limite_cpu_total": 1,
+    "limite_mem_total": 768,
+    "ganho_claro_rps": false,
+    "ganho_claro_p95": false,
+    "piora_clara_rps": false,
+    "custo_hora_usd": 0.043812899999999995,
+    "custo_milhao_req_usd": 0.06854352043080794
+  }
+]

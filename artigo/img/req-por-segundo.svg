@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 550" width="760" height="550" role="img" aria-labelledby="t d">
+<title id="t">Requisições por segundo a cada mudança</title><desc id="d">00-linha-de-base: 2.34 req/s; 01-indices-fk: 2.40 req/s; 02-indice-status: 3.85 req/s; 03-resumo-top-produtos: 3.99 req/s; 04-indice-dia: 4.10 req/s; 05-pool-conexoes: 10.68 req/s; 06-indice-email: 16.52 req/s; 07-vendas-agregado-sql: 19.89 req/s; 08-contagem-status: 40.84 req/s; 09-pagina-deferred-join: 36.73 req/s; 10-pedidos-cliente-join: 45.10 req/s; 11-sem-paralelismo: 82.98 req/s; 12-indice-trigramas: 130.47 req/s; 13-log-sem-corpo: 130.38 req/s; 14-totais-pedido: 199.07 req/s; 15-banco-meia-cpu: 177.56 req/s</desc>
+<style>
+    .fundo { fill: #fcfcfb } .t1 { fill: #0b0b0b } .t2 { fill: #52514e } .t3 { fill: #898781 }
+    .grade { stroke: #e4e3df } .ganho { fill: #2a78d6 } .neutro { fill: #b8b6af } .base { fill: #6b6a65 }
+    @media (prefers-color-scheme: dark) {
+      .fundo { fill: #1a1a19 } .t1 { fill: #f0efec } .t2 { fill: #c3c2b7 } .t3 { fill: #898781 }
+      .grade { stroke: #383835 } .ganho { fill: #3987e5 } .neutro { fill: #5f5e59 } .base { fill: #9a988f }
+    }
+    text { font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif }
+  </style>
+<rect class="fundo" x="0" y="0" width="760" height="550" rx="8"/>
+<text class="t1" x="20" y="30" font-size="17" font-weight="600">Requisições por segundo a cada mudança</text>
+<text class="t2" x="20" y="52" font-size="12.5">Mediana de 3 execuções do scripts/medir.sh (20 VUs, 60 s). Escala logarítmica: maior é melhor.</text>
+<line class="grade" x1="220" x2="220" y1="72" y2="494" stroke-width="1"/>
+<text class="t3" x="220" y="512" font-size="11.5" text-anchor="middle">1</text>
+<line class="grade" x1="376.66666666666663" x2="376.66666666666663" y1="72" y2="494" stroke-width="1"/>
+<text class="t3" x="376.66666666666663" y="512" font-size="11.5" text-anchor="middle">10</text>
+<line class="grade" x1="533.3333333333333" x2="533.3333333333333" y1="72" y2="494" stroke-width="1"/>
+<text class="t3" x="533.3333333333333" y="512" font-size="11.5" text-anchor="middle">100</text>
+<line class="grade" x1="690" x2="690" y1="72" y2="494" stroke-width="1"/>
+<text class="t3" x="690" y="512" font-size="11.5" text-anchor="middle">1.000</text>
+<text class="t2" x="210" y="95" font-size="12" text-anchor="end">00-linha-de-base</text>
+<path class="base" d="M220,83 H273.88889002508137 a4,4 0 0 1 4,4 V95 a4,4 0 0 1 -4,4 H220 Z"/>
+<text class="t1" x="283.88889002508137" y="95" font-size="12">2,3</text>
+<text class="t2" x="210" y="121" font-size="12" text-anchor="end">01-indices-fk</text>
+<path class="neutro" d="M220,109 H275.54954454090904 a4,4 0 0 1 4,4 V121 a4,4 0 0 1 -4,4 H220 Z"/>
+<text class="t1" x="285.54954454090904" y="121" font-size="12">2,4</text>
+<text class="t2" x="210" y="147" font-size="12" text-anchor="end">02-indice-status</text>
+<path class="ganho" d="M220,135 H307.6926842165215 a4,4 0 0 1 4,4 V147 a4,4 0 0 1 -4,4 H220 Z"/>
+<text class="t1" x="317.6926842165215" y="147" font-size="12">3,8</text>
+<text class="t2" x="210" y="173" font-size="12" text-anchor="end">03-resumo-top-produtos</text>
+<path class="neutro" d="M220,161 H310.09854092992174 a4,4 0 0 1 4,4 V173 a4,4 0 0 1 -4,4 H220 Z"/>
+<text class="t1" x="320.09854092992174" y="173" font-size="12">4,0</text>
+<text class="t2" x="210" y="199" font-size="12" text-anchor="end">04-indice-dia</text>
+<path class="neutro" d="M220,187 H312.0026258563276 a4,4 0 0 1 4,4 V199 a4,4 0 0 1 -4,4 H220 Z"/>
+<text class="t1" x="322.0026258563276" y="199" font-size="12">4,1</text>
+<text class="t2" x="210" y="225" font-size="12" text-anchor="end">05-pool-conexoes</text>
+<path class="ganho" d="M220,213 H377.1321569497303 a4,4 0 0 1 4,4 V225 a4,4 0 0 1 -4,4 H220 Z"/>
+<text class="t1" x="387.1321569497303" y="225" font-size="12">10,7</text>
+<text class="t2" x="210" y="251" font-size="12" text-anchor="end">06-indice-email</text>
+<path class="ganho" d="M220,239 H406.82949313458323 a4,4 0 0 1 4,4 V251 a4,4 0 0 1 -4,4 H220 Z"/>
+<text class="t1" x="416.82949313458323" y="251" font-size="12">16,5</text>
+<text class="t2" x="210" y="277" font-size="12" text-anchor="end">07-vendas-agregado-sql</text>
+<path class="neutro" d="M220,265 H419.4392756565728 a4,4 0 0 1 4,4 V277 a4,4 0 0 1 -4,4 H220 Z"/>
+<text class="t1" x="429.4392756565728" y="277" font-size="12">19,9</text>
+<text class="t2" x="210" y="303" font-size="12" text-anchor="end">08-contagem-status</text>
+<path class="ganho" d="M220,291 H468.3974819392372 a4,4 0 0 1 4,4 V303 a4,4 0 0 1 -4,4 H220 Z"/>
+<text class="t1" x="478.3974819392372" y="303" font-size="12">40,8</text>
+<text class="t2" x="210" y="329" font-size="12" text-anchor="end">09-pagina-deferred-join</text>
+<path class="neutro" d="M220,317 H461.1878166733615 a4,4 0 0 1 4,4 V329 a4,4 0 0 1 -4,4 H220 Z"/>
+<text class="t1" x="471.1878166733615" y="329" font-size="12">36,7</text>
+<text class="t2" x="210" y="355" font-size="12" text-anchor="end">10-pedidos-cliente-join</text>
+<path class="neutro" d="M220,343 H475.16093210783623 a4,4 0 0 1 4,4 V355 a4,4 0 0 1 -4,4 H220 Z"/>
+<text class="t1" x="485.16093210783623" y="355" font-size="12">45,1</text>
+<text class="t2" x="210" y="381" font-size="12" text-anchor="end">11-sem-paralelismo</text>
+<path class="ganho" d="M220,369 H516.6386359797351 a4,4 0 0 1 4,4 V381 a4,4 0 0 1 -4,4 H220 Z"/>
+<text class="t1" x="526.6386359797351" y="381" font-size="12">83,0</text>
+<text class="t2" x="210" y="407" font-size="12" text-anchor="end">12-indice-trigramas</text>
+<path class="ganho" d="M220,395 H547.4322201135506 a4,4 0 0 1 4,4 V407 a4,4 0 0 1 -4,4 H220 Z"/>
+<text class="t1" x="557.4322201135506" y="407" font-size="12">130</text>
+<text class="t2" x="210" y="433" font-size="12" text-anchor="end">13-log-sem-corpo</text>
+<path class="neutro" d="M220,421 H547.3822833815632 a4,4 0 0 1 4,4 V433 a4,4 0 0 1 -4,4 H220 Z"/>
+<text class="t1" x="557.3822833815632" y="433" font-size="12">130</text>
+<text class="t2" x="210" y="459" font-size="12" text-anchor="end">14-totais-pedido</text>
+<path class="ganho" d="M220,447 H576.1788404692535 a4,4 0 0 1 4,4 V459 a4,4 0 0 1 -4,4 H220 Z"/>
+<text class="t1" x="586.1788404692535" y="459" font-size="12">199</text>
+<text class="t2" x="210" y="485" font-size="12" text-anchor="end">15-banco-meia-cpu</text>
+<path class="neutro" d="M220,473 H568.3955179498008 a4,4 0 0 1 4,4 V485 a4,4 0 0 1 -4,4 H220 Z"/>
+<text class="t1" x="578.3955179498008" y="485" font-size="12">178</text>
+<rect class="base" x="20" y="524" width="12" height="12" rx="3"/>
+<text class="t2" x="38" y="534" font-size="12">linha de base</text>
+<rect class="ganho" x="145.8" y="524" width="12" height="12" rx="3"/>
+<text class="t2" x="163.8" y="534" font-size="12">ganho claro sobre a anterior</text>
+<rect class="neutro" x="370.6" y="524" width="12" height="12" rx="3"/>
+<text class="t2" x="388.6" y="534" font-size="12">sem ganho claro (faixas se sobrepõem)</text>
+</svg>

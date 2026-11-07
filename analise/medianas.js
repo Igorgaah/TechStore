@@ -159,16 +159,23 @@ md.push('"Antes" de cada mudança é o rótulo anterior na ordem numérica; a ú
 md.push('');
 md.push('## Geral');
 md.push('');
-md.push('| Rótulo | Exec. | Commit | req/s | p95 (ms) | p50 (ms) | Erros | vs anterior (req/s, p95) | vs linha de base (req/s, p95) | Contrato |');
-md.push('|---|---|---|---|---|---|---|---|---|---|');
+md.push('| Rótulo | Exec. | Commit | req/s | p95 (ms) | p50 (ms) | Erros | vs anterior (req/s, p95) | Ganho claro vs anterior? (req/s; p95) | vs linha de base (req/s, p95) | Contrato |');
+md.push('|---|---|---|---|---|---|---|---|---|---|---|');
 resumos.forEach((r, i) => {
   const ant = resumos[i - 1];
   const vsAnt = ant ? `${fmt.vezes(r.rps, ant.rps)} req/s, ${fmt.vezes(ant.p95, r.p95)} menor` : '-';
+  // Ganho claro = faixas sem sobreposição: a pior execução depois é melhor que a melhor execução antes.
+  r.ganho_claro_rps = ant ? r.rps_min > ant.rps_max : null;
+  r.ganho_claro_p95 = ant ? r.p95_max < ant.p95_min : null;
+  r.piora_clara_rps = ant ? r.rps_max < ant.rps_min : null;
+  const marca = (g, p) => (g ? 'sim' : p ? 'piora' : 'não');
+  const claro = ant ? `${marca(r.ganho_claro_rps, r.piora_clara_rps)}; ${marca(r.ganho_claro_p95, r.p95_min > ant.p95_max)}` : '-';
   const vsBase = i ? `${fmt.vezes(r.rps, base.rps)} req/s, ${fmt.vezes(base.p95, r.p95)} menor` : '-';
-  md.push(`| ${r.rotulo} | ${r.n} | ${r.commits.join(', ')} | ${fmt.n(r.rps, 2)} [${fmt.n(r.rps_min, 2)}–${fmt.n(r.rps_max, 2)}] | ${fmt.ms(r.p95)} [${fmt.ms(r.p95_min)}–${fmt.ms(r.p95_max)}] | ${fmt.ms(r.p50)} | ${fmt.pct(r.erros)} | ${vsAnt} | ${vsBase} | ${r.contratoMantido ? 'mantido' : '**QUEBRADO**'} |`);
+  md.push(`| ${r.rotulo} | ${r.n} | ${r.commits.join(', ')} | ${fmt.n(r.rps, 2)} [${fmt.n(r.rps_min, 2)}–${fmt.n(r.rps_max, 2)}] | ${fmt.ms(r.p95)} [${fmt.ms(r.p95_min)}–${fmt.ms(r.p95_max)}] | ${fmt.ms(r.p50)} | ${fmt.pct(r.erros)} | ${vsAnt} | ${claro} | ${vsBase} | ${r.contratoMantido ? 'mantido' : '**QUEBRADO**'} |`);
 });
 md.push('');
 md.push('"2.0x req/s" = o dobro de requisições por segundo; "3.0x menor" = p95 três vezes menor.');
+md.push('"Ganho claro" = as faixas das execuções não se sobrepõem: a pior execução depois da mudança é melhor que a melhor execução antes dela. Com 3 execuções e variação acima de 30% entre elas, uma mediana melhor sem isso pode ser ruído.');
 md.push('');
 md.push('## Recursos (CPU e memória durante a carga) e custo');
 md.push('');
@@ -183,6 +190,24 @@ for (const r of resumos) {
   const cpr = servicos.map((s) => fmt.n(r.recursos[s]?.cpu_ms_por_req, 2));
   const lim = Object.entries(r.limites).map(([s, l]) => `${s} ${l.cpus} CPU/${l.memoria_mib} MiB`).join('; ');
   md.push(`| ${r.rotulo} | ${cpu.join(' | ')} | ${mem.join(' | ')} | ${cpr.join(' | ')} | ${fmt.n(r.limite_cpu_total, 2)} CPU / ${fmt.n(r.limite_mem_total, 0)} MiB (${lim}) |`);
+}
+md.push('');
+// Custo: proxy linear com as tarifas por segundo publicadas na página de preços do AWS Fargate
+// (Linux/x86, US East - N. Virginia, consultada em 2026-11-07). Não é uma cotação: o Fargate só aceita
+// combinações fixas de CPU e memória por tarefa, e o banco ali seria outro serviço (ex.: RDS).
+const PRECO = { vcpu_s: 0.000011244, gb_s: 0.000001235 };
+md.push('## Custo estimado (proxy)');
+md.push('');
+md.push('Tarifas por segundo do [AWS Fargate](https://aws.amazon.com/fargate/pricing/) (Linux/x86, US East, consultadas em 2026-11-07): US$ 0,000011244 por vCPU e US$ 0,000001235 por GB. Custo = CPU e memória **reservadas** (os limites do compose), não o consumo. "Por milhão de requisições" usa o req/s mediano da carga, em que o sistema está sempre no limite: é uma medida de eficiência, não uma fatura.');
+md.push('');
+md.push('| Rótulo | vCPU reservada | Memória reservada (GB) | US$/hora | US$ por milhão de requisições | vs linha de base |');
+md.push('|---|---|---|---|---|---|');
+const custoPorSegundo = (r) => r.limite_cpu_total * PRECO.vcpu_s + (r.limite_mem_total / 1024) * PRECO.gb_s;
+const custoMilhao = (r) => (custoPorSegundo(r) / r.rps) * 1e6;
+for (const r of resumos) {
+  md.push(`| ${r.rotulo} | ${fmt.n(r.limite_cpu_total, 2)} | ${fmt.n(r.limite_mem_total / 1024, 2)} | ${(custoPorSegundo(r) * 3600).toFixed(4)} | ${custoMilhao(r).toFixed(4)} | ${fmt.vezes(custoMilhao(base), custoMilhao(r))} menor |`);
+  r.custo_hora_usd = custoPorSegundo(r) * 3600;
+  r.custo_milhao_req_usd = custoMilhao(r);
 }
 md.push('');
 md.push('## p95 por rota (ms, mediana das execuções)');
