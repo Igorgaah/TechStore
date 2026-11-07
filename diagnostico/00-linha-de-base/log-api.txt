@@ -1,0 +1,16 @@
+# rotulo: 00-linha-de-base
+# data: 2026-11-07 02:04:37 -0300
+# commit: 19948f4 (arquivos alterados sem commit: 0)
+
+Log da API (stdout do container) durante a carga de diagnóstico:
+  linhas: 143
+  bytes:  164059
+  requisições da carga (k6): 143
+  bytes de log por requisição: 1147
+  maior linha (bytes): 3472
+
+Exemplos (primeiros 600 caracteres de linhas de rotas diferentes):
+{"metodo":"GET","url":"/clientes/56814","status":200,"duracao_ms":594,"resposta":{"id":56814,"nome":"Gabriela Queiroz","email":"Cliente56814@Exemplo.com","cidade":"Recife","criado_em":"2022-04-08T07:01:06.000Z"}}
+{"metodo":"GET","url":"/clientes?email=cliente13096%40exemplo.com","status":200,"duracao_ms":1612,"resposta":[{"id":13096,"nome":"Queila Santos","email":"cliente13096@exemplo.com","cidade":"Porto Alegre","criado_em":"2023-04-16T07:33:44.000Z"}]}
+{"metodo":"GET","url":"/clientes/26537/pedidos","status":200,"duracao_ms":31077,"resposta":[{"id":200216,"status":"cancelado","criado_em":"2025-12-30T01:31:04.000Z","total_centavos":1269710,"itens":[{"produto_id":4880,"produto_nome":"Cadeira Portatil Modelo 4880","quantidade":1,"preco_unitario_centavos":328190},{"produto_id":5383,"produto_nome":"Teclado Pro Modelo 5383","quantidade":2,"preco_unitario_centavos":470760}]},{"id":300216,"status":"cancelado","criado_em":"2025-08-20T04:24:24.000Z","total_centavos":2068660,"itens":[{"produto_id":4880,"produto_nome":"Cadeira Portatil Modelo 4880","qua
+{"metodo":"GET","url":"/relatorios/vendas-por-dia?inicio=2025-11-16&fim=2025-11-22","status":200,"duracao_ms":9402,"resposta":[{"dia":"2025-11-16","pedidos":616,"itens":3701,"receita_centavos":917647550},{"dia":"2025-11-17","pedidos":616,"itens":3702,"receita_centavos":904006500},{"dia":"2025-11-18","pedidos":610,"itens":3642,"receita_centavos":899567720},{"dia":"2025-11-19","pedidos":620,"itens":3727,"receita_centavos":914089900},{"dia":"2025-11-20","pedidos":617,"itens":3699,"receita_centavos":903445910},{"dia":"2025-11-21","pedidos":612,"itens":3674,"receita_centavos":910666830},{"dia":"202

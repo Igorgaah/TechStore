@@ -1,0 +1,19 @@
+ Container desafio-performance-carga-run-fbb1ac4c1770 Creating 
+ Container desafio-performance-carga-run-fbb1ac4c1770 Created 
+Medição: diagnostico-00-linha-de-base
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        143
+Requisições/s:      1.95
+Tempo de resposta:  mediana 1726.4 ms | p95 34608.4 ms | p99 38327.4 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               41        414.3 ms      1083.8 ms     1238.4 ms     0.0%    
+cliente-por-email     22        1748.4 ms     2329.9 ms     2446.6 ms     0.0%    
+pedidos-do-cliente    28        29642.8 ms    37759.2 ms    38357.8 ms    0.0%    
+pedidos-por-status    17        11610.8 ms    33257.1 ms    35419.5 ms    0.0%    
+busca-produtos        23        923.9 ms      1812.2 ms     1859.7 ms     0.0%    
+vendas-por-dia        11        12200.5 ms    17909.0 ms    18168.1 ms    0.0%    
+top-produtos          1         48526.8 ms    48526.8 ms    48526.8 ms    0.0%    
