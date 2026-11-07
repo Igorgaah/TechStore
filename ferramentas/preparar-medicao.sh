@@ -5,6 +5,10 @@
 #  medir com ele rodando misturaria o custo dele no resultado.)
 #
 #   ferramentas/preparar-medicao.sh
+#
+# Procedimento usado em todas as medições: banco recriado do zero (docker compose down -v && up -d --build)
+# e este script antes da 1ª execução. Assim o banco está sempre no mesmo estado (dados recém-gerados,
+# cache quente, autovacuum concluído); um banco só reiniciado começa com o cache frio.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 export MSYS_NO_PATHCONV=1
@@ -15,10 +19,13 @@ for _ in $(seq 1 120); do
 done
 curl -fsS http://127.0.0.1:3000/saude >/dev/null || { echo "API fora do ar" >&2; exit 1; }
 
+# Pendente = tabela com mais inserções desde o último vacuum do que o limiar do autovacuum
+# (autovacuum_vacuum_insert_threshold + scale_factor x linhas, padrões 1000 e 0,2), ou um worker rodando.
+# Não usa last_autovacuum: o diagnostico/coletar.sh zera as estatísticas (pg_stat_reset) e ele volta a NULL.
 for _ in $(seq 1 300); do
   pendentes="$(docker compose exec -T banco psql -U loja -d loja -X -At -c "
-    SELECT (SELECT count(*) FROM pg_stat_user_tables
-             WHERE relname IN ('clientes','produtos','pedidos','itens_pedido') AND last_autovacuum IS NULL)
+    SELECT (SELECT count(*) FROM pg_stat_user_tables s JOIN pg_class c ON c.oid = s.relid
+             WHERE s.n_ins_since_vacuum > 1000 + 0.2 * greatest(c.reltuples, 0))
          + (SELECT count(*) FROM pg_stat_activity WHERE backend_type = 'autovacuum worker')" | tr -d '\r')"
   if [[ "$pendentes" == "0" ]]; then
     echo "Pronto: API no ar e autovacuum pós-carga concluído."
