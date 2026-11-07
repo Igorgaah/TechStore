@@ -1,0 +1,22 @@
+# rotulo: 08-contagem-status
+# data: 2026-11-07 09:03:40 -0300
+# commit: 36969d5 (arquivos alterados sem commit: 0)
+
+Contadores acumulados durante a carga de diagnóstico (zerados com pg_stat_reset logo antes).
+
+Pager usage is off.
+       tabela        | varreduras_seq | linhas_lidas_seq | buscas_indice | linhas_via_indice 
+---------------------+----------------+------------------+---------------+-------------------
+ produtos            |            403 |          8060000 |          8409 |              8317
+ pedidos_por_status  |            363 |             1452 |             0 |                 0
+ clientes            |              0 |                0 |          1586 |              1586
+ receita_por_produto |              0 |                0 |           138 |               506
+ pedidos             |              0 |                0 |          1518 |           4713538
+ itens_pedido        |              0 |                0 |        879891 |           2638616
+(6 rows)
+
+ sessoes_abertas | transacoes | blocos_lidos_disco | blocos_cache | pct_cache | arquivos_temp | bytes_temp | tempo_ativo_s | tempo_sessao_s 
+-----------------+------------+--------------------+--------------+-----------+---------------+------------+---------------+----------------
+              20 |      14924 |             778997 |      6727807 |      89.6 |            45 | 198 MB     |         303.3 |          684.8
+(1 row)
+

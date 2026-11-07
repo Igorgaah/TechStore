@@ -1,0 +1,22 @@
+# rotulo: 08-contagem-status
+# data: 2026-11-07 09:03:37 -0300
+# commit: 36969d5 (arquivos alterados sem commit: 0)
+
+pg_stat_statements durante a carga de diagnóstico (20 VUs, 60s, semente 42).
+tempo_total_ms = soma do tempo de execução no banco; pct = fatia do tempo total do banco.
+
+Pager usage is off.
+ chamadas | tempo_total_ms | pct  | media_ms | linhas | blocos_cache | blocos_lidos | blocos_temp |                                                    consulta                                                    
+----------+----------------+------+----------+--------+--------------+--------------+-------------+----------------------------------------------------------------------------------------------------------------
+      360 |         106776 | 35.2 |   296.60 |   7200 |      3051547 |       498570 |       25420 | SELECT * FROM pedidos WHERE status = $1 ORDER BY criado_em DESC, id DESC LIMIT $2 OFFSET $3
+      204 |          99273 | 32.7 |   486.63 |   1428 |      3463033 |       274550 |           0 | SELECT to_char(p.criado_em::date, $3) AS dia, count(DISTINCT p.id) AS pedidos, sum(i.quantidade) AS itens, sum
+      398 |          88053 | 29.0 |   221.24 |   7960 |        75091 |          550 |           0 | SELECT * FROM produtos WHERE nome ILIKE $2 || $1 || $3 ORDER BY nome, id LIMIT $4
+      532 |           3005 |  1.0 |     5.65 |   2660 |         2265 |         2003 |           0 | SELECT * FROM pedidos WHERE cliente_id = $1 ORDER BY criado_em DESC, id DESC
+      378 |           2773 |  0.9 |     7.34 |    378 |          613 |          908 |           0 | SELECT * FROM clientes WHERE lower(email) = lower($1) ORDER BY id
+     7885 |           2127 |  0.7 |     0.27 |   7885 |        22611 |         1044 |           0 | SELECT * FROM produtos WHERE id = $1
+     2660 |            936 |  0.3 |     0.35 |   7885 |         8455 |         2209 |           0 | SELECT * FROM itens_pedido WHERE pedido_id = $1 ORDER BY id
+     1200 |            295 |  0.1 |     0.25 |   1200 |         1291 |         2309 |           0 | SELECT * FROM clientes WHERE id = $1
+       46 |            192 |  0.1 |     4.17 |    460 |         1572 |          360 |           0 | SELECT pr.id, pr.nome, pr.categoria, r.unidades, r.receita_centavos FROM receita_por_produto r JOIN produtos p
+      360 |             90 |  0.0 |     0.25 |    360 |          356 |            4 |           0 | SELECT coalesce((SELECT total FROM pedidos_por_status WHERE status = $1), $2) AS total
+(10 rows)
+

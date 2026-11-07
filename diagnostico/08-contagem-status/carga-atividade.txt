@@ -1,0 +1,32 @@
+# rotulo: 08-contagem-status
+# data: 2026-11-07 09:03:42 -0300
+# commit: 36969d5 (arquivos alterados sem commit: 0)
+
+Amostras: 55 (1 por segundo). Sessões ativas em média: 5.36 (com 1 CPU no banco, acima de 1 = fila).
+
+Por estado de espera (CPU = executando, sem esperar). Colunas: sessões ativas em média, % das amostras ativas.
+    3.67   68.5%  CPU
+    0.36    6.8%  LWLock:BufferMapping
+    0.35    6.4%  IPC:MessageQueueReceive
+    0.31    5.8%  IO:DataFileRead
+    0.24    4.4%  IO:BufFileWrite
+    0.13    2.4%  IO:DSMAllocate
+    0.11    2.0%  IPC:BgWorkerShutdown
+    0.05    1.0%  Client:ClientRead
+    0.04    0.7%  Timeout:SpinDelay
+    0.04    0.7%  LWLock:SharedTidBitmap
+    0.04    0.7%  IPC:MessageQueueInternal
+    0.02    0.3%  IPC:ParallelFinish
+    0.02    0.3%  IPC:BufferIO
+
+Por consulta (quanto do banco cada consulta ocupa). Colunas: sessões ativas em média, % das amostras ativas.
+    1.64   30.5%  SELECT to_char(p.criado_em::date, 'YYYY-MM-DD') AS dia, count(DISTINCT p.id) AS pedidos, sum(i.quantidade) AS itens, sum(i.quantidade * i.preco_unitar
+    1.62   30.2%  SELECT * FROM pedidos WHERE status = $1 ORDER BY criado_em DESC, id DESC LIMIT $2 OFFSET $3
+    1.42   26.4%  SELECT * FROM produtos WHERE nome ILIKE '%' 
+    0.38    7.1%  SELECT * FROM produtos WHERE id = $1
+    0.11    2.0%  SELECT * FROM itens_pedido WHERE pedido_id = $1 ORDER BY id
+    0.05    1.0%  SELECT coalesce((SELECT total FROM pedidos_por_status WHERE status = $1), 0) AS total
+    0.05    1.0%  SELECT * FROM clientes WHERE lower(email) = lower($1) ORDER BY id
+    0.04    0.7%  SELECT * FROM pedidos WHERE cliente_id = $1 ORDER BY criado_em DESC, id DESC
+    0.04    0.7%  SELECT * FROM clientes WHERE id = $1
+    0.02    0.3%  SELECT pr.id, pr.nome, pr.categoria, r.unidades, r.receita_centavos FROM receita_por_produto r JOIN produtos pr ON pr.id = r.produto_id WHERE r.itens 
