@@ -36,20 +36,24 @@
     "p50": 1597.783955,
     "p99": 30927.285729519976,
     "erros": 0,
+    "erros_max": 0.006993006993006993,
+    "execucoes_com_erro": 1,
+    "duracao_s": 70.64780243999999,
+    "amostras": 37,
     "recursos": {
       "api": {
         "cpu_media": 9.655675675675678,
         "cpu_max": 20.74,
         "mem_media": 29.699729729729732,
         "mem_max": 38.3,
-        "cpu_ms_por_req": 35.02007669749606
+        "cpu_ms_por_req": 41.234857665972484
       },
       "banco": {
         "cpu_media": 95.25935483870968,
         "cpu_max": 109.76,
         "mem_media": 385.0351351351352,
         "mem_max": 446.2,
-        "cpu_ms_por_req": 341.3795665634675
+        "cpu_ms_por_req": 413.0775954454538
       }
     },
     "porRota": {
@@ -134,20 +138,24 @@
     "p50": 2300.131472,
     "p99": 39595.11607465982,
     "erros": 0,
+    "erros_max": 0.005434782608695652,
+    "execucoes_com_erro": 1,
+    "duracao_s": 70.962099831,
+    "amostras": 23,
     "recursos": {
       "api": {
         "cpu_media": 13.575,
         "cpu_max": 36.01,
         "mem_media": 36.96478260869566,
         "mem_max": 47.62,
-        "cpu_ms_por_req": 46.75972540045767
+        "cpu_ms_por_req": 56.576537171449715
       },
       "banco": {
         "cpu_media": 103.85,
         "cpu_max": 147.17,
         "mem_media": 367.6807692307692,
         "mem_max": 424.2,
-        "cpu_ms_por_req": 338.64130434782606
+        "cpu_ms_por_req": 432.81571898748103
       }
     },
     "porRota": {
@@ -232,20 +240,24 @@
     "p50": 1857.194101,
     "p99": 22641.391689280008,
     "erros": 0,
+    "erros_max": 0,
+    "execucoes_com_erro": 0,
+    "duracao_s": 68.15357549000001,
+    "amostras": 24,
     "recursos": {
       "api": {
         "cpu_media": 18.76086956521739,
         "cpu_max": 40.46,
         "mem_media": 34.14913043478261,
         "mem_max": 41.62,
-        "cpu_ms_por_req": 45.20691461498166
+        "cpu_ms_por_req": 49.37117530535272
       },
       "banco": {
         "cpu_media": 101.66833333333335,
         "cpu_max": 128.34,
         "mem_media": 431.53333333333336,
         "mem_max": 496.1,
-        "cpu_ms_por_req": 225.24644412191577
+        "cpu_ms_por_req": 258.5116471027537
       }
     },
     "porRota": {
@@ -330,20 +342,24 @@
     "p50": 2093.008579,
     "p99": 22086.631802160002,
     "erros": 0,
+    "erros_max": 0,
+    "execucoes_com_erro": 0,
+    "duracao_s": 64.462053858,
+    "amostras": 24,
     "recursos": {
       "api": {
         "cpu_media": 21.81208333333333,
         "cpu_max": 37.74,
         "mem_media": 34.27181818181818,
         "mem_max": 42.29,
-        "cpu_ms_por_req": 47.189602446483164
+        "cpu_ms_por_req": 54.71018251317188
       },
       "banco": {
         "cpu_media": 106.96583333333335,
         "cpu_max": 132.04,
         "mem_media": 444.4259259259259,
         "mem_max": 469.5,
-        "cpu_ms_por_req": 249.72568093385223
+        "cpu_ms_por_req": 268.2971715680618
       }
     },
     "porRota": {
@@ -428,20 +444,24 @@
     "p50": 1959.226668,
     "p99": 25283.818871670013,
     "erros": 0,
+    "erros_max": 0,
+    "execucoes_com_erro": 0,
+    "duracao_s": 62.926994229,
+    "amostras": 21,
     "recursos": {
       "api": {
         "cpu_media": 22.531000000000002,
         "cpu_max": 55,
         "mem_media": 33.11299999999999,
         "mem_max": 43.55,
-        "cpu_ms_por_req": 52.39767441860465
+        "cpu_ms_por_req": 54.953802595875935
       },
       "banco": {
         "cpu_media": 109.62099999999998,
         "cpu_max": 131.27,
         "mem_media": 412.2375,
         "mem_max": 463.7,
-        "cpu_ms_por_req": 254.93255813953485
+        "cpu_ms_por_req": 267.368993580512
       }
     },
     "porRota": {
@@ -526,20 +546,24 @@
     "p50": 877.349809,
     "p99": 10449.075315610004,
     "erros": 0,
+    "erros_max": 0,
+    "execucoes_com_erro": 0,
+    "duracao_s": 60.496380075,
+    "amostras": 21,
     "recursos": {
       "api": {
         "cpu_media": 37.36761904761905,
         "cpu_max": 64.29,
         "mem_media": 34.541111111111114,
         "mem_max": 47.07,
-        "cpu_ms_por_req": 30.524104378593535
+        "cpu_ms_por_req": 30.77663033227277
       },
       "banco": {
         "cpu_media": 100.66523809523811,
         "cpu_max": 142.77,
         "mem_media": 462.69444444444446,
         "mem_max": 492.3,
-        "cpu_ms_por_req": 86.34763379035826
+        "cpu_ms_por_req": 87.06198787264043
       }
     },
     "porRota": {
@@ -624,20 +648,24 @@
     "p50": 536.720322,
     "p99": 7277.867393560002,
     "erros": 0,
+    "erros_max": 0,
+    "execucoes_com_erro": 0,
+    "duracao_s": 60.84443436,
+    "amostras": 20,
     "recursos": {
       "api": {
         "cpu_media": 42.83863636363637,
         "cpu_max": 59.96,
         "mem_media": 33.0475,
         "mem_max": 41.67,
-        "cpu_ms_por_req": 26.282935153583622
+        "cpu_ms_por_req": 26.652838712339253
       },
       "banco": {
         "cpu_media": 86.51409090909091,
         "cpu_max": 127.05,
         "mem_media": 459.52,
         "mem_max": 489.6,
-        "cpu_ms_por_req": 51.141334527541424
+        "cpu_ms_por_req": 52.363209038654745
       }
     },
     "porRota": {
@@ -722,20 +750,24 @@
     "p50": 401.8558325,
     "p99": 7016.827412870004,
     "erros": 0,
+    "erros_max": 0,
+    "execucoes_com_erro": 0,
+    "duracao_s": 60.410118890999996,
+    "amostras": 23,
     "recursos": {
       "api": {
         "cpu_media": 15.560454545454546,
         "cpu_max": 33.65,
         "mem_media": 24.531818181818185,
         "mem_max": 26.11,
-        "cpu_ms_por_req": 7.754379341588645
+        "cpu_ms_por_req": 7.824808384301989
       },
       "banco": {
         "cpu_media": 102.99739130434784,
         "cpu_max": 141.18,
         "mem_media": 457.28636363636366,
         "mem_max": 490.6,
-        "cpu_ms_por_req": 51.90516460283904
+        "cpu_ms_por_req": 52.37659253972762
       }
     },
     "porRota": {
@@ -820,20 +852,24 @@
     "p50": 207.30420650000002,
     "p99": 2669.2460257200005,
     "erros": 0,
+    "erros_max": 0,
+    "execucoes_com_erro": 0,
+    "duracao_s": 60.362770772999994,
+    "amostras": 23,
     "recursos": {
       "api": {
         "cpu_media": 23.923043478260865,
         "cpu_max": 41.91,
         "mem_media": 26.63086956521739,
         "mem_max": 26.95,
-        "cpu_ms_por_req": 5.842013059404363
+        "cpu_ms_por_req": 5.867099196565136
       },
       "banco": {
         "cpu_media": 101.35000000000001,
         "cpu_max": 123,
         "mem_media": 463.60909090909087,
         "mem_max": 494.9,
-        "cpu_ms_por_req": 24.74969474969475
+        "cpu_ms_por_req": 24.855972197359584
       }
     },
     "porRota": {
@@ -918,20 +954,24 @@
     "p50": 206.02941,
     "p99": 3390.3557797999997,
     "erros": 0,
+    "erros_max": 0,
+    "execucoes_com_erro": 0,
+    "duracao_s": 60.391667008999995,
+    "amostras": 24,
     "recursos": {
       "api": {
         "cpu_media": 23.965416666666666,
         "cpu_max": 50.35,
         "mem_media": 25.78791666666667,
         "mem_max": 27.16,
-        "cpu_ms_por_req": 6.365316511730854
+        "cpu_ms_por_req": 6.524637187145349
       },
       "banco": {
         "cpu_media": 104.21750000000002,
         "cpu_max": 121.95,
         "mem_media": 460.69583333333344,
         "mem_max": 477,
-        "cpu_ms_por_req": 27.680610889774236
+        "cpu_ms_por_req": 28.373442678219813
       }
     },
     "porRota": {
@@ -1016,20 +1056,24 @@
     "p50": 307.47679800000003,
     "p99": 2650.2362433399967,
     "erros": 0,
+    "erros_max": 0,
+    "execucoes_com_erro": 0,
+    "duracao_s": 60.700100346,
+    "amostras": 23,
     "recursos": {
       "api": {
         "cpu_media": 15.927272727272726,
         "cpu_max": 39.63,
         "mem_media": 26.272499999999997,
         "mem_max": 27,
-        "cpu_ms_por_req": 3.3681773879142294
+        "cpu_ms_por_req": 3.4074784238253657
       },
       "banco": {
         "cpu_media": 104.25166666666667,
         "cpu_max": 127.95,
         "mem_media": 469.6416666666666,
         "mem_max": 489,
-        "cpu_ms_por_req": 21.419172572304156
+        "cpu_ms_por_req": 21.559556719860378
       }
     },
     "porRota": {
@@ -1114,20 +1158,24 @@
     "p50": 187.11158,
     "p99": 910.2120625999988,
     "erros": 0,
+    "erros_max": 0,
+    "execucoes_com_erro": 0,
+    "duracao_s": 60.323361684000005,
+    "amostras": 23,
     "recursos": {
       "api": {
         "cpu_media": 23.394347826086953,
         "cpu_max": 51.16,
         "mem_media": 26.51380952380952,
         "mem_max": 26.96,
-        "cpu_ms_por_req": 2.9702511930957622
+        "cpu_ms_por_req": 2.982325545082451
       },
       "banco": {
         "cpu_media": 104.19952380952381,
         "cpu_max": 118.52,
         "mem_media": 482.4086956521739,
         "mem_max": 489.4,
-        "cpu_ms_por_req": 12.506444145972054
+        "cpu_ms_por_req": 12.557284024118166
       }
     },
     "porRota": {
@@ -1212,20 +1260,24 @@
     "p50": 109.569229,
     "p99": 648.9896010500013,
     "erros": 0,
+    "erros_max": 0,
+    "execucoes_com_erro": 0,
+    "duracao_s": 60.292418933,
+    "amostras": 23,
     "recursos": {
       "api": {
         "cpu_media": 38.323043478260864,
         "cpu_max": 56.1,
         "mem_media": 26.72608695652174,
         "mem_max": 27.32,
-        "cpu_ms_por_req": 2.851770567649327
+        "cpu_ms_por_req": 2.8656690960918736
       },
       "banco": {
         "cpu_media": 102.79636363636364,
         "cpu_max": 119.65,
         "mem_media": 476.95217391304345,
         "mem_max": 482.4,
-        "cpu_ms_por_req": 7.8410651133763265
+        "cpu_ms_por_req": 7.878670588529645
       }
     },
     "porRota": {
@@ -1310,20 +1362,24 @@
     "p50": 108.464694,
     "p99": 677.4728995199995,
     "erros": 0,
+    "erros_max": 0,
+    "execucoes_com_erro": 0,
+    "duracao_s": 60.416391333,
+    "amostras": 22,
     "recursos": {
       "api": {
         "cpu_media": 35.95818181818182,
         "cpu_max": 60.97,
         "mem_media": 26.65181818181818,
         "mem_max": 27.16,
-        "cpu_ms_por_req": 2.7435031906039034
+        "cpu_ms_por_req": 2.7669571123184915
       },
       "banco": {
         "cpu_media": 97.5990909090909,
         "cpu_max": 119.72,
         "mem_media": 473.15000000000003,
         "mem_max": 480,
-        "cpu_ms_por_req": 7.446522704152409
+        "cpu_ms_por_req": 7.510182247595716
       }
     },
     "porRota": {
@@ -1408,20 +1464,24 @@
     "p50": 98.005003,
     "p99": 200.875241,
     "erros": 0,
+    "erros_max": 0,
+    "execucoes_com_erro": 0,
+    "duracao_s": 60.065256339,
+    "amostras": 22,
     "recursos": {
       "api": {
         "cpu_media": 48.638571428571424,
         "cpu_max": 59.5,
         "mem_media": 27.069545454545448,
         "mem_max": 27.8,
-        "cpu_ms_por_req": 2.430193583692455
+        "cpu_ms_por_req": 2.4335665908450315
       },
       "banco": {
         "cpu_media": 41.6304347826087,
         "cpu_max": 70.07,
         "mem_media": 459.22272727272724,
         "mem_max": 468.9,
-        "cpu_ms_por_req": 2.0489099228582743
+        "cpu_ms_por_req": 2.051138328866716
       }
     },
     "porRota": {
@@ -1506,20 +1566,24 @@
     "p50": 100.173213,
     "p99": 310.47026444000034,
     "erros": 0,
+    "erros_max": 0,
+    "execucoes_com_erro": 0,
+    "duracao_s": 60.161614201999996,
+    "amostras": 23,
     "recursos": {
       "api": {
         "cpu_media": 45.95869565217391,
         "cpu_max": 57.64,
         "mem_media": 26.943043478260872,
         "mem_max": 27.79,
-        "cpu_ms_por_req": 2.61428815642731
+        "cpu_ms_por_req": 2.6213299246639603
       },
       "banco": {
         "cpu_media": 41.27217391304349,
         "cpu_max": 60.89,
         "mem_media": 422.3086956521739,
         "mem_max": 443.2,
-        "cpu_ms_por_req": 2.3182273308206414
+        "cpu_ms_por_req": 2.324471638489394
       }
     },
     "porRota": {
@@ -1566,5 +1630,107 @@
     "piora_clara_rps": false,
     "custo_hora_usd": 0.043812899999999995,
     "custo_milhao_req_usd": 0.06854352043080794
+  },
+  {
+    "rotulo": "16-triggers-corrigidos",
+    "n": 3,
+    "pastas": [
+      "20261107-122052-16-triggers-corrigidos",
+      "20261107-122232-16-triggers-corrigidos",
+      "20261107-122417-16-triggers-corrigidos"
+    ],
+    "commits": [
+      "0abc158"
+    ],
+    "sujos": [
+      "0"
+    ],
+    "parametros": [
+      "20 VUs, 60s, semente 42"
+    ],
+    "limites": {
+      "banco": {
+        "cpus": 0.5,
+        "memoria_mib": 512
+      },
+      "api": {
+        "cpus": 0.5,
+        "memoria_mib": 256
+      }
+    },
+    "contratoMantido": true,
+    "rps": 109.57299049140009,
+    "rps_min": 48.91436044830333,
+    "rps_max": 174.93738459231764,
+    "p95": 428.8381035,
+    "p95_min": 202.38978590000002,
+    "p95_max": 1008.8254087499996,
+    "p50": 129.295518,
+    "p99": 703.5765910000002,
+    "erros": 0,
+    "erros_max": 0,
+    "execucoes_com_erro": 0,
+    "duracao_s": 60.151684922,
+    "amostras": 24,
+    "recursos": {
+      "api": {
+        "cpu_media": 27.36916666666667,
+        "cpu_max": 48.13,
+        "mem_media": 26.643999999999995,
+        "mem_max": 27.37,
+        "cpu_ms_por_req": 2.7202304476483965
+      },
+      "banco": {
+        "cpu_media": 49.595,
+        "cpu_max": 65.34,
+        "mem_media": 371.932,
+        "mem_max": 380.2,
+        "cpu_ms_por_req": 4.5262066662214995
+      }
+    },
+    "porRota": {
+      "cliente": {
+        "p50": 105.483437,
+        "p95": 308.91958559999995,
+        "req": 1669
+      },
+      "cliente-por-email": {
+        "p50": 107.694726,
+        "p95": 318.5372326999998,
+        "req": 979
+      },
+      "pedidos-do-cliente": {
+        "p50": 146.2843345,
+        "p95": 488.7584748999998,
+        "req": 1404
+      },
+      "pedidos-por-status": {
+        "p50": 230.122117,
+        "p95": 690.8344767999996,
+        "req": 953
+      },
+      "busca-produtos": {
+        "p50": 133.412001,
+        "p95": 379.90387159999995,
+        "req": 965
+      },
+      "vendas-por-dia": {
+        "p50": 111.5945885,
+        "p95": 363.7269923499999,
+        "req": 510
+      },
+      "top-produtos": {
+        "p50": 103.490026,
+        "p95": 291.20515,
+        "req": 111
+      }
+    },
+    "limite_cpu_total": 1,
+    "limite_mem_total": 768,
+    "ganho_claro_rps": false,
+    "ganho_claro_p95": false,
+    "piora_clara_rps": false,
+    "custo_hora_usd": 0.043812899999999995,
+    "custo_milhao_req_usd": 0.11106979872886823
   }
 ]

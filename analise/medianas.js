@@ -7,7 +7,8 @@
 // Observações:
 // - O máximo de CPU/memória é recalculado do recursos.csv: o recursos.txt do medir.sh compara os valores
 //   como texto no awk (ex.: "98.7" > "104.5"), então o cpu_max dele pode sair menor que a média.
-// - "CPU por requisição" = CPU média do container (em CPUs) x duração da carga / requisições da carga.
+// - "CPU por requisição" = CPU média do container (em CPUs) x duração real da carga (state.testRunDurationMs
+//   do k6, a mesma base do req/s; passa de 60 s quando há requisições lentas no fim) / requisições da carga.
 //   É uma medida de eficiência: quanto de CPU cada requisição custou, independente do limite.
 const fs = require('node:fs');
 const path = require('node:path');
@@ -77,7 +78,7 @@ function lerExecucao(pasta) {
     if (d) porRota[rota] = { req: d.values.count, p50: d.values.med, p95: d.values['p(95)'] };
   }
   const requisicoes = m.http_reqs.values.count;
-  const dur = segundos(ctx.duracao);
+  const dur = k6.state && k6.state.testRunDurationMs ? k6.state.testRunDurationMs / 1000 : segundos(ctx.duracao);
   for (const r of Object.values(recursos)) r.cpu_ms_por_req = ((r.cpu_media / 100) * dur * 1000) / requisicoes;
   return {
     pasta,
@@ -92,6 +93,7 @@ function lerExecucao(pasta) {
     p95: m.http_req_duration.values['p(95)'],
     p99: m.http_req_duration.values['p(99)'],
     erros: m.http_req_failed.values.rate,
+    duracao_s: dur,
     recursos,
     porRota,
     contratoMantido: contrato.startsWith('Contrato mantido'),
@@ -118,6 +120,10 @@ function resumir(execucoes) {
     p50: mediana(execucoes.map((e) => e.p50)),
     p99: mediana(execucoes.map((e) => e.p99)),
     erros: mediana(execucoes.map((e) => e.erros)),
+    erros_max: Math.max(...execucoes.map((e) => e.erros)),
+    execucoes_com_erro: execucoes.filter((e) => e.erros > 0).length,
+    duracao_s: mediana(execucoes.map((e) => e.duracao_s)),
+    amostras: mediana(execucoes.map((e) => Math.max(...Object.values(e.recursos).map((x) => x.amostras)))),
     recursos: {},
     porRota: {},
   };
@@ -159,7 +165,7 @@ md.push('"Antes" de cada mudança é o rótulo anterior na ordem numérica; a ú
 md.push('');
 md.push('## Geral');
 md.push('');
-md.push('| Rótulo | Exec. | Commit | req/s | p95 (ms) | p50 (ms) | Erros | vs anterior (req/s, p95) | Ganho claro vs anterior? (req/s; p95) | vs linha de base (req/s, p95) | Contrato |');
+md.push('| Rótulo | Exec. | Commit | req/s | p95 (ms) | p50 (ms) | Erros (mediana; máx) | vs anterior (req/s, p95) | Ganho claro vs anterior? (req/s; p95) | vs linha de base (req/s, p95) | Contrato |');
 md.push('|---|---|---|---|---|---|---|---|---|---|---|');
 resumos.forEach((r, i) => {
   const ant = resumos[i - 1];
@@ -171,25 +177,25 @@ resumos.forEach((r, i) => {
   const marca = (g, p) => (g ? 'sim' : p ? 'piora' : 'não');
   const claro = ant ? `${marca(r.ganho_claro_rps, r.piora_clara_rps)}; ${marca(r.ganho_claro_p95, r.p95_min > ant.p95_max)}` : '-';
   const vsBase = i ? `${fmt.vezes(r.rps, base.rps)} req/s, ${fmt.vezes(base.p95, r.p95)} menor` : '-';
-  md.push(`| ${r.rotulo} | ${r.n} | ${r.commits.join(', ')} | ${fmt.n(r.rps, 2)} [${fmt.n(r.rps_min, 2)}–${fmt.n(r.rps_max, 2)}] | ${fmt.ms(r.p95)} [${fmt.ms(r.p95_min)}–${fmt.ms(r.p95_max)}] | ${fmt.ms(r.p50)} | ${fmt.pct(r.erros)} | ${vsAnt} | ${claro} | ${vsBase} | ${r.contratoMantido ? 'mantido' : '**QUEBRADO**'} |`);
+  md.push(`| ${r.rotulo} | ${r.n} | ${r.commits.join(', ')} | ${fmt.n(r.rps, 2)} [${fmt.n(r.rps_min, 2)}–${fmt.n(r.rps_max, 2)}] | ${fmt.ms(r.p95)} [${fmt.ms(r.p95_min)}–${fmt.ms(r.p95_max)}] | ${fmt.ms(r.p50)} | ${fmt.pct(r.erros)}; ${fmt.pct(r.erros_max)}${r.execucoes_com_erro ? ` (${r.execucoes_com_erro} exec.)` : ''} | ${vsAnt} | ${claro} | ${vsBase} | ${r.contratoMantido ? 'mantido' : '**QUEBRADO**'} |`);
 });
 md.push('');
-md.push('"2.0x req/s" = o dobro de requisições por segundo; "3.0x menor" = p95 três vezes menor.');
+md.push('"2.0x req/s" = o dobro de requisições por segundo; "3.0x menor" = p95 três vezes menor. Erros = requisições que falharam (no k6, timeout de 60 s); quando uma execução tem erro, o p95/p99 dela fica truncado no timeout.');
 md.push('"Ganho claro" = as faixas das execuções não se sobrepõem: a pior execução depois da mudança é melhor que a melhor execução antes dela. Com 3 execuções e variação acima de 30% entre elas, uma mediana melhor sem isso pode ser ruído.');
 md.push('');
 md.push('## Recursos (CPU e memória durante a carga) e custo');
 md.push('');
-md.push('CPU em % de 1 CPU (100% = 1 CPU). "CPU/req" = milissegundos de CPU gastos por requisição. Limites = soma do que o `docker-compose.yml` reserva para os containers (o custo de rodar).');
+md.push('CPU em % de 1 CPU (100% = 1 CPU). "CPU/req" = milissegundos de CPU gastos por requisição. Limites = soma dos limites de CPU e memória do `docker-compose.yml` (teto que o container pode usar). "Amostras" = leituras do `docker stats` durante a carga (mediana): cada leitura leva ~1 s com o host livre, então menos amostras indicam host mais disputado. "Duração" = duração real da carga (k6), base do CPU/req.');
 md.push('');
 const servicos = [...new Set(resumos.flatMap((r) => Object.keys(r.recursos)))].sort();
-md.push(`| Rótulo | ${servicos.map((s) => `${s}: CPU média / máx`).join(' | ')} | ${servicos.map((s) => `${s}: memória média / máx (MiB)`).join(' | ')} | ${servicos.map((s) => `${s}: CPU/req (ms)`).join(' | ')} | Limites (CPU / memória) |`);
-md.push(`|---|${servicos.map(() => '---').join('|')}|${servicos.map(() => '---').join('|')}|${servicos.map(() => '---').join('|')}|---|`);
+md.push(`| Rótulo | Amostras | Duração (s) | ${servicos.map((s) => `${s}: CPU média / máx`).join(' | ')} | ${servicos.map((s) => `${s}: memória média / máx (MiB)`).join(' | ')} | ${servicos.map((s) => `${s}: CPU/req (ms)`).join(' | ')} | Limites (CPU / memória) |`);
+md.push(`|---|---|---|${servicos.map(() => '---').join('|')}|${servicos.map(() => '---').join('|')}|${servicos.map(() => '---').join('|')}|---|`);
 for (const r of resumos) {
   const cpu = servicos.map((s) => `${fmt.n(r.recursos[s]?.cpu_media)}% / ${fmt.n(r.recursos[s]?.cpu_max)}%`);
   const mem = servicos.map((s) => `${fmt.n(r.recursos[s]?.mem_media)} / ${fmt.n(r.recursos[s]?.mem_max)}`);
   const cpr = servicos.map((s) => fmt.n(r.recursos[s]?.cpu_ms_por_req, 2));
   const lim = Object.entries(r.limites).map(([s, l]) => `${s} ${l.cpus} CPU/${l.memoria_mib} MiB`).join('; ');
-  md.push(`| ${r.rotulo} | ${cpu.join(' | ')} | ${mem.join(' | ')} | ${cpr.join(' | ')} | ${fmt.n(r.limite_cpu_total, 2)} CPU / ${fmt.n(r.limite_mem_total, 0)} MiB (${lim}) |`);
+  md.push(`| ${r.rotulo} | ${fmt.n(r.amostras, 0)} | ${fmt.n(r.duracao_s, 1)} | ${cpu.join(' | ')} | ${mem.join(' | ')} | ${cpr.join(' | ')} | ${fmt.n(r.limite_cpu_total, 2)} CPU / ${fmt.n(r.limite_mem_total, 0)} MiB (${lim}) |`);
 }
 md.push('');
 // Custo: proxy linear com as tarifas por segundo publicadas na página de preços do AWS Fargate
@@ -198,9 +204,9 @@ md.push('');
 const PRECO = { vcpu_s: 0.000011244, gb_s: 0.000001235 };
 md.push('## Custo estimado (proxy)');
 md.push('');
-md.push('Tarifas por segundo do [AWS Fargate](https://aws.amazon.com/fargate/pricing/) (Linux/x86, US East, consultadas em 2026-11-07): US$ 0,000011244 por vCPU e US$ 0,000001235 por GB. Custo = CPU e memória **reservadas** (os limites do compose), não o consumo. "Por milhão de requisições" usa o req/s mediano da carga, em que o sistema está sempre no limite: é uma medida de eficiência, não uma fatura.');
+md.push('Tarifas por segundo do [AWS Fargate](https://aws.amazon.com/fargate/pricing/) (Linux/x86, US East, consultadas em 2026-11-07): US$ 0,000011244 por vCPU e US$ 0,000001235 por GB. Custo = os **limites** de CPU e memória do compose cobrados como se fossem o tamanho contratado (modelo linear, um *proxy*: o Fargate só aceita combinações fixas de CPU e memória, e o banco ali seria outro serviço), não o consumo. Com os mesmos limites, o custo por hora não muda de 00 a 14; só a 15 o reduz. "Por milhão de requisições" usa o req/s mediano da carga, em que o sistema está sempre no limite: é uma medida de eficiência, não uma fatura.');
 md.push('');
-md.push('| Rótulo | vCPU reservada | Memória reservada (GB) | US$/hora | US$ por milhão de requisições | vs linha de base |');
+md.push('| Rótulo | Limite de CPU (vCPU) | Limite de memória (GB) | US$/hora | US$ por milhão de requisições | vs linha de base |');
 md.push('|---|---|---|---|---|---|');
 const custoPorSegundo = (r) => r.limite_cpu_total * PRECO.vcpu_s + (r.limite_mem_total / 1024) * PRECO.gb_s;
 const custoMilhao = (r) => (custoPorSegundo(r) / r.rps) * 1e6;
