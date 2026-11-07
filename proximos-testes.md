@@ -9,21 +9,21 @@ Ordem: primeiro o que pode **derrubar** a conclusão do artigo, depois o que pod
 ### 1. Custo dos triggers numa carga com escrita
 
 - **De onde veio:** [Nelson, Citus Data, "Faster PostgreSQL Counting"](https://www.citusdata.com/blog/2016/10/12/count-performance/): contagem por trigger "shifts overhead to inserts and deletes", e no teste deles as inserções ficaram 50× mais lentas. [PostgreSQL 16, 13.3 Explicit Locking](https://www.postgresql.org/docs/16/explicit-locking.html): o UPDATE de uma linha bloqueia outras transações que tentam alterar a mesma linha até o fim da transação.
-- **O que eu acredito que ganharia:** a resposta à maior dúvida da solução. Opinião: `totais_pedido` (uma linha por pedido) e `receita_por_produto` (20 mil linhas) devem ter custo moderado. A `pedidos_por_status` é uma linha quente: toda inserção de pedido atualiza uma de só 4 linhas, então transações de checkout concorrentes devem se enfileirar nela.
-- **Como testaria:** um script `pgbench` que cria pedidos com 1 a 5 itens (como o `02-dados.sql`) com 1, 8 e 32 clientes simultâneos, medindo TPS e latência com e sem os três triggers (banco recriado com e sem os arquivos `05`, `08` e `10`). Se a linha quente pesar, testar contadores particionados: N linhas por status, uma escolhida por transação, somadas na leitura.
+- **O que eu acredito que ganharia:** a resposta à maior dúvida da solução. Opinião: `totais_pedido` (uma linha por pedido) e `receita_por_produto` (20 mil linhas) devem ter custo moderado. A `pedidos_por_status` é uma linha quente: toda inserção de pedido atualiza uma de só 4 linhas, então transações concorrentes devem se enfileirar nela. Dois riscos já foram reproduzidos na revisão, sem medida de frequência: *deadlock* (erro 40P01) entre inserções de itens dos mesmos produtos em ordens diferentes e entre trocas de status em ordens opostas; e espera por lock entre inserir item e cancelar o mesmo pedido, que é o efeito desejado da correção 16 (no teste, ~4–5 s, o tempo que a outra transação ficou aberta). Limite conhecido: DELETE de um pedido e dos seus itens no **mesmo comando** não é descontado de `receita_por_produto`.
+- **Como testaria:** um script `pgbench` que cria pedidos com 1 a 5 itens (como o `02-dados.sql`) com 1, 8 e 32 clientes simultâneos, medindo TPS, latência e a taxa de 40P01, com e sem os triggers (banco recriado com e sem os arquivos `05`, `08`, `10` e `11`). Se a linha quente pesar, testar contadores particionados (N linhas por status, uma escolhida por transação, somadas na leitura). Se os deadlocks pesarem, testar triggers por comando que façam os upserts ordenados por `produto_id` (item 11) ou nova tentativa automática em quem escreve.
 - **O que precisaria:** um perfil de escrita da loja real (pedidos por segundo no pico) para escolher a concorrência; o `pgbench` já vem na imagem do PostgreSQL.
 
 ### 2. Carga em modelo aberto (taxa de chegada fixa)
 
 - **De onde veio:** [Schroeder, Wierman e Harchol-Balter, "Open Versus Closed: A Cautionary Tale", NSDI 2006](https://www.usenix.org/legacy/events/nsdi06/tech/full_papers/schroeder/schroeder_html/index.html); [k6, Open and closed models](https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/open-vs-closed/) e [executor constant-arrival-rate](https://grafana.com/docs/k6/latest/using-k6/scenarios/executors/constant-arrival-rate/).
 - **O que eu acredito que ganharia:** uma latência mais próxima do que um usuário real veria. Com 20 VUs fixos, quando a API demora, a carga diminui junto (*coordinated omission*), e o p95 medido sai otimista.
-- **Como testaria:** um cenário novo fora de `carga/` (a régua não muda), com `constant-arrival-rate` em 50, 100 e 150 req/s e os mesmos pesos de rota, nos estados 00, 08 e 14. Medir p95 e iterações descartadas.
+- **Como testaria:** um cenário novo fora de `carga/` (a régua não muda), com `constant-arrival-rate` e os mesmos pesos de rota, a 50%, 75% e 90% do req/s mediano de cada estado (~1 / 1,8 / 2,1 req/s na 00, ~20 / 30 / 37 na 08 e ~100 / 150 / 180 na 14). Medir p95 e iterações descartadas, e comparar os estados na mesma taxa absoluta que todos aguentem.
 - **O que precisaria:** só tempo de máquina. Acima da capacidade, a fila cresce sem limite, então é preciso começar abaixo do req/s medido aqui.
 
 ### 3. Medir de novo numa máquina quieta, com mais repetições
 
 - **De onde veio:** [Uta et al., NSDI 2020](https://www.usenix.org/system/files/nsdi20-paper-uta.pdf): "Three repetitions are insufficient to calculate CIs"; [Papadopoulos et al., SPEC RG 2019 / IEEE TSE 2021](https://research.spec.org/fileadmin/user_upload/documents/rg_cloud/endorsed_publications/SPEC_RG_2019_Methodological_Principles_for_Reproducible_Performance_Evaluation_in_Cloud_Computing.pdf).
-- **O que eu acredito que ganharia:** saber se as mudanças "sem ganho claro" (01, 03, 04, 07, 09, 10) não ajudam de fato no req/s ou se o efeito foi escondido pelo ruído. As medições foram feitas com um jogo usando ~2 dos 4 núcleos do host ([diagnostico/host-cpu.txt](diagnostico/host-cpu.txt)).
+- **O que eu acredito que ganharia:** saber se as mudanças sem ganho claro em req/s (01, 03, 04, 07, 09, 10, 13 e 16) não ajudam de fato ou se o efeito foi escondido pelo ruído, e confirmar a 02, que só teve ganho claro na série refeita. As medições foram feitas com um jogo usando ~2 dos 4 núcleos do host ([diagnostico/host-cpu.txt](diagnostico/host-cpu.txt)).
 - **Como testaria:** Linux nativo, sem outros programas, 10 execuções por estado com o `medir.sh` e intervalo de confiança da mediana por *bootstrap*. Alternar a ordem dos estados (00, 14, 01, 13...) para não confundir o efeito com o tempo.
 - **O que precisaria:** uma máquina dedicada por ~4 horas.
 
@@ -99,8 +99,29 @@ Ordem: primeiro o que pode **derrubar** a conclusão do artigo, depois o que pod
 - **Como testaria:** mascarar a query string das rotas com dados pessoais no middleware e conferir uma amostra de `docker compose logs api`.
 - **O que precisaria:** nada.
 
+### 14. Throttling do banco com 0,5 CPU
+
+- **De onde veio:** [Linux, CFS Bandwidth Control](https://docs.kernel.org/scheduler/sched-bwc.html): o limite de CPU é uma cota por período, e o grupo "throttled" só volta a rodar no período seguinte; o `cpu.stat` registra "nr_throttled: Number of times the group has been throttled/limited."
+- **O que eu acredito que ganharia:** explicar a fragilidade vista na 16. Com o mesmo caminho de leitura da 15, uma execução caiu para 48,91 req/s com a CPU do banco no limite e quase o dobro de CPU por requisição. Opinião: com 0,5 CPU, o banco é interrompido no meio de seções críticas e os outros processos gastam CPU esperando locks.
+- **Como testaria:** ler `/sys/fs/cgroup/cpu.stat` do container do banco antes e depois de cada execução, com 0,5 e 1,0 CPU, e cruzar `nr_throttled` e `throttled_usec` com o req/s e o CPU/req.
+- **O que precisaria:** só tempo de máquina, de preferência numa máquina quieta (teste 3).
+
+### 15. Timeouts no pool de conexões
+
+- **De onde veio:** [node-postgres, pg.Pool](https://node-postgres.com/apis/pool): por padrão, `connectionTimeoutMillis` é 0, "which means no timeout"; achado da revisão de código.
+- **O que eu acredito que ganharia:** robustez, não velocidade. Se as 10 conexões do pool ficarem presas (lock, consulta lenta, banco travado), hoje todas as requisições esperam sem prazo. No código original, cada requisição abria a sua conexão.
+- **Como testaria:** `connectionTimeoutMillis` (ex.: 5 s) e `statement_timeout` no pool, medir de novo (o caminho normal não deve mudar) e provocar um lock longo para ver a API responder 500 em vez de pendurar.
+- **O que precisaria:** decidir o tempo máximo aceitável de resposta (um SLO).
+
+### 16. Filtro de data como faixa, sem cast na coluna
+
+- **De onde veio:** [Winand, Use The Index, Luke!: datas](https://use-the-index-luke.com/sql/where-clause/obfuscation/dates): "Always consider using an explicit range condition when comparing dates."
+- **O que eu acredito que ganharia:** nada no estado final, porque vendas-por-dia já lê `totais_pedido` (mudança 14). Seria a alternativa à mudança 04 (índice de expressão) se os totais por pedido fossem descartados por causa do custo na escrita (teste 1).
+- **Como testaria:** `criado_em >= $1::date AND criado_em < $2::date + 1` com índice em `criado_em`, na consulta da mudança 07, medido contra a 04.
+- **O que precisaria:** só tempo.
+
 ## Descartadas com evidência
 
-- **JIT do PostgreSQL** ([PostgreSQL 16, 32.2 When to JIT?](https://www.postgresql.org/docs/16/jit-decision.html)): nenhum plano da linha de base teve seção JIT. O maior custo estimado entre as consultas foi 62.594 (top-produtos, 57.087), abaixo do `jit_above_cost` padrão de 100000 ([diagnostico/00-linha-de-base/explain.txt](diagnostico/00-linha-de-base/explain.txt) e [ambiente.txt](diagnostico/00-linha-de-base/ambiente.txt)), então desligar o JIT não mudaria nada.
+- **JIT do PostgreSQL** ([PostgreSQL 16, 32.2 When to JIT?](https://www.postgresql.org/docs/16/jit-decision.html)): nenhum plano da linha de base teve seção JIT. O maior custo estimado de uma consulta foi 57.087 (top-produtos), abaixo do `jit_above_cost` padrão de 100000; nenhum nó de plano passou de 62.594 ([diagnostico/00-linha-de-base/explain.txt](diagnostico/00-linha-de-base/explain.txt) e [ambiente.txt](diagnostico/00-linha-de-base/ambiente.txt)), então desligar o JIT não mudaria nada.
 - **Cluster de processos Node** ([Node.js, Cluster](https://nodejs.org/api/cluster.html)): o limite da API é 0,5 CPU; mais processos disputariam a mesma fatia. Só faria sentido junto com mais CPU, o que é custo.
 - **Busca full-text (`tsvector`)** ([PostgreSQL 16, 12.1](https://www.postgresql.org/docs/16/textsearch-intro.html)): casa por palavra normalizada, não por substring, então mudaria o resultado de `ILIKE '%termo%'` e quebraria o contrato.

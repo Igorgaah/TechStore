@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 550" width="760" height="550" role="img" aria-labelledby="t d">
-<title id="t">Requisições por segundo a cada mudança</title><desc id="d">00-linha-de-base: 2.34 req/s; 01-indices-fk: 2.40 req/s; 02-indice-status: 3.85 req/s; 03-resumo-top-produtos: 3.99 req/s; 04-indice-dia: 4.10 req/s; 05-pool-conexoes: 10.68 req/s; 06-indice-email: 16.52 req/s; 07-vendas-agregado-sql: 19.89 req/s; 08-contagem-status: 40.84 req/s; 09-pagina-deferred-join: 36.73 req/s; 10-pedidos-cliente-join: 45.10 req/s; 11-sem-paralelismo: 82.98 req/s; 12-indice-trigramas: 130.47 req/s; 13-log-sem-corpo: 130.38 req/s; 14-totais-pedido: 199.07 req/s; 15-banco-meia-cpu: 177.56 req/s</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 576" width="760" height="576" role="img" aria-labelledby="t d">
+<title id="t">Requisições por segundo a cada mudança</title><desc id="d">00-linha-de-base: 2.34 req/s; 01-indices-fk: 2.40 req/s; 02-indice-status: 3.85 req/s; 03-resumo-top-produtos: 3.99 req/s; 04-indice-dia: 4.10 req/s; 05-pool-conexoes: 10.68 req/s; 06-indice-email: 16.52 req/s; 07-vendas-agregado-sql: 19.89 req/s; 08-contagem-status: 40.84 req/s; 09-pagina-deferred-join: 36.73 req/s; 10-pedidos-cliente-join: 45.10 req/s; 11-sem-paralelismo: 82.98 req/s; 12-indice-trigramas: 130.47 req/s; 13-log-sem-corpo: 130.38 req/s; 14-totais-pedido: 199.07 req/s; 15-banco-meia-cpu: 177.56 req/s; 16-triggers-corrigidos: 109.57 req/s</desc>
 <style>
     .fundo { fill: #fcfcfb } .t1 { fill: #0b0b0b } .t2 { fill: #52514e } .t3 { fill: #898781 }
     .grade { stroke: #e4e3df } .ganho { fill: #2a78d6 } .neutro { fill: #b8b6af } .base { fill: #6b6a65 }
@@ -9,17 +9,17 @@
     }
     text { font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif }
   </style>
-<rect class="fundo" x="0" y="0" width="760" height="550" rx="8"/>
+<rect class="fundo" x="0" y="0" width="760" height="576" rx="8"/>
 <text class="t1" x="20" y="30" font-size="17" font-weight="600">Requisições por segundo a cada mudança</text>
 <text class="t2" x="20" y="52" font-size="12.5">Mediana de 3 execuções do scripts/medir.sh (20 VUs, 60 s). Escala logarítmica: maior é melhor.</text>
-<line class="grade" x1="220" x2="220" y1="72" y2="494" stroke-width="1"/>
-<text class="t3" x="220" y="512" font-size="11.5" text-anchor="middle">1</text>
-<line class="grade" x1="376.66666666666663" x2="376.66666666666663" y1="72" y2="494" stroke-width="1"/>
-<text class="t3" x="376.66666666666663" y="512" font-size="11.5" text-anchor="middle">10</text>
-<line class="grade" x1="533.3333333333333" x2="533.3333333333333" y1="72" y2="494" stroke-width="1"/>
-<text class="t3" x="533.3333333333333" y="512" font-size="11.5" text-anchor="middle">100</text>
-<line class="grade" x1="690" x2="690" y1="72" y2="494" stroke-width="1"/>
-<text class="t3" x="690" y="512" font-size="11.5" text-anchor="middle">1.000</text>
+<line class="grade" x1="220" x2="220" y1="72" y2="520" stroke-width="1"/>
+<text class="t3" x="220" y="538" font-size="11.5" text-anchor="middle">1</text>
+<line class="grade" x1="376.66666666666663" x2="376.66666666666663" y1="72" y2="520" stroke-width="1"/>
+<text class="t3" x="376.66666666666663" y="538" font-size="11.5" text-anchor="middle">10</text>
+<line class="grade" x1="533.3333333333333" x2="533.3333333333333" y1="72" y2="520" stroke-width="1"/>
+<text class="t3" x="533.3333333333333" y="538" font-size="11.5" text-anchor="middle">100</text>
+<line class="grade" x1="690" x2="690" y1="72" y2="520" stroke-width="1"/>
+<text class="t3" x="690" y="538" font-size="11.5" text-anchor="middle">1.000</text>
 <text class="t2" x="210" y="95" font-size="12" text-anchor="end">00-linha-de-base</text>
 <path class="base" d="M220,83 H273.88889002508137 a4,4 0 0 1 4,4 V95 a4,4 0 0 1 -4,4 H220 Z"/>
 <text class="t1" x="283.88889002508137" y="95" font-size="12">2,3</text>
@@ -68,10 +68,13 @@
 <text class="t2" x="210" y="485" font-size="12" text-anchor="end">15-banco-meia-cpu</text>
 <path class="neutro" d="M220,473 H568.3955179498008 a4,4 0 0 1 4,4 V485 a4,4 0 0 1 -4,4 H220 Z"/>
 <text class="t1" x="578.3955179498008" y="485" font-size="12">178</text>
-<rect class="base" x="20" y="524" width="12" height="12" rx="3"/>
-<text class="t2" x="38" y="534" font-size="12">linha de base</text>
-<rect class="ganho" x="145.8" y="524" width="12" height="12" rx="3"/>
-<text class="t2" x="163.8" y="534" font-size="12">ganho claro sobre a anterior</text>
-<rect class="neutro" x="370.6" y="524" width="12" height="12" rx="3"/>
-<text class="t2" x="388.6" y="534" font-size="12">sem ganho claro (faixas se sobrepõem)</text>
+<text class="t2" x="210" y="511" font-size="12" text-anchor="end">16-triggers-corrigidos</text>
+<path class="neutro" d="M220,499 H535.5535506326084 a4,4 0 0 1 4,4 V511 a4,4 0 0 1 -4,4 H220 Z"/>
+<text class="t1" x="545.5535506326084" y="511" font-size="12">110</text>
+<rect class="base" x="20" y="550" width="12" height="12" rx="3"/>
+<text class="t2" x="38" y="560" font-size="12">linha de base</text>
+<rect class="ganho" x="145.8" y="550" width="12" height="12" rx="3"/>
+<text class="t2" x="163.8" y="560" font-size="12">ganho claro sobre a anterior</text>
+<rect class="neutro" x="370.6" y="550" width="12" height="12" rx="3"/>
+<text class="t2" x="388.6" y="560" font-size="12">sem ganho claro (faixas se sobrepõem)</text>
 </svg>

@@ -6,17 +6,18 @@ A aplicação é a API de uma loja fictícia, em Node.js (Express) com PostgreSQ
 
 ## Resultado deste trabalho
 
-**O problema:** com 20 usuários simultâneos, a API atendia 2,34 requisições por segundo, com p95 de 27 s. O banco ficava saturado (95% de 1 CPU) e a API, quase ociosa. O diagnóstico ([diagnostico/](diagnostico/)) mostrou que o banco refazia trabalho desnecessário: varreduras de tabela inteira por falta de índice, uma conexão nova por consulta, N+1 (17 idas ao banco numa só requisição), consulta paralela num banco de 1 CPU e relatórios e contagens recalculados sobre 1,5 milhão de itens a cada chamada.
+**O problema:** com 20 usuários simultâneos, a API atendia 2,34 requisições por segundo, com p95 de 27 s. O banco ficava saturado (95% de 1 CPU) e a API, quase ociosa. O diagnóstico ([diagnostico/](diagnostico/)) mostrou que o banco refazia trabalho desnecessário: varreduras de tabela inteira por falta de índice, uma conexão nova por consulta, N+1 (17 idas ao banco numa só requisição), consulta paralela num banco de 1 CPU relatórios recalculados sobre 1,5 milhão de itens e contagens sobre até 300 mil pedidos a cada chamada.
 
-**O que mudou:** 15 mudanças, uma por commit, cada uma medida 3 vezes pelo `scripts/medir.sh`: índices, pool de conexões, fim do N+1, agregação no banco, tabelas de resumo mantidas por trigger (exatas), consulta paralela desligada, log sem dados pessoais e, por fim, menos CPU para o banco. Nenhuma resposta mudou: o contrato foi mantido em todas as execuções, e 790 URLs foram conferidas contra o código original.
+**O que mudou:** 16 mudanças (14 de desempenho, 1 de custo e 1 de corretude), uma por commit, cada uma medida 3 vezes pelo `scripts/medir.sh`: índices, pool de conexões, fim do N+1, agregação no banco, tabelas de resumo mantidas por trigger (exatas), consulta paralela desligada, log sem dados pessoais, menos CPU para o banco e, por fim, correções nos triggers achadas na revisão (corrida, ordem de disparo e overflow, que só aparecem com escrita). Nenhuma resposta mudou: o contrato foi mantido em todas as execuções, e 790 URLs foram conferidas contra o código original.
 
-| Estado | req/s | p95 | CPU média banco · API | CPU reservada | Custo estimado por milhão de req. |
+| Estado | req/s | p95 | CPU média banco · API | CPU alocada (limite) | Custo estimado por milhão de req. |
 |---|---|---|---|---|---|
 | Linha de base (00) | 2,34 | 27.087 ms | 95% · 10% | 1,5 vCPU | US$ 7,60 |
 | Mais rápido (14) | 199,07 | 178 ms | 42% · 49% | 1,5 vCPU | US$ 0,09 |
 | Mais barato (15) | 177,56 | 201 ms | 41% · 46% | 1,0 vCPU | US$ 0,07 |
+| Final (16 = 15 + triggers corrigidos) | 109,57 [48,91–174,94] | 429 ms | 50% · 27% | 1,0 vCPU | US$ 0,11 |
 
-Medianas de 3 execuções, geradas por script a partir de `resultados/` ([analise/medianas.md](analise/medianas.md)). O custo usa as tarifas por segundo do AWS Fargate como referência, e é uma estimativa de eficiência, não uma fatura. As medições foram feitas num Windows com outros programas abertos, o que aumenta a variação entre execuções (veja os limites no artigo).
+Medianas de 3 execuções, geradas por script a partir de `resultados/` ([analise/medianas.md](analise/medianas.md)). O custo usa as tarifas por segundo do AWS Fargate como referência, num modelo linear sobre os limites do compose: é uma estimativa de eficiência, não uma fatura. A 16 não muda nenhuma consulta de leitura da 15; a diferença está dentro do ruído (a série variou 3,6×; ver [experimentos.md](experimentos.md)). As medições foram feitas num Windows com outros programas abertos, o que aumenta a variação entre execuções (veja os limites no artigo).
 
 | Documento | Conteúdo |
 |---|---|
@@ -34,6 +35,7 @@ ferramentas/preparar-medicao.sh            # espera o autovacuum pós-carga ante
 diagnostico/coletar.sh 99-teste diagnostico/consultas/15-atuais.sql   # evidências do estado atual (~3 min)
 testes/api-original.sh && node testes/equivalencia.js http://127.0.0.1:3001 http://127.0.0.1:3000 && testes/api-original.sh parar
 docker compose exec -T banco psql -U loja -d loja -X < testes/resumos.sql   # confere os triggers (ROLLBACK no fim)
+testes/concorrencia.sh                     # corrida entre inserir item e cancelar o pedido (faz COMMIT num pedido de teste)
 node analise/medianas.js && node analise/graficos.js && node analise/experimentos.js   # tabelas e gráficos a partir de resultados/
 ```
 
@@ -48,7 +50,7 @@ No Windows, rodando no Git Bash em vez do WSL, exporte `MSYS_NO_PATHCONV=1` ante
 
 ```
 Vaga - Estágio Pesquisa e Inovação 2026/
-├── AGENTS.md                  # instruções para agentes de IA (o CLAUDE.md aponta para ele)
+├── AGENTS.md                  # instruções para agentes de IA (o CLAUDE.md aponta para ele; não incluído neste repositório)
 ├── docker-compose.yml         # API, banco e as ferramentas de medição
 ├── api/                       # código da API (Express + pg) e Dockerfile
 ├── banco/                     # scripts que criam as tabelas e geram os dados
@@ -145,7 +147,7 @@ cd meu-desafio
 git init -b main
 git add .
 git commit -m "chore: estado original do desafio"
-ls        # deve mostrar AGENTS.md, CLAUDE.md, README.md, api, banco, carga, contrato, docker-compose.yml, resultados, scripts
+ls        # na pasta original, deve mostrar AGENTS.md, CLAUDE.md, README.md, api, banco, carga, contrato, docker-compose.yml, resultados, scripts
 ```
 
 A partir daqui, todos os comandos rodam dentro de `meu-desafio`. A pasta `t4h-desafios` pode ser apagada.
@@ -418,7 +420,7 @@ Tudo o que você fizer direto no `psql` se perde quando o banco é apagado. Para
 
 ## Usar um agente de IA
 
-O [AGENTS.md](AGENTS.md) resume, para agentes como Claude Code, Codex ou Cursor, como rodar e medir a aplicação e o que não pode ser mudado. Ele não traz o enunciado: passe o enunciado para o agente junto com o seu pedido.
+O `AGENTS.md` da pasta original do desafio (não incluído neste repositório) resume, para agentes como Claude Code, Codex ou Cursor, como rodar e medir a aplicação e o que não pode ser mudado. Ele não traz o enunciado: passe o enunciado para o agente junto com o seu pedido.
 
 Abra o agente dentro da sua cópia desta pasta. Na raiz do t4h-desafios, o `CLAUDE.md` e a pasta `.claude/` são de quem mantém o repositório e não valem para o desafio.
 

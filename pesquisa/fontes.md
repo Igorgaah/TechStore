@@ -142,6 +142,8 @@ Total: 81 fontes distintas (52 de documentação oficial, 10 de técnica primár
 - **Citações (literais):**
   - "All functions and operators used in an index definition must be “immutable”, that is, their results must depend only on their arguments and never on any outside influence (such as the contents of another table or the current time)." (Notes / Description): Funções e operadores em um índice de expressão precisam ser imutáveis.
   - "However, an index-only scan can return the contents of non-key columns without having to visit the index's table, since they are available directly from the index entry." (Parameters - INCLUDE): Com INCLUDE, o index-only scan devolve colunas não-chave sem visitar a tabela.
+  - "Other transactions can still read the table, but if they try to insert, update, or delete rows in the table they will block until the index build is finished." (Building Indexes Concurrently; aberta de novo em 2026-11-07): o CREATE INDEX normal bloqueia escritas até terminar.
+  - "PostgreSQL supports building indexes without locking out writes." (Building Indexes Concurrently; aberta de novo em 2026-11-07): com CONCURRENTLY, as escritas continuam.
   - "Thus this method requires more total work than a standard index build and takes significantly longer to complete." (Building Indexes Concurrently): CREATE INDEX CONCURRENTLY não bloqueia escritas, mas dá mais trabalho, leva bem mais tempo e, se falhar, deixa um índice inválido.
 - **Custo ou risco segundo a fonte:** CONCURRENTLY faz duas varreduras e espera transações, e pode deixar um índice inválido. Expressões não imutáveis são rejeitadas.
 - **Opinião (aplicabilidade aqui):** como criado_em é timestamp SEM fuso, o cast criado_em::date é imutável e o índice de expressão ((criado_em::date)) é permitido. Com timestamptz não seria, porque o resultado depende do TimeZone. Em ambiente de desafio sem escrita concorrente, CONCURRENTLY é desnecessário.
@@ -407,7 +409,7 @@ Total: 81 fontes distintas (52 de documentação oficial, 10 de técnica primár
 
 ### Analyzing the Limits of Connection Scalability in Postgres
 
-- **Autor/organização:** Andres Freund (Microsoft, Azure Database for PostgreSQL / Citus; committer do PostgreSQL) (2020-10-08 (atualizado em 2020-10-26))
+- **Autor/organização:** Andres Freund (andresfreund, Microsoft) (2020-10-08 (atualizado em 2020-10-26))
 - **Tipo:** técnica primária
 - **Link:** <https://techcommunity.microsoft.com/blog/adforpostgresql/analyzing-the-limits-of-connection-scalability-in-postgres/1757266>
 - **Sustenta:** Análise dos custos de conexões no PostgreSQL (estabelecimento, memória, snapshots) e do papel dos poolers
@@ -431,6 +433,7 @@ Total: 81 fontes distintas (52 de documentação oficial, 10 de técnica primár
   - "A server connection is assigned to a client only during a transaction. When PgBouncer notices that the transaction is over, the server will be put back into the pool." (Pooling modes): No modo transaction, uma conexão do servidor fica com o cliente só durante a transação e volta ao pool quando ela termina.
   - "Note that “transaction” pooling breaks client expectations of the server by design" (SQL feature map for pooling modes): O próprio projeto avisa que o pooling por transação quebra, por desenho, as expectativas do cliente sobre o servidor. Na tabela de compatibilidade, SET/RESET, LISTEN, PREPARE/DEALLOCATE e advisory locks de sessão aparecem como 'Never' nesse modo.
   - "Low memory requirements (2 kB per connection by default)." (Features): PgBouncer consome pouca memória: 2 kB por conexão no padrão.
+  - Tabela "SQL feature map for pooling modes" (aberta de novo em 2026-11-07): "Protocol-level prepared plans | Yes | Yes [2]", com a nota 2 "You need to change max_prepared_statements to a non-zero value to enable this support."; "PREPARE / DEALLOCATE | Yes | Never"; "SET/RESET | Yes | Never". Ou seja: em modo transaction, PREPARE e SET em SQL não funcionam, mas prepared statements do protocolo funcionam se configurados.
 - **Custo ou risco segundo a fonte:** Modo transaction e statement quebram recursos de sessão (SET, PREPARE, LISTEN, advisory locks de sessão, WITH HOLD cursors). O modo statement proíbe transações com vários comandos.
 - **Correção do verificador:** Contexto: "Note that “transaction” pooling breaks client expectations of the server by design and can be used only if the application cooperates"
 - **Opinião (aplicabilidade aqui):** é uma alternativa ou complemento a (a), mas acrescenta mais um serviço com CPU e memória próprias no compose, o que vai contra (g). Com uma única instância da API, o pool interno do pg resolve o mesmo problema sem infraestrutura extra. PgBouncer faz mais sentido com várias instâncias da API ou funções serverless.
@@ -684,9 +687,9 @@ Total: 81 fontes distintas (52 de documentação oficial, 10 de técnica primár
 - **Tipo:** documentação oficial
 - **Link:** <https://www.postgresql.org/docs/16/explicit-locking.html>
 - **Sustenta:** Base para o risco de linha quente: UPDATE concorrente na mesma linha de contador/resumo serializa as transações.
-- **Verificação:** confirmada-com-correcao (1/2 citações encontradas na página)
+- **Verificação:** confirmada-com-correcao (a citação 1 foi trocada pelo texto literal do verificador; 2/2 literais)
 - **Citações (literais):**
-  - "other transactions that attempt UPDATE, DELETE, SELECT FOR UPDATE or SELECT FOR NO KEY UPDATE of these rows will be blocked until the current transaction ends" (13.3.2 Row-Level Locks (FOR UPDATE)): Outras transações que tentem UPDATE, DELETE ou SELECT FOR UPDATE/NO KEY UPDATE em linhas bloqueadas esperam até o fim da transação atual.
+  - "That is, other transactions that attempt UPDATE, DELETE, SELECT FOR UPDATE, SELECT FOR NO KEY UPDATE, SELECT FOR SHARE or SELECT FOR KEY SHARE of these rows will be blocked until the current transaction ends;" (13.3.2 Row-Level Locks (FOR UPDATE)): Outras transações que tentem UPDATE, DELETE ou SELECT FOR UPDATE/NO KEY UPDATE em linhas bloqueadas esperam até o fim da transação atual.
   - "This lock mode is also acquired by any UPDATE that does not acquire a FOR UPDATE lock." (13.3.2 Row-Level Locks (FOR NO KEY UPDATE)): Todo UPDATE que não pega FOR UPDATE pega o modo FOR NO KEY UPDATE, que também conflita com outros escritores da mesma linha.
 - **Custo ou risco segundo a fonte:** Escritores concorrentes na mesma linha ficam bloqueados até o commit ou rollback do primeiro.
 - **Correção do verificador:** Texto literal de (1), em 13.3.2, modo FOR UPDATE: 'That is, other transactions that attempt UPDATE, DELETE, SELECT FOR UPDATE, SELECT FOR NO KEY UPDATE, SELECT FOR SHARE or SELECT FOR KEY SHARE of these rows will be blocked until the current transaction ends;'
@@ -813,7 +816,7 @@ Total: 81 fontes distintas (52 de documentação oficial, 10 de técnica primár
 - **Citações (literais):**
   - "Asynchronous logging enables the minimum overhead of Pino." (Asynchronous Logging): O log assíncrono dá o menor custo possível ao Pino.
   - "Asynchronous logging works by buffering log messages and writing them in larger chunks." (Asynchronous Logging): Funciona juntando mensagens num buffer e gravando em blocos maiores.
-  - "There is a possibility of the most recently buffered log messages being lost." (Caveats): As mensagens mais recentes no buffer podem se perder (por exemplo, numa queda abrupta).
+  - "There is a possibility of the most recently buffered log messages being lost in case of a system failure, e.g. a power cut." (Caveats): As mensagens mais recentes no buffer podem se perder (por exemplo, numa queda abrupta).
 - **Custo ou risco segundo a fonte:** Perda das últimas linhas em crash. Em AWS Lambda, logs atrasados ou perdidos. Uma chamada de log deixa de corresponder a uma escrita.
 - **Correção do verificador:** Texto literal de (3): 'There is a possibility of the most recently buffered log messages being lost in case of a system failure, e.g. a power cut.'
 - **Opinião (aplicabilidade aqui):** aceitável para log de acesso. Para erros fatais, vale manter escrita síncrona ou um flush na saída.
@@ -862,7 +865,7 @@ Total: 81 fontes distintas (52 de documentação oficial, 10 de técnica primár
   - "To see why, note that in a closed system Little's Law states that N=X E[T], where N is the constant MPL across policies." (5.2 The impact of scheduling): Num sistema fechado, a Lei de Little dá N = X·E[T], com N fixo (o número de usuários/MPL); logo, com N constante, o tempo de resposta médio é determinado pela vazão. A fila fica limitada a N mesmo sob carga muito alta.
 - **Custo ou risco segundo a fonte:** O artigo não diz que o modelo aberto é sempre o certo: dá regras práticas e afirma que sistemas parcialmente abertos com muitas requisições por sessão (mais de 10) se comportam como fechados ('a high number of requests per session (more than 10) suggests a closed model'). Trocar o modelo sem critério também distorce a medição.
 - **Correção do verificador:** Ao usar a citação 1, manter a condição do original: 'in capacity planning for an open system, choosing a workload generator based on a closed model can greatly underestimate response times'. Ao usar a citação 2, manter 'for a fixed load, the mean response time for an open system model can exceed that for a closed system model by an order of magnitude or more.'
-- **Opinião (aplicabilidade aqui):** aplica-se diretamente. O k6 do desafio usa 20 VUs sem pausa, ou seja, um sistema fechado com N=20 e think time zero. Pela Lei de Little, o tempo médio de resposta é cerca de 20/vazão: na linha de base, 20/1,57 req/s dá uns 12,7 s (conta minha, de resumo.txt). Por isso latência e vazão não são métricas independentes nesse cenário, e a p95 medida tende a subestimar a de tráfego real (aberto). Manter o cenário fechado para comparar com a linha de base faz sentido, mas vale complementar com um cenário aberto.
+- **Opinião (aplicabilidade aqui):** aplica-se diretamente. O k6 do desafio usa 20 VUs sem pausa, ou seja, um sistema fechado com N=20 e think time zero. Pela Lei de Little, o tempo médio de resposta é cerca de 20/vazão: na linha de base, 20/2,34 req/s dá uns 8,5 s (conta minha, com a mediana de analise/medianas.md). Por isso latência e vazão não são métricas independentes nesse cenário, e a p95 medida tende a subestimar a de tráfego real (aberto). Manter o cenário fechado para comparar com a linha de base faz sentido, mas vale complementar com um cenário aberto.
 
 ### Open and closed models (k6 documentation)
 
@@ -890,7 +893,7 @@ Total: 81 fontes distintas (52 de documentação oficial, 10 de técnica primár
   - "Number of iterations to start during each `timeUnit` period." (Options): rate é o número de iterações iniciadas em cada período timeUnit.
   - "Using too low of a `preAllocatedVUs` setting will reduce the test duration at the desired rate" (Options / aviso): preAllocatedVUs baixo demais reduz o tempo do teste em que a taxa desejada é mantida.
 - **Custo ou risco segundo a fonte:** Exige dimensionar VUs (preAllocatedVUs/maxVUs). Com VUs a menos, o teste não sustenta a taxa pedida.
-- **Opinião (aplicabilidade aqui):** bom como cenário complementar, sem substituir o oficial. Com a linha de base a uns 1,5 req/s, uma taxa fixa acima disso faria a versão original acumular fila e timeouts. Para comparar antes e depois no mesmo cenário aberto, a taxa precisa ser sustentável pela versão mais lenta. A outra opção é usar o cenário aberto só para caracterizar a versão otimizada.
+- **Opinião (aplicabilidade aqui):** bom como cenário complementar, sem substituir o oficial. Com a linha de base a uns 2,3 req/s (analise/medianas.md), uma taxa fixa acima disso faria a versão original acumular fila e timeouts. Para comparar antes e depois no mesmo cenário aberto, a taxa precisa ser sustentável pela versão mais lenta. A outra opção é usar o cenário aberto só para caracterizar a versão otimizada.
 
 ### VU allocation for arrival-rate executors (k6 documentation)
 
@@ -947,7 +950,7 @@ Total: 81 fontes distintas (52 de documentação oficial, 10 de técnica primár
   - "a high-order percentile, such as the 99th or 99.9th, shows you a plausible worst-case value" (Aggregation): Um percentil alto, como o 99º ou o 99,9º, mostra um valor plausível de pior caso.
 - **Custo ou risco segundo a fonte:** Percentis altos precisam de muitas amostras para ser estáveis (inferência minha). A fonte observa que a mediana (p50) 'emphasizes the typical case'.
 - **Correção do verificador:** Opcional: dar os autores do capítulo (Chris Jones, John Wilkes, Niall Murphy, com Cody Smith) além de 'Google'.
-- **Opinião (aplicabilidade aqui):** justifica reportar p95/p99. Mas na linha de base há rotas com 1 a 25 amostras por execução (top-produtos tem n=1), e com isso a p95 por rota é estatisticamente instável. É uma causa provável da variação acima de 30% entre execuções. Reportar o n por rota junto do percentil.
+- **Opinião (aplicabilidade aqui):** justifica reportar p95/p99. Mas na linha de base há rotas com 1 a 48 amostras por execução (top-produtos tem n=1 ou 2; resultados/*-00-linha-de-base/resumo.txt), e com isso a p95 por rota é estatisticamente instável. É uma causa provável da variação acima de 30% entre execuções. Reportar o n por rota junto do percentil.
 
 ### Is Big Data Performance Reproducible in Modern Cloud Networks?
 
@@ -1032,7 +1035,7 @@ Total: 81 fontes distintas (52 de documentação oficial, 10 de técnica primár
   - "CPU cost: $0.000011244 per vCPU second, memory cost: $0.000001235 per GB per second" (Pricing examples, Example 1): No mesmo exemplo, a memória custa US$ 0,000001235 por GB-segundo.
   - "Pricing is calculated per second with a 1-minute minimum." (Pricing details): A cobrança é por segundo, com mínimo de 1 minuto.
 - **Custo ou risco segundo a fonte:** Preço por região, sistema operacional e arquitetura ('pricing is calculated based on the vCPU, memory, Operating Systems, CPU Architecture' e armazenamento). No exemplo 2, o Linux/ARM (Graviton) tem tarifa menor: 'CPU cost: $0.0000089944 per vCPU second'. Os preços podem mudar depois da data de acesso.
-- **Opinião (aplicabilidade aqui):** OPINIÃO e cálculo meu: pelas tarifas por segundo, 1 vCPU custa cerca de 9,1 vezes 1 GB (0,000011244/0,000001235). A configuração atual (API 0,5 vCPU + 0,25 GB; banco 1 vCPU + 0,5 GB) daria uns US$ 0,0641/h, cerca de US$ 46,8 por mês de 730 h, e uns 95% disso é CPU. Portanto, cortar CPU importa muito mais que cortar memória. Uma métrica útil é o custo por milhão de requisições = custo/h ÷ (req/s × 3600) × 10^6. Na linha de base (1,57 req/s) daria uns US$ 11,3 por milhão. É um modelo proxy: o desafio roda em Docker local, não no Fargate.
+- **Opinião (aplicabilidade aqui):** OPINIÃO e cálculo meu: pelas tarifas por segundo, 1 vCPU custa cerca de 9,1 vezes 1 GB (0,000011244/0,000001235). A configuração atual (API 0,5 vCPU + 0,25 GB; banco 1 vCPU + 0,5 GB) daria uns US$ 0,0641/h, cerca de US$ 46,8 por mês de 730 h, e uns 95% disso é CPU. Portanto, cortar CPU importa muito mais que cortar memória. Uma métrica útil é o custo por milhão de requisições = custo/h ÷ (req/s × 3600) × 10^6. Na linha de base (2,34 req/s, mediana) daria uns US$ 7,60 por milhão (calculado por analise/medianas.js). É um modelo proxy: o desafio roda em Docker local, não no Fargate.
 
 ### Amazon ECS task definition differences for Fargate - Task CPU and memory
 
