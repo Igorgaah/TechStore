@@ -17,8 +17,13 @@
 #   carga-atividade.txt     amostragem de pg_stat_activity a cada 1 s: o que o banco estava executando
 #   log-api.txt             volume do log da API durante a carga e exemplos de linha
 #
-# As partes 4 a 6 reiniciam o banco com diagnostico/docker-compose.pgss.yml (pg_stat_statements e
-# log_connections ligados) e, no fim, voltam para o docker-compose.yml normal e removem a extensão.
+# As partes 4 a 6 reiniciam o banco com pg_stat_statements e log_connections ligados e, no fim, voltam
+# para o docker-compose.yml normal e removem a extensão. O override é gerado na hora a partir do command
+# que o banco está usando, com as opções do diagnóstico ACRESCENTADAS: no Compose, o command de um
+# arquivo de override substitui o da base. (Até a correção desta ferramenta, um override fixo,
+# diagnostico/docker-compose.pgss.yml, fazia isso e apagava o max_parallel_workers_per_gather=0 da
+# mudança 11: as cargas de diagnóstico de 13 e 15 rodaram com consulta paralela ligada.)
+# Logo depois do reinício o cache do banco está frio: a carga de diagnóstico não reproduz o req/s medido.
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -88,15 +93,23 @@ if [[ "${SEM_CARGA:-}" == "1" ]]; then
 fi
 
 echo "[4/6] reiniciando o banco com pg_stat_statements e log_connections (só para o diagnóstico)..."
+OVERRIDE="diagnostico/.override-diagnostico.yml"
 restaurar() {
   echo "Restaurando o banco para o docker-compose.yml normal..."
   psql_banco -c "DROP EXTENSION IF EXISTS pg_stat_statements;" >/dev/null 2>&1 || true
   docker compose up -d --wait banco >/dev/null 2>&1
   docker compose restart api >/dev/null 2>&1
+  rm -f "$OVERRIDE"
   api_no_ar
 }
 trap restaurar EXIT
-docker compose -f docker-compose.yml -f diagnostico/docker-compose.pgss.yml up -d --wait banco >/dev/null 2>&1
+# command atual do banco, em JSON (ex.: ["postgres","-c","max_parallel_workers_per_gather=0"]), que também
+# é YAML válido; as opções do diagnóstico entram no fim da mesma lista.
+CMD_ATUAL="$(docker inspect -f '{{json .Config.Cmd}}' "$(docker compose ps -q banco)" | tr -d '\r')"
+EXTRA='"-c","shared_preload_libraries=pg_stat_statements","-c","pg_stat_statements.track=all","-c","track_io_timing=on","-c","log_connections=on"'
+printf 'services:\n  banco:\n    command: %s,%s]\n' "${CMD_ATUAL%]}" "$EXTRA" > "$OVERRIDE"
+echo "      command do banco no diagnóstico: $(sed -n 's/^    command: //p' "$OVERRIDE")"
+docker compose -f docker-compose.yml -f "$OVERRIDE" up -d --wait banco >/dev/null 2>&1
 docker compose restart api >/dev/null 2>&1
 api_no_ar
 psql_banco -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;" >/dev/null
@@ -218,7 +231,7 @@ resumo_atividade() { # $1 = coluna agrupada (2 = estado de espera, 3 = consulta)
     $2 != "" { ativas++ }
     END {
       n = 0; for (a in amostras) n++
-      printf "Amostras: %d (1 por segundo). Sessões ativas em média: %.2f (com 1 CPU no banco, acima de 1 = fila).\n", n, ativas / n
+      printf "Amostras: %d (1 por segundo). Sessões ativas em média: %.2f (acima do número de CPUs do banco = fila).\n", n, ativas / n
     }' "$RAW"
   echo
   echo "Por estado de espera (CPU = executando, sem esperar). Colunas: sessões ativas em média, % das amostras ativas."
