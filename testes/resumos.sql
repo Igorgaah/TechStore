@@ -1,5 +1,6 @@
--- Teste dos triggers das tabelas de resumo (receita_por_produto, mudança 03; pedidos_por_status, mudança 08): aplica escritas de todos os tipos dentro de uma
--- transação e, depois de cada uma, confere se o resumo é igual ao agregado calculado do zero.
+-- Teste dos triggers das tabelas de resumo (receita_por_produto, mudança 03; pedidos_por_status, mudança 08;
+-- totais_pedido, mudança 14): aplica escritas de todos os tipos dentro de uma transação e, depois de cada
+-- uma, confere se cada resumo é igual ao agregado calculado do zero.
 -- Termina com ROLLBACK: não deixa nada no banco.
 --   docker compose exec -T banco psql -U loja -d loja -X < testes/resumos.sql
 \set ON_ERROR_STOP on
@@ -9,6 +10,7 @@ BEGIN;
 CREATE FUNCTION pg_temp.conferir(etapa text) RETURNS text LANGUAGE plpgsql AS $$
 DECLARE
     diferencas bigint;
+    conferidos text;
 BEGIN
     WITH resumo AS (
         SELECT produto_id, itens, unidades, receita_centavos FROM receita_por_produto WHERE itens > 0
@@ -27,6 +29,8 @@ BEGIN
         RAISE EXCEPTION 'FALHOU em "%": % linhas diferentes entre resumo e agregado completo', etapa, diferencas;
     END IF;
 
+    conferidos := 'receita por produto';
+
     -- Contagem por status (mudança 08), se a tabela existir.
     IF to_regclass('pedidos_por_status') IS NOT NULL THEN
         EXECUTE $q$
@@ -40,9 +44,32 @@ BEGIN
         IF diferencas > 0 THEN
             RAISE EXCEPTION 'FALHOU em "%": contagem por status difere em % linhas', etapa, diferencas;
         END IF;
-        RETURN 'ok  ' || etapa || ' (receita por produto e contagem por status)';
+        conferidos := conferidos || ', contagem por status';
     END IF;
-    RETURN 'ok  ' || etapa || ' (receita por produto)';
+
+    -- Vendas por dia a partir dos totais por pedido (mudança 14), contra o JOIN original, em todos os dias.
+    IF to_regclass('totais_pedido') IS NOT NULL THEN
+        EXECUTE $q$
+            WITH resumo AS (
+                SELECT dia, count(*) AS pedidos, sum(unidades) AS itens, sum(receita_centavos) AS receita
+                  FROM totais_pedido WHERE ativo AND itens > 0 GROUP BY dia
+            ), completo AS (
+                SELECT p.criado_em::date AS dia, count(DISTINCT p.id) AS pedidos, sum(i.quantidade) AS itens,
+                       sum(i.quantidade * i.preco_unitario_centavos) AS receita
+                  FROM pedidos p JOIN itens_pedido i ON i.pedido_id = p.id
+                 WHERE p.status <> 'cancelado' GROUP BY 1
+            )
+            SELECT count(*) FROM ((SELECT * FROM resumo EXCEPT ALL SELECT * FROM completo)
+                                  UNION ALL
+                                  (SELECT * FROM completo EXCEPT ALL SELECT * FROM resumo)) d
+        $q$ INTO diferencas;
+        IF diferencas > 0 THEN
+            RAISE EXCEPTION 'FALHOU em "%": vendas por dia diferem em % dias', etapa, diferencas;
+        END IF;
+        conferidos := conferidos || ', vendas por dia';
+    END IF;
+
+    RETURN 'ok  ' || etapa || ' (' || conferidos || ')';
 END $$;
 
 SELECT pg_temp.conferir('estado inicial');
@@ -79,11 +106,18 @@ SELECT pg_temp.conferir('move item de pedido cancelado para pedido ativo');
 DELETE FROM itens_pedido WHERE id = 90000003;
 SELECT pg_temp.conferir('apaga um item');
 
+UPDATE pedidos SET criado_em = criado_em - interval '3 days' WHERE id IN (900001, 10, 11);
+SELECT pg_temp.conferir('muda a data (o dia) de pedidos');
+
+INSERT INTO pedidos (id, cliente_id, status, criado_em, observacoes)
+VALUES (900003, 3, 'pago', '2025-06-01 12:00', 'teste sem itens');
+SELECT pg_temp.conferir('insere pedido sem itens');
+
 UPDATE pedidos SET status = 'cancelado' WHERE id IN (2, 3, 4);
 SELECT pg_temp.conferir('cancela 3 pedidos já existentes de uma vez');
 
 DELETE FROM itens_pedido WHERE pedido_id = 900001;
-DELETE FROM pedidos WHERE id IN (900001, 900002);
+DELETE FROM pedidos WHERE id IN (900001, 900002, 900003);
 SELECT pg_temp.conferir('apaga pedidos e itens');
 
 ROLLBACK;

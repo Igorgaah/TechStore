@@ -170,21 +170,21 @@ rotas.get('/relatorios/vendas-por-dia', assincrono(async (req, res) => {
     return res.status(400).json({ erro: `o periodo deve ter entre 1 e ${MAX_DIAS_RELATORIO} dias` });
   }
 
-  // Agrega no banco: uma linha por dia, em vez de uma por item (com o texto de observacoes, que a
-  // resposta nem usa). criado_em é timestamp sem fuso e a API roda em TZ=UTC, então criado_em::date
-  // é o mesmo dia que o código original obtinha com criado_em.toISOString().slice(0, 10). Dias sem
-  // venda continuam fora da resposta. count/sum chegam do pg como texto (bigint) e viram número.
+  // Soma os totais por pedido (banco/10-totais-pedido.sql, mantidos por trigger), uma linha por dia.
+  // Equivale ao JOIN original: pedidos não cancelados com pelo menos um item (itens > 0), contados uma
+  // vez cada; itens e receita somados sobre os itens desses pedidos. dia = criado_em::date, o mesmo dia
+  // que o código original obtinha com criado_em.toISOString() (timestamp sem fuso, API em TZ=UTC).
+  // Dias sem venda continuam fora da resposta. count/sum chegam do pg como texto e viram número.
   const linhas = await consultar(
-    `SELECT to_char(p.criado_em::date, 'YYYY-MM-DD') AS dia,
-            count(DISTINCT p.id) AS pedidos,
-            sum(i.quantidade) AS itens,
-            sum(i.quantidade * i.preco_unitario_centavos) AS receita_centavos
-       FROM pedidos p
-       JOIN itens_pedido i ON i.pedido_id = p.id
-      WHERE p.criado_em::date BETWEEN $1 AND $2
-        AND p.status <> 'cancelado'
-      GROUP BY p.criado_em::date
-      ORDER BY p.criado_em::date`,
+    `SELECT to_char(dia, 'YYYY-MM-DD') AS dia,
+            count(*) AS pedidos,
+            sum(unidades) AS itens,
+            sum(receita_centavos) AS receita_centavos
+       FROM totais_pedido
+      WHERE dia BETWEEN $1 AND $2
+        AND ativo AND itens > 0
+      GROUP BY totais_pedido.dia
+      ORDER BY totais_pedido.dia`,
     [req.query.inicio, req.query.fim],
   );
 
