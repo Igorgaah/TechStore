@@ -3,6 +3,9 @@ name: desafio-performance
 services:
   banco:
     image: postgres:16.4
+    # Mudança 11: sem consulta paralela. Com o container limitado a 1 CPU, os workers paralelos
+    # disputam a mesma CPU e só acrescentam coordenação (espera IPC:MessageQueueReceive no diagnóstico).
+    command: ["postgres", "-c", "max_parallel_workers_per_gather=0"]
     shm_size: 256mb
     environment:
       POSTGRES_USER: loja
