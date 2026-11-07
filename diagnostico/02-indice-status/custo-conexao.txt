@@ -1,0 +1,8 @@
+# rotulo: 02-indice-status
+# data: 2026-11-07 02:33:50 -0300
+# commit: 5198b26 (arquivos alterados sem commit: 2)
+
+consultas por cenário: 300 (SELECT por chave primária, banco ocioso)
+conexão nova por consulta (db.js original)    15.781 ms/consulta  | CPU do Node 4.817 ms/consulta | total 4734 ms
+pool (1 conexão reaproveitada)                2.300 ms/consulta  | CPU do Node 1.131 ms/consulta | total 690 ms
+razão tempo (nova/pool): 6.9x

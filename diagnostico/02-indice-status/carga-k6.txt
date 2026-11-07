@@ -1,0 +1,19 @@
+ Container desafio-performance-carga-run-8702a72072bb Creating 
+ Container desafio-performance-carga-run-8702a72072bb Created 
+Medição: diagnostico-02-indice-status
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        211
+Requisições/s:      3.24
+Tempo de resposta:  mediana 2088.4 ms | p95 22816.5 ms | p99 29064.9 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               54        982.4 ms      2167.6 ms     2959.4 ms     0.0%    
+cliente-por-email     36        2055.9 ms     3852.6 ms     5180.6 ms     0.0%    
+pedidos-do-cliente    46        15380.2 ms    28535.7 ms    29258.5 ms    0.0%    
+pedidos-por-status    24        3690.2 ms     8161.9 ms     8332.9 ms     0.0%    
+busca-produtos        35        1302.0 ms     3397.2 ms     5022.4 ms     0.0%    
+vendas-por-dia        13        6001.9 ms     14928.5 ms    15555.7 ms    0.0%    
+top-produtos          3         21631.8 ms    51158.1 ms    53782.6 ms    0.0%    
