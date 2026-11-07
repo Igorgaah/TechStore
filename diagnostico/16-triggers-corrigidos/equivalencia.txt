@@ -1,0 +1,15 @@
+# testes/equivalencia.js: API original (ea4cd8d) x API no commit cbe1be2, 2026-11-07 12:27:17 -0300
+
+referência: http://127.0.0.1:3001   candidata: http://127.0.0.1:3000
+790 URLs comparadas (texto da resposta, inclusive status e ordem)
+
+ 150 iguais    0 diferentes  /clientes/:n
+ 100 iguais    0 diferentes  /clientes?email=
+ 250 iguais    0 diferentes  /clientes/:n/pedidos
+ 140 iguais    0 diferentes  /pedidos?status=&pagina=
+  20 iguais    0 diferentes  /produtos/busca?q=
+ 120 iguais    0 diferentes  /relatorios/vendas-por-dia?inicio=&fim=
+   9 iguais    0 diferentes  /relatorios/top-produtos?limite=
+   1 iguais    0 diferentes  /relatorios/top-produtos
+
+Equivalência mantida: as 790 respostas são idênticas.

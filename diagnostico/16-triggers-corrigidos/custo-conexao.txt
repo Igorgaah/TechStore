@@ -1,0 +1,8 @@
+# rotulo: 16-triggers-corrigidos
+# data: 2026-11-07 12:35:32 -0300
+# commit: cbe1be2 (arquivos alterados sem commit: 4)
+
+consultas por cenário: 300 (SELECT por chave primária, banco ocioso)
+conexão nova por consulta (db.js original)    21.768 ms/consulta  | CPU do Node 4.720 ms/consulta | total 6530 ms
+pool (1 conexão reaproveitada)                2.847 ms/consulta  | CPU do Node 1.303 ms/consulta | total 854 ms
+razão tempo (nova/pool): 7.6x

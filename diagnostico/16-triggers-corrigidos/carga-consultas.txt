@@ -1,0 +1,20 @@
+# rotulo: 16-triggers-corrigidos
+# data: 2026-11-07 12:38:28 -0300
+# commit: cbe1be2 (arquivos alterados sem commit: 4)
+
+pg_stat_statements durante a carga de diagnóstico (20 VUs, 60s, semente 42).
+tempo_total_ms = soma do tempo de execução no banco; pct = fatia do tempo total do banco.
+
+Pager usage is off.
+ chamadas | tempo_total_ms | pct  | media_ms | linhas | blocos_cache | blocos_lidos | blocos_temp |                                                    consulta                                                    
+----------+----------------+------+----------+--------+--------------+--------------+-------------+----------------------------------------------------------------------------------------------------------------
+     1887 |          33513 | 32.5 |    17.76 |  28165 |       124630 |        18494 |           0 | SELECT p.id AS pedido_id, p.status, p.criado_em, i.produto_id, pr.nome AS produto_nome, i.quantidade, i.preco_
+     1314 |          31601 | 30.7 |    24.05 |  26280 |       175043 |        10268 |           0 | SELECT p.id, p.cliente_id, p.status, p.criado_em FROM (SELECT id FROM pedidos WHERE status = $1 ORDER BY criad
+     1357 |          23309 | 22.6 |    17.18 |  27140 |       214676 |            0 |           0 | SELECT * FROM produtos WHERE nome ILIKE $2 || $1 || $3 ORDER BY nome, id LIMIT $4
+      734 |           7497 |  7.3 |    10.21 |   5138 |        17288 |         1758 |           0 | SELECT to_char(dia, $3) AS dia, count(*) AS pedidos, sum(unidades) AS itens, sum(receita_centavos) AS receita_
+     1325 |           4762 |  4.6 |     3.59 |   1325 |         4009 |         1300 |           0 | SELECT * FROM clientes WHERE lower(email) = lower($1) ORDER BY id
+     2249 |           2270 |  2.2 |     1.01 |   2249 |         5764 |          983 |           0 | SELECT * FROM clientes WHERE id = $1
+     1314 |             43 |  0.0 |     0.03 |   1314 |         1314 |            0 |           0 | SELECT coalesce((SELECT total FROM pedidos_por_status WHERE status = $1), $2) AS total
+      163 |             10 |  0.0 |     0.06 |   1630 |         6846 |            0 |           0 | SELECT pr.id, pr.nome, pr.categoria, r.unidades, r.receita_centavos FROM receita_por_produto r JOIN produtos p
+(8 rows)
+

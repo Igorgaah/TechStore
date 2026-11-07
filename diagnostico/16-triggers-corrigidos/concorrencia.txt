@@ -1,0 +1,8 @@
+# testes/concorrencia.sh no commit cbe1be2, 2026-11-07 12:26:30 -0300
+ok      estado inicial: resumo (itens 5025, receita 656335360) = agregado completo
+        cenário 1: o INSERT esperou 5 s pela transação que cancelava o pedido
+ok      cenário 1 (cancela o pedido enquanto outro insere item): resumo (itens 5025, receita 656335360) = agregado completo
+        cenário 2: o UPDATE esperou 4 s pela transação que inseria o item
+ok      cenário 2 (insere item enquanto outro cancela o pedido): resumo (itens 5025, receita 656335360) = agregado completo
+ok      depois da limpeza: resumo (itens 5025, receita 656335360) = agregado completo
+Concorrência: resumo correto nos 2 cenários.
