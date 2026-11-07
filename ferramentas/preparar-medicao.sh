@@ -6,9 +6,10 @@
 #
 #   ferramentas/preparar-medicao.sh
 #
-# Procedimento usado em todas as medições: banco recriado do zero (docker compose down -v && up -d --build)
-# e este script antes da 1ª execução. Assim o banco está sempre no mesmo estado (dados recém-gerados,
-# cache quente, autovacuum concluído); um banco só reiniciado começa com o cache frio.
+# Estado do banco antes de cada série: dados recém-gerados, cache quente e autovacuum concluído.
+# Mudanças no banco: recriado do zero (docker compose down -v && up -d --build). Mudanças só na API
+# (05 e 07): banco mantido rodando desde a série anterior; da 10 em diante, recriado sempre.
+# Um banco apenas reiniciado começa com o cache frio (ver a mudança 09 em experimentos.md).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 export MSYS_NO_PATHCONV=1
