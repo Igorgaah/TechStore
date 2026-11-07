@@ -1,0 +1,19 @@
+ Container desafio-performance-carga-run-ae9cfe9d7826 Creating 
+ Container desafio-performance-carga-run-ae9cfe9d7826 Created 
+Medição: diagnostico-13-log-sem-corpo
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        6206
+Requisições/s:      103.24
+Tempo de resposta:  mediana 130.2 ms | p95 579.7 ms | p99 903.1 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               1566      107.7 ms      217.9 ms      313.9 ms      0.0%    
+cliente-por-email     918       108.8 ms      267.6 ms      357.0 ms      0.0%    
+pedidos-do-cliente    1317      115.0 ms      272.8 ms      337.4 ms      0.0%    
+pedidos-por-status    899       219.3 ms      420.9 ms      597.7 ms      0.0%    
+busca-produtos        917       135.6 ms      301.3 ms      423.9 ms      0.0%    
+vendas-por-dia        481       626.4 ms      1066.0 ms     1238.4 ms     0.0%    
+top-produtos          108       115.5 ms      232.0 ms      295.5 ms      0.0%    
