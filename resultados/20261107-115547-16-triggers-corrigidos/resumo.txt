@@ -1,0 +1,17 @@
+Medição: 16-triggers-corrigidos
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        8511
+Requisições/s:      141.63
+Tempo de resposta:  mediana 105.9 ms | p95 327.3 ms | p99 522.7 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               2136      97.7 ms       261.4 ms      385.4 ms      0.0%    
+cliente-por-email     1252      97.4 ms       277.2 ms      409.0 ms      0.0%    
+pedidos-do-cliente    1770      106.1 ms      394.4 ms      580.0 ms      0.0%    
+pedidos-por-status    1235      171.6 ms      500.1 ms      874.5 ms      0.0%    
+busca-produtos        1273      114.0 ms      296.8 ms      400.3 ms      0.0%    
+vendas-por-dia        690       100.6 ms      279.7 ms      413.5 ms      0.0%    
+top-produtos          155       100.5 ms      203.8 ms      316.2 ms      0.0%    
