@@ -5,8 +5,10 @@ const app = express();
 const porta = Number(process.env.PORT || 3000);
 
 // Log de acesso só com metadados. Antes ele trazia também o corpo inteiro da resposta: cada resposta
-// era serializada duas vezes (log e cliente) e gravada de forma síncrona no stdout, com nome e e-mail
-// de clientes no log (diagnostico/00-linha-de-base/log-api.txt).
+// era serializada duas vezes (log e cliente), ~1,1 KB de log por requisição, com nome e e-mail de
+// clientes (diagnostico/00-linha-de-base/log-api.txt). Observação: no container (Linux) o stdout é um
+// pipe, e a doc do Node 20 diz que escrita em pipe é assíncrona em POSIX; a hipótese original da
+// mudança 13 supunha escrita síncrona (ver experimentos.md).
 app.use((req, res, next) => {
   const inicio = Date.now();
   const enviarJson = res.json.bind(res);
