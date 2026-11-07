@@ -190,16 +190,15 @@ rotas.get('/relatorios/top-produtos', assincrono(async (req, res) => {
   const limite = req.query.limite === undefined ? 10 : inteiroPositivo(req.query.limite);
   if (limite === null || limite > 50) return res.status(400).json({ erro: 'limite deve ser um inteiro entre 1 e 50' });
 
+  // A soma por produto (sem pedidos cancelados) é mantida por triggers em receita_por_produto
+  // (banco/05-resumo-top-produtos.sql); a rota só lê o Top-N, na mesma ordem de antes.
+  // itens > 0: só produtos com algum item de pedido não cancelado, como no JOIN original.
   const linhas = await consultar(
-    `SELECT pr.id, pr.nome, pr.categoria,
-            sum(i.quantidade) AS unidades,
-            sum(i.quantidade * i.preco_unitario_centavos) AS receita_centavos
-       FROM itens_pedido i
-       JOIN pedidos p ON p.id = i.pedido_id
-       JOIN produtos pr ON pr.id = i.produto_id
-      WHERE p.status <> 'cancelado'
-      GROUP BY pr.id, pr.nome, pr.categoria
-      ORDER BY receita_centavos DESC, pr.id
+    `SELECT pr.id, pr.nome, pr.categoria, r.unidades, r.receita_centavos
+       FROM receita_por_produto r
+       JOIN produtos pr ON pr.id = r.produto_id
+      WHERE r.itens > 0
+      ORDER BY r.receita_centavos DESC, r.produto_id
       LIMIT $1`,
     [limite],
   );
