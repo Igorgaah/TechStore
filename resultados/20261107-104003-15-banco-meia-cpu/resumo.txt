@@ -1,0 +1,17 @@
+Medição: 15-banco-meia-cpu
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        9774
+Requisições/s:      162.47
+Tempo de resposta:  mediana 102.1 ms | p95 262.0 ms | p99 387.4 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               2419      96.2 ms       198.2 ms      315.8 ms      0.0%    
+cliente-por-email     1433      96.1 ms       205.2 ms      304.0 ms      0.0%    
+pedidos-do-cliente    2035      101.2 ms      261.5 ms      396.9 ms      0.0%    
+pedidos-por-status    1410      164.3 ms      330.5 ms      505.2 ms      0.0%    
+busca-produtos        1478      106.3 ms      244.5 ms      346.2 ms      0.0%    
+vendas-por-dia        814       100.0 ms      210.0 ms      360.1 ms      0.0%    
+top-produtos          185       94.5 ms       195.0 ms      329.3 ms      0.0%    
