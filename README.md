@@ -4,6 +4,41 @@ Aplicação do desafio técnico da vaga de estágio em Pesquisa e Inovação da 
 
 A aplicação é a API de uma loja fictícia, em Node.js (Express) com PostgreSQL 16, rodando em containers. Ela funciona, mas fica lenta sob carga e gasta mais recursos do que deveria. Todos os dados são sintéticos e gerados na primeira subida: 100 mil clientes, 20 mil produtos, 500 mil pedidos e 1,5 milhão de itens de pedido.
 
+## Resultado deste trabalho
+
+**O problema:** com 20 usuários simultâneos, a API atendia 2,34 requisições por segundo, com p95 de 27 s. O banco ficava saturado (95% de 1 CPU) e a API, quase ociosa. O diagnóstico ([diagnostico/](diagnostico/)) mostrou que o banco refazia trabalho desnecessário: varreduras de tabela inteira por falta de índice, uma conexão nova por consulta, N+1 (17 idas ao banco numa só requisição), consulta paralela num banco de 1 CPU e relatórios e contagens recalculados sobre 1,5 milhão de itens a cada chamada.
+
+**O que mudou:** 15 mudanças, uma por commit, cada uma medida 3 vezes pelo `scripts/medir.sh`: índices, pool de conexões, fim do N+1, agregação no banco, tabelas de resumo mantidas por trigger (exatas), consulta paralela desligada, log sem dados pessoais e, por fim, menos CPU para o banco. Nenhuma resposta mudou: o contrato foi mantido em todas as execuções, e 790 URLs foram conferidas contra o código original.
+
+| Estado | req/s | p95 | CPU média banco · API | CPU reservada | Custo estimado por milhão de req. |
+|---|---|---|---|---|---|
+| Linha de base (00) | 2,34 | 27.087 ms | 95% · 10% | 1,5 vCPU | US$ 7,60 |
+| Mais rápido (14) | 199,07 | 178 ms | 42% · 49% | 1,5 vCPU | US$ 0,09 |
+| Mais barato (15) | 177,56 | 201 ms | 41% · 46% | 1,0 vCPU | US$ 0,07 |
+
+Medianas de 3 execuções, geradas por script a partir de `resultados/` ([analise/medianas.md](analise/medianas.md)). O custo usa as tarifas por segundo do AWS Fargate como referência, e é uma estimativa de eficiência, não uma fatura. As medições foram feitas num Windows com outros programas abertos, o que aumenta a variação entre execuções (veja os limites no artigo).
+
+| Documento | Conteúdo |
+|---|---|
+| [artigo/artigo.md](artigo/artigo.md) | O artigo: diagnóstico, estado da arte, alternativas, escolha, resultados e limites |
+| [experimentos.md](experimentos.md) | Uma linha por mudança: fonte, hipótese, antes, depois, pastas de resultados e conclusão |
+| [proximos-testes.md](proximos-testes.md) | Ideias pesquisadas e não testadas, com fonte e como testar |
+| [pesquisa/fontes.md](pesquisa/fontes.md) | As 81 fontes pesquisadas, com citações literais verificadas |
+
+### Como repetir o diagnóstico e os testes deste trabalho
+
+Além dos passos deste README (subir, gravar o contrato, medir), o repositório tem:
+
+```bash
+ferramentas/preparar-medicao.sh            # espera o autovacuum pós-carga antes da 1ª medição
+diagnostico/coletar.sh 99-teste diagnostico/consultas/15-atuais.sql   # evidências do estado atual (~3 min)
+testes/api-original.sh && node testes/equivalencia.js http://127.0.0.1:3001 http://127.0.0.1:3000 && testes/api-original.sh parar
+docker compose exec -T banco psql -U loja -d loja -X < testes/resumos.sql   # confere os triggers (ROLLBACK no fim)
+node analise/medianas.js && node analise/graficos.js && node analise/experimentos.js   # tabelas e gráficos a partir de resultados/
+```
+
+No Windows, rodando no Git Bash em vez do WSL, exporte `MSYS_NO_PATHCONV=1` antes dos scripts. Sem isso, o Git Bash converte caminhos como `/carga/teste-carga.js` em caminhos do Windows. A equivalência e as análises precisam de Node.js na máquina; o resto roda em containers. Os arquivos `AGENTS.md` e `CLAUDE.md` da pasta original do desafio não fazem parte deste repositório.
+
 ## Prazo e entrega
 
 - **Prazo e entregas:** estão no enunciado enviado na largada
