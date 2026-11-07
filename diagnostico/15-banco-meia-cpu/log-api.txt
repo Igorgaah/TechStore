@@ -1,0 +1,16 @@
+# rotulo: 15-banco-meia-cpu
+# data: 2026-11-07 10:53:34 -0300
+# commit: 9c65b15 (arquivos alterados sem commit: 5)
+
+Log da API (stdout do container) durante a carga de diagnóstico:
+  linhas: 4830
+  bytes:  406048
+  requisições da carga (k6): 4830
+  bytes de log por requisição: 84
+  maior linha (bytes): 115
+
+Exemplos (primeiros 600 caracteres de linhas de rotas diferentes):
+{"metodo":"GET","url":"/clientes/57067","status":200,"duracao_ms":31}
+{"metodo":"GET","url":"/clientes?email=cliente17610%40exemplo.com","status":200,"duracao_ms":18}
+{"metodo":"GET","url":"/clientes/10400/pedidos","status":200,"duracao_ms":5}
+{"metodo":"GET","url":"/relatorios/vendas-por-dia?inicio=2025-11-16&fim=2025-11-22","status":200,"duracao_ms":2}

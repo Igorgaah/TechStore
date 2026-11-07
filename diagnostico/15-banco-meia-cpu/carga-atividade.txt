@@ -1,0 +1,18 @@
+# rotulo: 15-banco-meia-cpu
+# data: 2026-11-07 10:53:31 -0300
+# commit: 9c65b15 (arquivos alterados sem commit: 5)
+
+Amostras: 55 (1 por segundo). Sessões ativas em média: 3.80 (com 1 CPU no banco, acima de 1 = fila).
+
+Por estado de espera (CPU = executando, sem esperar). Colunas: sessões ativas em média, % das amostras ativas.
+    2.13   56.0%  IO:DataFileRead
+    1.55   40.7%  CPU
+    0.13    3.3%  Client:ClientRead
+
+Por consulta (quanto do banco cada consulta ocupa). Colunas: sessões ativas em média, % das amostras ativas.
+    1.78   46.9%  SELECT p.id AS pedido_id, p.status, p.criado_em, i.produto_id, pr.nome AS produto_nome, i.quantidade, i.preco_unitario_centavos FROM clientes c LEFT J
+    0.65   17.2%  SELECT p.id, p.cliente_id, p.status, p.criado_em FROM (SELECT id FROM pedidos WHERE status = $1 ORDER BY criado_em DESC, id DESC LIMIT $2 OFFSET $3) A
+    0.62   16.3%  SELECT * FROM produtos WHERE nome ILIKE '%' 
+    0.29    7.7%  SELECT * FROM clientes WHERE id = $1
+    0.25    6.7%  SELECT to_char(dia, 'YYYY-MM-DD') AS dia, count(*) AS pedidos, sum(unidades) AS itens, sum(receita_centavos) AS receita_centavos FROM totais_pedido WH
+    0.20    5.3%  SELECT * FROM clientes WHERE lower(email) = lower($1) ORDER BY id
